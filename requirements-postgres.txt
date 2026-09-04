@@ -1,0 +1,17 @@
+# Production Postgres path only (backend/app/db/models.py, queries.py,
+# session.py). NOT required to run the SQLite-backed demo -- see
+# requirements.txt for that. Install this only when you're ready to point
+# main.py at a real Postgres instance (see docs/ARCHITECTURE.md).
+#
+# psycopg2-binary sometimes fails to build from source on Windows or on
+# Python versions without a prebuilt wheel yet. If `pip install -r
+# requirements-postgres.txt` fails on psycopg2-binary specifically:
+#   1. Make sure you're on a 64-bit Python (3.9-3.12 have the best wheel
+#      coverage as of this writing).
+#   2. Try `pip install --only-binary :all: psycopg2-binary` to force a
+#      wheel and refuse to compile from source.
+#   3. As a last resort, install PostgreSQL locally (which provides
+#      pg_config) so the source build has what it needs.
+
+sqlalchemy==2.0.35
+psycopg2-binary==2.9.9

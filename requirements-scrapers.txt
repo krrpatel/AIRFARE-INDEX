@@ -1,0 +1,2 @@
+# Optional dependencies for browser-based source collection.
+selenium>=4.25,<5

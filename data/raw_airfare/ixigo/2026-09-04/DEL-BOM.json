@@ -1,0 +1,5397 @@
+{
+  "route": "DEL-BOM",
+  "status": "SUCCESS",
+  "reason": "Fare observations captured",
+  "observations": [
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1049|IX2368",
+      "stops": 1,
+      "fare": {
+        "amount": 7730.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "GOX",
+          "flight_number": "IX1049",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "GOX",
+          "destination": "BOM",
+          "flight_number": "IX2368",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6454|6E5265",
+      "stops": 1,
+      "fare": {
+        "amount": 6618.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "GWL",
+          "flight_number": "6E6454",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "GWL",
+          "destination": "BOM",
+          "flight_number": "6E5265",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI1705|AI9890",
+      "stops": 1,
+      "fare": {
+        "amount": 11946.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BHO",
+          "flight_number": "AI1705",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BHO",
+          "destination": "BOM",
+          "flight_number": "AI9890",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2664|AI2850",
+      "stops": 1,
+      "fare": {
+        "amount": 17179.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BLR",
+          "flight_number": "AI2664",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BLR",
+          "destination": "BOM",
+          "flight_number": "AI2850",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6218",
+      "stops": 0,
+      "fare": {
+        "amount": 6688.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E6218",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E675",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E675",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1068|IX1241",
+      "stops": 1,
+      "fare": {
+        "amount": 9929.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "GOI",
+          "flight_number": "IX1068",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "GOI",
+          "destination": "BOM",
+          "flight_number": "IX1241",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2487|AI2811",
+      "stops": 1,
+      "fare": {
+        "amount": 17313.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BLR",
+          "flight_number": "AI2487",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BLR",
+          "destination": "BOM",
+          "flight_number": "AI2811",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E853",
+      "stops": 0,
+      "fare": {
+        "amount": 6688.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E853",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2509|AI9559",
+      "stops": 1,
+      "fare": {
+        "amount": 11670.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "VNS",
+          "flight_number": "AI2509",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "VNS",
+          "destination": "BOM",
+          "flight_number": "AI9559",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2715|AI2494",
+      "stops": 1,
+      "fare": {
+        "amount": 13747.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "AI2715",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "AI2494",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2813|AI2811",
+      "stops": 1,
+      "fare": {
+        "amount": 17313.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BLR",
+          "flight_number": "AI2813",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BLR",
+          "destination": "BOM",
+          "flight_number": "AI2811",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2955",
+      "stops": 0,
+      "fare": {
+        "amount": 7347.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2955",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1235",
+      "stops": 0,
+      "fare": {
+        "amount": 6529.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "IX1235",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2819|AI2610",
+      "stops": 1,
+      "fare": {
+        "amount": 20615.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BLR",
+          "flight_number": "AI2819",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BLR",
+          "destination": "BOM",
+          "flight_number": "AI2610",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI1777",
+      "stops": 0,
+      "fare": {
+        "amount": 7173.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI1777",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2939|AI2494",
+      "stops": 1,
+      "fare": {
+        "amount": 11626.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "AI2939",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "AI2494",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2412|AI2858",
+      "stops": 1,
+      "fare": {
+        "amount": 17528.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BLR",
+          "flight_number": "AI2412",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BLR",
+          "destination": "BOM",
+          "flight_number": "AI2858",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6050|6E6382",
+      "stops": 1,
+      "fare": {
+        "amount": 6828.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "IXC",
+          "flight_number": "6E6050",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "IXC",
+          "destination": "BOM",
+          "flight_number": "6E6382",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "QP1110",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "QP1110",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6676",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E6676",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2499|AI2492",
+      "stops": 1,
+      "fare": {
+        "amount": 14120.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "LKO",
+          "flight_number": "AI2499",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "LKO",
+          "destination": "BOM",
+          "flight_number": "AI2492",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2945",
+      "stops": 0,
+      "fare": {
+        "amount": 7000.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2945",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1165|IX1027",
+      "stops": 1,
+      "fare": {
+        "amount": 6790.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "LKO",
+          "flight_number": "IX1165",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "LKO",
+          "destination": "BOM",
+          "flight_number": "IX1027",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1817|IX2368",
+      "stops": 1,
+      "fare": {
+        "amount": 7730.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "GOX",
+          "flight_number": "IX1817",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "GOX",
+          "destination": "BOM",
+          "flight_number": "IX2368",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E5014|6E679",
+      "stops": 1,
+      "fare": {
+        "amount": 7142.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BDQ",
+          "flight_number": "6E5014",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BDQ",
+          "destination": "BOM",
+          "flight_number": "6E679",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI465|AI2584",
+      "stops": 1,
+      "fare": {
+        "amount": 15289.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "NAG",
+          "flight_number": "AI465",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "NAG",
+          "destination": "BOM",
+          "flight_number": "AI2584",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI1780|AI2750",
+      "stops": 1,
+      "fare": {
+        "amount": 15551.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "IDR",
+          "flight_number": "AI1780",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "IDR",
+          "destination": "BOM",
+          "flight_number": "AI2750",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI9920|AI2998",
+      "stops": 1,
+      "fare": {
+        "amount": 12674.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "ATQ",
+          "flight_number": "AI9920",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "ATQ",
+          "destination": "BOM",
+          "flight_number": "AI2998",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI9856|AI2662",
+      "stops": 1,
+      "fare": {
+        "amount": 16314.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "SXR",
+          "flight_number": "AI9856",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "SXR",
+          "destination": "BOM",
+          "flight_number": "AI2662",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2627|AI2478",
+      "stops": 1,
+      "fare": {
+        "amount": 24056.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "GOI",
+          "flight_number": "AI2627",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "GOI",
+          "destination": "BOM",
+          "flight_number": "AI2478",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1059|IX1025",
+      "stops": 1,
+      "fare": {
+        "amount": 11930.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BBI",
+          "flight_number": "IX1059",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BBI",
+          "destination": "BOM",
+          "flight_number": "IX1025",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6318",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E6318",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2512|AI2858",
+      "stops": 1,
+      "fare": {
+        "amount": 17528.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BLR",
+          "flight_number": "AI2512",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BLR",
+          "destination": "BOM",
+          "flight_number": "AI2858",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2981",
+      "stops": 0,
+      "fare": {
+        "amount": 7159.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2981",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6282|6E5259",
+      "stops": 1,
+      "fare": {
+        "amount": 8059.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HYD",
+          "flight_number": "6E6282",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HYD",
+          "destination": "BOM",
+          "flight_number": "6E5259",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2975",
+      "stops": 0,
+      "fare": {
+        "amount": 7159.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2975",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6171|6E233",
+      "stops": 1,
+      "fare": {
+        "amount": 6618.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HSR",
+          "flight_number": "6E6171",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HSR",
+          "destination": "BOM",
+          "flight_number": "6E233",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2664|AI2840",
+      "stops": 1,
+      "fare": {
+        "amount": 17493.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BLR",
+          "flight_number": "AI2664",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BLR",
+          "destination": "BOM",
+          "flight_number": "AI2840",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E2147|6E6938",
+      "stops": 1,
+      "fare": {
+        "amount": 6828.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "LKO",
+          "flight_number": "6E2147",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "LKO",
+          "destination": "BOM",
+          "flight_number": "6E6938",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI423|AI2916",
+      "stops": 1,
+      "fare": {
+        "amount": 11626.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "AI423",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "AI2916",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2515|AI1780",
+      "stops": 1,
+      "fare": {
+        "amount": 17252.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "IDR",
+          "flight_number": "AI2515",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "IDR",
+          "destination": "BOM",
+          "flight_number": "AI1780",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2519|AI2876",
+      "stops": 1,
+      "fare": {
+        "amount": 17018.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HYD",
+          "flight_number": "AI2519",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HYD",
+          "destination": "BOM",
+          "flight_number": "AI2876",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2553|AI2662",
+      "stops": 1,
+      "fare": {
+        "amount": 17700.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "SXR",
+          "flight_number": "AI2553",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "SXR",
+          "destination": "BOM",
+          "flight_number": "AI2662",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2959|AI2848",
+      "stops": 1,
+      "fare": {
+        "amount": 9790.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "AI2959",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "AI2848",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E758|6E5083",
+      "stops": 1,
+      "fare": {
+        "amount": 6828.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HBX",
+          "flight_number": "6E758",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HBX",
+          "destination": "BOM",
+          "flight_number": "6E5083",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2487|AI2858",
+      "stops": 1,
+      "fare": {
+        "amount": 17043.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BLR",
+          "flight_number": "AI2487",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BLR",
+          "destination": "BOM",
+          "flight_number": "AI2858",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E320",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E320",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI1779|AI2596",
+      "stops": 1,
+      "fare": {
+        "amount": 20821.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "UDR",
+          "flight_number": "AI1779",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "UDR",
+          "destination": "BOM",
+          "flight_number": "AI2596",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1811|IX1800",
+      "stops": 1,
+      "fare": {
+        "amount": 16690.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "COK",
+          "flight_number": "IX1811",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "COK",
+          "destination": "BOM",
+          "flight_number": "IX1800",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2545|AI2918",
+      "stops": 1,
+      "fare": {
+        "amount": 11520.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "AI2545",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "AI2918",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2995",
+      "stops": 0,
+      "fare": {
+        "amount": 7000.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2995",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6443|6E5344",
+      "stops": 1,
+      "fare": {
+        "amount": 7274.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "NAG",
+          "flight_number": "6E6443",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "NAG",
+          "destination": "BOM",
+          "flight_number": "6E5344",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2664|AI2642",
+      "stops": 1,
+      "fare": {
+        "amount": 17493.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BLR",
+          "flight_number": "AI2664",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BLR",
+          "destination": "BOM",
+          "flight_number": "AI2642",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1076|IX1547",
+      "stops": 1,
+      "fare": {
+        "amount": 24015.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "IXB",
+          "flight_number": "IX1076",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "IXB",
+          "destination": "BOM",
+          "flight_number": "IX1547",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI1706|AI2872",
+      "stops": 1,
+      "fare": {
+        "amount": 15686.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HYD",
+          "flight_number": "AI1706",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HYD",
+          "destination": "BOM",
+          "flight_number": "AI2872",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2895|AI2828",
+      "stops": 1,
+      "fare": {
+        "amount": 17767.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "MAA",
+          "flight_number": "AI2895",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "MAA",
+          "destination": "BOM",
+          "flight_number": "AI2828",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1082|IX2368",
+      "stops": 1,
+      "fare": {
+        "amount": 7730.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "GOX",
+          "flight_number": "IX1082",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "GOX",
+          "destination": "BOM",
+          "flight_number": "IX2368",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI9759|AI2492",
+      "stops": 1,
+      "fare": {
+        "amount": 11385.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "LKO",
+          "flight_number": "AI9759",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "LKO",
+          "destination": "BOM",
+          "flight_number": "AI2492",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2433",
+      "stops": 0,
+      "fare": {
+        "amount": 7336.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2433",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI9757|AI2492",
+      "stops": 1,
+      "fare": {
+        "amount": 11385.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "LKO",
+          "flight_number": "AI9757",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "LKO",
+          "destination": "BOM",
+          "flight_number": "AI2492",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6107",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E6107",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "QP1826",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "QP1826",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI885|AI2731",
+      "stops": 1,
+      "fare": {
+        "amount": 13976.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HSR",
+          "flight_number": "AI885",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HSR",
+          "destination": "BOM",
+          "flight_number": "AI2731",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2803|AI2852",
+      "stops": 1,
+      "fare": {
+        "amount": 18202.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BLR",
+          "flight_number": "AI2803",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BLR",
+          "destination": "BOM",
+          "flight_number": "AI2852",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2512|AI2811",
+      "stops": 1,
+      "fare": {
+        "amount": 17798.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BLR",
+          "flight_number": "AI2512",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BLR",
+          "destination": "BOM",
+          "flight_number": "AI2811",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI9418|AI1780",
+      "stops": 1,
+      "fare": {
+        "amount": 14151.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "IDR",
+          "flight_number": "AI9418",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "IDR",
+          "destination": "BOM",
+          "flight_number": "AI1780",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6047",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E6047",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1064|IX1243",
+      "stops": 1,
+      "fare": {
+        "amount": 11930.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BBI",
+          "flight_number": "IX1064",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BBI",
+          "destination": "BOM",
+          "flight_number": "IX1243",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2439",
+      "stops": 0,
+      "fare": {
+        "amount": 7289.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2439",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "SG802",
+      "stops": 0,
+      "fare": {
+        "amount": 6118.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "SG802",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E704|6E6196",
+      "stops": 1,
+      "fare": {
+        "amount": 8692.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HYD",
+          "flight_number": "6E704",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HYD",
+          "destination": "BOM",
+          "flight_number": "6E6196",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1812|IX1802",
+      "stops": 1,
+      "fare": {
+        "amount": 20298.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "COK",
+          "flight_number": "IX1812",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "COK",
+          "destination": "BOM",
+          "flight_number": "IX1802",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2985",
+      "stops": 0,
+      "fare": {
+        "amount": 7173.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2985",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E2013|6E6205",
+      "stops": 1,
+      "fare": {
+        "amount": 6618.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "6E2013",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "6E6205",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2909|AI494",
+      "stops": 1,
+      "fare": {
+        "amount": 11520.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "AI2909",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "AI494",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2957",
+      "stops": 0,
+      "fare": {
+        "amount": 7000.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2957",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI1743|AI472",
+      "stops": 1,
+      "fare": {
+        "amount": 15933.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "IXC",
+          "flight_number": "AI1743",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "IXC",
+          "destination": "BOM",
+          "flight_number": "AI472",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2715|AI2504",
+      "stops": 1,
+      "fare": {
+        "amount": 13641.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "AI2715",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "AI2504",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6983|6E2104",
+      "stops": 1,
+      "fare": {
+        "amount": 6618.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HSR",
+          "flight_number": "6E6983",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HSR",
+          "destination": "BOM",
+          "flight_number": "6E2104",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "SG815",
+      "stops": 0,
+      "fare": {
+        "amount": 6118.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "SG815",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2859|AI2447",
+      "stops": 1,
+      "fare": {
+        "amount": 16344.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HYD",
+          "flight_number": "AI2859",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HYD",
+          "destination": "BOM",
+          "flight_number": "AI2447",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI487|AI2506",
+      "stops": 1,
+      "fare": {
+        "amount": 15973.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "GOI",
+          "flight_number": "AI487",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "GOI",
+          "destination": "BOM",
+          "flight_number": "AI2506",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI881|AI2494",
+      "stops": 1,
+      "fare": {
+        "amount": 11626.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "AI881",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "AI2494",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2963",
+      "stops": 0,
+      "fare": {
+        "amount": 7000.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2963",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1815|IX1798",
+      "stops": 1,
+      "fare": {
+        "amount": 13429.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "COK",
+          "flight_number": "IX1815",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "COK",
+          "destination": "BOM",
+          "flight_number": "IX1798",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E2169|6E6598",
+      "stops": 1,
+      "fare": {
+        "amount": 7274.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "IDR",
+          "flight_number": "6E2169",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "IDR",
+          "destination": "BOM",
+          "flight_number": "6E6598",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI1739|AI2662",
+      "stops": 1,
+      "fare": {
+        "amount": 17130.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "SXR",
+          "flight_number": "AI1739",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "SXR",
+          "destination": "BOM",
+          "flight_number": "AI2662",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2542|AI2445",
+      "stops": 1,
+      "fare": {
+        "amount": 16056.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HYD",
+          "flight_number": "AI2542",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HYD",
+          "destination": "BOM",
+          "flight_number": "AI2445",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6479|6E2058",
+      "stops": 1,
+      "fare": {
+        "amount": 6828.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "LKO",
+          "flight_number": "6E6479",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "LKO",
+          "destination": "BOM",
+          "flight_number": "6E2058",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI1780",
+      "stops": 0,
+      "fare": {
+        "amount": 7000.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI1780",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E327",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E327",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2859|AI2445",
+      "stops": 1,
+      "fare": {
+        "amount": 16056.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HYD",
+          "flight_number": "AI2859",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HYD",
+          "destination": "BOM",
+          "flight_number": "AI2445",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI441",
+      "stops": 0,
+      "fare": {
+        "amount": 7000.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI441",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2465|AI2447",
+      "stops": 1,
+      "fare": {
+        "amount": 18999.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HYD",
+          "flight_number": "AI2465",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HYD",
+          "destination": "BOM",
+          "flight_number": "AI2447",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2715|AI2916",
+      "stops": 1,
+      "fare": {
+        "amount": 13747.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "AI2715",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "AI2916",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E5119|6E6468",
+      "stops": 1,
+      "fare": {
+        "amount": 6618.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "6E5119",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "6E6468",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI817|AI2504",
+      "stops": 1,
+      "fare": {
+        "amount": 11751.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "AI817",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "AI2504",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2519|AI2699",
+      "stops": 1,
+      "fare": {
+        "amount": 16310.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HYD",
+          "flight_number": "AI2519",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HYD",
+          "destination": "BOM",
+          "flight_number": "AI2699",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6114",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E6114",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI487|AI604",
+      "stops": 1,
+      "fare": {
+        "amount": 14986.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "GOI",
+          "flight_number": "AI487",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "GOI",
+          "destination": "BOM",
+          "flight_number": "AI604",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E324",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E324",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6706",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E6706",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E329",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E329",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI809|AI2494",
+      "stops": 1,
+      "fare": {
+        "amount": 13747.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "AI809",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "AI2494",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E2076|6E5078",
+      "stops": 1,
+      "fare": {
+        "amount": 6618.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "6E2076",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "6E5078",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2809|AI2811",
+      "stops": 1,
+      "fare": {
+        "amount": 17798.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BLR",
+          "flight_number": "AI2809",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BLR",
+          "destination": "BOM",
+          "flight_number": "AI2811",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E2113|6E708",
+      "stops": 1,
+      "fare": {
+        "amount": 6828.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "LKO",
+          "flight_number": "6E2113",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "LKO",
+          "destination": "BOM",
+          "flight_number": "6E708",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E395",
+      "stops": 0,
+      "fare": {
+        "amount": 6688.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E395",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2483|AI2740",
+      "stops": 1,
+      "fare": {
+        "amount": 22759.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "MAA",
+          "flight_number": "AI2483",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "MAA",
+          "destination": "BOM",
+          "flight_number": "AI2740",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2499|AI9752",
+      "stops": 1,
+      "fare": {
+        "amount": 10491.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "LKO",
+          "flight_number": "AI2499",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "LKO",
+          "destination": "BOM",
+          "flight_number": "AI9752",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E864",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E864",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E931|6E6351",
+      "stops": 1,
+      "fare": {
+        "amount": 6618.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "6E931",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "6E6351",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI1703|AI2729",
+      "stops": 1,
+      "fare": {
+        "amount": 15678.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "ATQ",
+          "flight_number": "AI1703",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "ATQ",
+          "destination": "BOM",
+          "flight_number": "AI2729",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2813|AI2840",
+      "stops": 1,
+      "fare": {
+        "amount": 17493.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BLR",
+          "flight_number": "AI2813",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BLR",
+          "destination": "BOM",
+          "flight_number": "AI2840",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2809|AI2858",
+      "stops": 1,
+      "fare": {
+        "amount": 17528.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BLR",
+          "flight_number": "AI2809",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BLR",
+          "destination": "BOM",
+          "flight_number": "AI2858",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "QP1820",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "QP1820",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2879|AI2699",
+      "stops": 1,
+      "fare": {
+        "amount": 16056.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HYD",
+          "flight_number": "AI2879",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HYD",
+          "destination": "BOM",
+          "flight_number": "AI2699",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2951",
+      "stops": 0,
+      "fare": {
+        "amount": 7159.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2951",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E5138|6E5049",
+      "stops": 1,
+      "fare": {
+        "amount": 6750.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "RPR",
+          "flight_number": "6E5138",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "RPR",
+          "destination": "BOM",
+          "flight_number": "6E5049",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1273|IX1547",
+      "stops": 1,
+      "fare": {
+        "amount": 22240.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "IXB",
+          "flight_number": "IX1273",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "IXB",
+          "destination": "BOM",
+          "flight_number": "IX1547",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E5073|6E5160",
+      "stops": 1,
+      "fare": {
+        "amount": 6618.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "6E5073",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "6E5160",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1081|IX1547",
+      "stops": 1,
+      "fare": {
+        "amount": 22240.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "IXB",
+          "flight_number": "IX1081",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "IXB",
+          "destination": "BOM",
+          "flight_number": "IX1547",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI1745",
+      "stops": 0,
+      "fare": {
+        "amount": 7159.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI1745",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2678",
+      "stops": 0,
+      "fare": {
+        "amount": 7000.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2678",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E882|6E5143",
+      "stops": 1,
+      "fare": {
+        "amount": 8059.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HYD",
+          "flight_number": "6E882",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HYD",
+          "destination": "BOM",
+          "flight_number": "6E5143",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI427|AI2630",
+      "stops": 1,
+      "fare": {
+        "amount": 18814.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BLR",
+          "flight_number": "AI427",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BLR",
+          "destination": "BOM",
+          "flight_number": "AI2630",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2429",
+      "stops": 0,
+      "fare": {
+        "amount": 7000.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2429",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI1749|AI2790",
+      "stops": 1,
+      "fare": {
+        "amount": 17499.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "PAT",
+          "flight_number": "AI1749",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "PAT",
+          "destination": "BOM",
+          "flight_number": "AI2790",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2537|AI2786",
+      "stops": 1,
+      "fare": {
+        "amount": 14223.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HSR",
+          "flight_number": "AI2537",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HSR",
+          "destination": "BOM",
+          "flight_number": "AI2786",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2977",
+      "stops": 0,
+      "fare": {
+        "amount": 7347.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2977",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6261|6E6285",
+      "stops": 1,
+      "fare": {
+        "amount": 6618.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "6E6261",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "6E6285",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E354",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E354",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E449",
+      "stops": 0,
+      "fare": {
+        "amount": 6688.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E449",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI881|AI2916",
+      "stops": 1,
+      "fare": {
+        "amount": 11626.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "AI881",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "AI2916",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6829|6E552",
+      "stops": 1,
+      "fare": {
+        "amount": 7274.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "IDR",
+          "flight_number": "6E6829",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "IDR",
+          "destination": "BOM",
+          "flight_number": "6E552",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E5298|6E5021",
+      "stops": 1,
+      "fare": {
+        "amount": 10022.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "DED",
+          "flight_number": "6E5298",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "DED",
+          "destination": "BOM",
+          "flight_number": "6E5021",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1812|IX1800",
+      "stops": 1,
+      "fare": {
+        "amount": 20298.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "COK",
+          "flight_number": "IX1812",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "COK",
+          "destination": "BOM",
+          "flight_number": "IX1800",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI1719|AI622",
+      "stops": 1,
+      "fare": {
+        "amount": 16527.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "JAI",
+          "flight_number": "AI1719",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "JAI",
+          "destination": "BOM",
+          "flight_number": "AI622",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2909|AI2918",
+      "stops": 1,
+      "fare": {
+        "amount": 11520.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "AI2909",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "AI2918",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI1792|AI2662",
+      "stops": 1,
+      "fare": {
+        "amount": 15810.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "SXR",
+          "flight_number": "AI1792",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "SXR",
+          "destination": "BOM",
+          "flight_number": "AI2662",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6022",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E6022",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2441",
+      "stops": 0,
+      "fare": {
+        "amount": 7000.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2441",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1056",
+      "stops": 0,
+      "fare": {
+        "amount": 6529.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "IX1056",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6601|6E6363",
+      "stops": 1,
+      "fare": {
+        "amount": 8059.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HYD",
+          "flight_number": "6E6601",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HYD",
+          "destination": "BOM",
+          "flight_number": "6E6363",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1049|IX1209",
+      "stops": 1,
+      "fare": {
+        "amount": 7730.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "GOX",
+          "flight_number": "IX1049",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "GOX",
+          "destination": "BOM",
+          "flight_number": "IX1209",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2542|AI2447",
+      "stops": 1,
+      "fare": {
+        "amount": 16344.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HYD",
+          "flight_number": "AI2542",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HYD",
+          "destination": "BOM",
+          "flight_number": "AI2447",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2943",
+      "stops": 0,
+      "fare": {
+        "amount": 7173.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2943",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI495|AI2998",
+      "stops": 1,
+      "fare": {
+        "amount": 17679.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "ATQ",
+          "flight_number": "AI495",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "ATQ",
+          "destination": "BOM",
+          "flight_number": "AI2998",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1783|IX1025",
+      "stops": 1,
+      "fare": {
+        "amount": 10930.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BBI",
+          "flight_number": "IX1783",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BBI",
+          "destination": "BOM",
+          "flight_number": "IX1025",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2761|AI622",
+      "stops": 1,
+      "fare": {
+        "amount": 13658.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "JAI",
+          "flight_number": "AI2761",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "JAI",
+          "destination": "BOM",
+          "flight_number": "AI622",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E353",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E353",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "IX1067|IX1547",
+      "stops": 1,
+      "fare": {
+        "amount": 22240.0,
+        "currency": "INR"
+      },
+      "provider_id": 1057,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "IXB",
+          "flight_number": "IX1067",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "IXB",
+          "destination": "BOM",
+          "flight_number": "IX1547",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2959|AI2504",
+      "stops": 1,
+      "fare": {
+        "amount": 11520.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "AI2959",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "AI2504",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI9736|AI2856",
+      "stops": 1,
+      "fare": {
+        "amount": 19193.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "COK",
+          "flight_number": "AI9736",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "COK",
+          "destination": "BOM",
+          "flight_number": "AI2856",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI423|AI2504",
+      "stops": 1,
+      "fare": {
+        "amount": 11520.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "AI423",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "AI2504",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E5119|6E5146",
+      "stops": 1,
+      "fare": {
+        "amount": 6618.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "6E5119",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "6E5146",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "QP1833",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "QP1833",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "QP1119",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "QP1119",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E322",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E322",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2449|AI2872",
+      "stops": 1,
+      "fare": {
+        "amount": 15686.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HYD",
+          "flight_number": "AI2449",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HYD",
+          "destination": "BOM",
+          "flight_number": "AI2872",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "QP1128",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "QP1128",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6814",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E6814",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI1773|AI2998",
+      "stops": 1,
+      "fare": {
+        "amount": 15888.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "ATQ",
+          "flight_number": "AI1773",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "ATQ",
+          "destination": "BOM",
+          "flight_number": "AI2998",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2757|AI2402",
+      "stops": 1,
+      "fare": {
+        "amount": 17493.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BLR",
+          "flight_number": "AI2757",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BLR",
+          "destination": "BOM",
+          "flight_number": "AI2402",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI9584|AI2790",
+      "stops": 1,
+      "fare": {
+        "amount": 15006.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "PAT",
+          "flight_number": "AI9584",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "PAT",
+          "destination": "BOM",
+          "flight_number": "AI2790",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2927",
+      "stops": 0,
+      "fare": {
+        "amount": 7000.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2927",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2933",
+      "stops": 0,
+      "fare": {
+        "amount": 7159.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2933",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E2249|6E5132",
+      "stops": 1,
+      "fare": {
+        "amount": 6750.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BHO",
+          "flight_number": "6E2249",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BHO",
+          "destination": "BOM",
+          "flight_number": "6E5132",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2487|AI2840",
+      "stops": 1,
+      "fare": {
+        "amount": 17493.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BLR",
+          "flight_number": "AI2487",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BLR",
+          "destination": "BOM",
+          "flight_number": "AI2840",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI1785",
+      "stops": 0,
+      "fare": {
+        "amount": 7173.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI1785",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E303",
+      "stops": 0,
+      "fare": {
+        "amount": 6688.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E303",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI1793|AI418",
+      "stops": 1,
+      "fare": {
+        "amount": 17440.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HYD",
+          "flight_number": "AI1793",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HYD",
+          "destination": "BOM",
+          "flight_number": "AI418",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI1706|AI2626",
+      "stops": 1,
+      "fare": {
+        "amount": 17372.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HYD",
+          "flight_number": "AI1706",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HYD",
+          "destination": "BOM",
+          "flight_number": "AI2626",
+          "travel_date": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "6E6328",
+      "stops": 0,
+      "fare": {
+        "amount": 6530.0,
+        "currency": "INR"
+      },
+      "provider_id": 1044,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "6E6328",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2817|AI2850",
+      "stops": 1,
+      "fare": {
+        "amount": 19307.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BLR",
+          "flight_number": "AI2817",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "BLR",
+          "destination": "BOM",
+          "flight_number": "AI2850",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2425",
+      "stops": 0,
+      "fare": {
+        "amount": 7000.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "BOM",
+          "flight_number": "AI2425",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI2577|AI2872",
+      "stops": 1,
+      "fare": {
+        "amount": 18283.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "HYD",
+          "flight_number": "AI2577",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "HYD",
+          "destination": "BOM",
+          "flight_number": "AI2872",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "source": "ixigo",
+      "observed_at": "2026-09-04T20:19:50+0530",
+      "origin": "DEL",
+      "destination": "BOM",
+      "travel_date": "2026-10-10",
+      "advance_purchase_days": null,
+      "cabin_class": "Economy",
+      "airline_code": null,
+      "flight_number": "AI817|AI2848",
+      "stops": 1,
+      "fare": {
+        "amount": 10021.0,
+        "currency": "INR"
+      },
+      "provider_id": 1063,
+      "fare_token_present": true,
+      "segments": [
+        {
+          "origin": "DEL",
+          "destination": "AMD",
+          "flight_number": "AI817",
+          "travel_date": "2026-10-10"
+        },
+        {
+          "origin": "AMD",
+          "destination": "BOM",
+          "flight_number": "AI2848",
+          "travel_date": "2026-10-10"
+        }
+      ]
+    }
+  ],
+  "observation_count": 179,
+  "captured_streams": 1,
+  "response_count": 1,
+  "source_url": "https://www.ixigo.com/search/result/flight?from=DEL&to=BOM&date=10102026&adults=1&children=0&infants=0&class=e&source=Search+Form"
+}

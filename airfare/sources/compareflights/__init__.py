@@ -1,0 +1,2 @@
+"""CompareFlights source adapter."""
+

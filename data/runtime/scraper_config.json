@@ -1,0 +1,12 @@
+{
+  "daily_route_pairs": 20,
+  "compareflights_time": "06:00",
+  "ixigo_time": "06:30",
+  "direction_mode": "bidirectional",
+  "ixigo_driver": "chromium",
+  "ixigo_headless": false,
+  "ixigo_route_delay_seconds": 3,
+  "ixigo_retry_count": 2,
+  "ixigo_viewport_width": 1920,
+  "ixigo_viewport_height": 1080
+}

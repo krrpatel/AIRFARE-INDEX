@@ -1,0 +1,3372 @@
+{
+  "generated_at": "2026-08-26T09:57:49.984035+05:30",
+  "window_start": "2025-08",
+  "window_end": "2026-07",
+  "months": [
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07"
+  ],
+  "weight_definition": "pax_weight = route 12-month passenger traffic / combined passenger traffic of all Top-50 routes (weights sum to 1.0); pax_weight_pct is the same share expressed as a percentage",
+  "routes": [
+    {
+      "rank": 1,
+      "route": "DEL-BOM",
+      "source": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "destination": {
+        "city": "Mumbai",
+        "code": "BOM"
+      },
+      "total_pax_12_months": 6778337,
+      "average_monthly_pax": 564861.4,
+      "pax_weight": 0.083381,
+      "pax_weight_pct": 8.34,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 507830
+        },
+        {
+          "month": "2025-09",
+          "pax": 503271
+        },
+        {
+          "month": "2025-10",
+          "pax": 548294
+        },
+        {
+          "month": "2025-11",
+          "pax": 602310
+        },
+        {
+          "month": "2025-12",
+          "pax": 587188
+        },
+        {
+          "month": "2026-01",
+          "pax": 588249
+        },
+        {
+          "month": "2026-02",
+          "pax": 605932
+        },
+        {
+          "month": "2026-03",
+          "pax": 596078
+        },
+        {
+          "month": "2026-04",
+          "pax": 572139
+        },
+        {
+          "month": "2026-05",
+          "pax": 629220
+        },
+        {
+          "month": "2026-06",
+          "pax": 533275
+        },
+        {
+          "month": "2026-07",
+          "pax": 504551
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "route": "BLR-DEL",
+      "source": {
+        "city": "Bengaluru",
+        "code": "BLR"
+      },
+      "destination": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "total_pax_12_months": 4877158,
+      "average_monthly_pax": 406429.8,
+      "pax_weight": 0.059994,
+      "pax_weight_pct": 6.0,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 387743
+        },
+        {
+          "month": "2025-09",
+          "pax": 363529
+        },
+        {
+          "month": "2025-10",
+          "pax": 374275
+        },
+        {
+          "month": "2025-11",
+          "pax": 444099
+        },
+        {
+          "month": "2025-12",
+          "pax": 421576
+        },
+        {
+          "month": "2026-01",
+          "pax": 415981
+        },
+        {
+          "month": "2026-02",
+          "pax": 427600
+        },
+        {
+          "month": "2026-03",
+          "pax": 419883
+        },
+        {
+          "month": "2026-04",
+          "pax": 424379
+        },
+        {
+          "month": "2026-05",
+          "pax": 440321
+        },
+        {
+          "month": "2026-06",
+          "pax": 375345
+        },
+        {
+          "month": "2026-07",
+          "pax": 382427
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "route": "BLR-BOM",
+      "source": {
+        "city": "Bengaluru",
+        "code": "BLR"
+      },
+      "destination": {
+        "city": "Mumbai",
+        "code": "BOM"
+      },
+      "total_pax_12_months": 4129165,
+      "average_monthly_pax": 344097.1,
+      "pax_weight": 0.050793,
+      "pax_weight_pct": 5.08,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 339811
+        },
+        {
+          "month": "2025-09",
+          "pax": 329010
+        },
+        {
+          "month": "2025-10",
+          "pax": 318397
+        },
+        {
+          "month": "2025-11",
+          "pax": 340573
+        },
+        {
+          "month": "2025-12",
+          "pax": 324953
+        },
+        {
+          "month": "2026-01",
+          "pax": 366651
+        },
+        {
+          "month": "2026-02",
+          "pax": 341132
+        },
+        {
+          "month": "2026-03",
+          "pax": 335559
+        },
+        {
+          "month": "2026-04",
+          "pax": 357157
+        },
+        {
+          "month": "2026-05",
+          "pax": 395304
+        },
+        {
+          "month": "2026-06",
+          "pax": 349010
+        },
+        {
+          "month": "2026-07",
+          "pax": 331608
+        }
+      ]
+    },
+    {
+      "rank": 4,
+      "route": "DEL-HYD",
+      "source": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "destination": {
+        "city": "Hyderabad",
+        "code": "HYD"
+      },
+      "total_pax_12_months": 3105466,
+      "average_monthly_pax": 258788.8,
+      "pax_weight": 0.0382,
+      "pax_weight_pct": 3.82,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 237768
+        },
+        {
+          "month": "2025-09",
+          "pax": 235098
+        },
+        {
+          "month": "2025-10",
+          "pax": 252190
+        },
+        {
+          "month": "2025-11",
+          "pax": 264228
+        },
+        {
+          "month": "2025-12",
+          "pax": 253895
+        },
+        {
+          "month": "2026-01",
+          "pax": 266185
+        },
+        {
+          "month": "2026-02",
+          "pax": 265783
+        },
+        {
+          "month": "2026-03",
+          "pax": 273395
+        },
+        {
+          "month": "2026-04",
+          "pax": 268312
+        },
+        {
+          "month": "2026-05",
+          "pax": 287233
+        },
+        {
+          "month": "2026-06",
+          "pax": 257981
+        },
+        {
+          "month": "2026-07",
+          "pax": 243398
+        }
+      ]
+    },
+    {
+      "rank": 5,
+      "route": "DEL-CCU",
+      "source": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "destination": {
+        "city": "Kolkata",
+        "code": "CCU"
+      },
+      "total_pax_12_months": 2912808,
+      "average_monthly_pax": 242734.0,
+      "pax_weight": 0.035831,
+      "pax_weight_pct": 3.58,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 196877
+        },
+        {
+          "month": "2025-09",
+          "pax": 200519
+        },
+        {
+          "month": "2025-10",
+          "pax": 231627
+        },
+        {
+          "month": "2025-11",
+          "pax": 252068
+        },
+        {
+          "month": "2025-12",
+          "pax": 252732
+        },
+        {
+          "month": "2026-01",
+          "pax": 268402
+        },
+        {
+          "month": "2026-02",
+          "pax": 261672
+        },
+        {
+          "month": "2026-03",
+          "pax": 275206
+        },
+        {
+          "month": "2026-04",
+          "pax": 245477
+        },
+        {
+          "month": "2026-05",
+          "pax": 265368
+        },
+        {
+          "month": "2026-06",
+          "pax": 241712
+        },
+        {
+          "month": "2026-07",
+          "pax": 221148
+        }
+      ]
+    },
+    {
+      "rank": 6,
+      "route": "DEL-PNQ",
+      "source": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "destination": {
+        "city": "Pune",
+        "code": "PNQ"
+      },
+      "total_pax_12_months": 2864459,
+      "average_monthly_pax": 238704.9,
+      "pax_weight": 0.035236,
+      "pax_weight_pct": 3.52,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 228927
+        },
+        {
+          "month": "2025-09",
+          "pax": 215848
+        },
+        {
+          "month": "2025-10",
+          "pax": 229899
+        },
+        {
+          "month": "2025-11",
+          "pax": 251518
+        },
+        {
+          "month": "2025-12",
+          "pax": 233983
+        },
+        {
+          "month": "2026-01",
+          "pax": 247487
+        },
+        {
+          "month": "2026-02",
+          "pax": 245533
+        },
+        {
+          "month": "2026-03",
+          "pax": 255692
+        },
+        {
+          "month": "2026-04",
+          "pax": 240632
+        },
+        {
+          "month": "2026-05",
+          "pax": 261742
+        },
+        {
+          "month": "2026-06",
+          "pax": 233719
+        },
+        {
+          "month": "2026-07",
+          "pax": 219479
+        }
+      ]
+    },
+    {
+      "rank": 7,
+      "route": "AMD-DEL",
+      "source": {
+        "city": "Ahmedabad",
+        "code": "AMD"
+      },
+      "destination": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "total_pax_12_months": 2373313,
+      "average_monthly_pax": 197776.1,
+      "pax_weight": 0.029194,
+      "pax_weight_pct": 2.92,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 192228
+        },
+        {
+          "month": "2025-09",
+          "pax": 190092
+        },
+        {
+          "month": "2025-10",
+          "pax": 190858
+        },
+        {
+          "month": "2025-11",
+          "pax": 202730
+        },
+        {
+          "month": "2025-12",
+          "pax": 194592
+        },
+        {
+          "month": "2026-01",
+          "pax": 214121
+        },
+        {
+          "month": "2026-02",
+          "pax": 201317
+        },
+        {
+          "month": "2026-03",
+          "pax": 211658
+        },
+        {
+          "month": "2026-04",
+          "pax": 198314
+        },
+        {
+          "month": "2026-05",
+          "pax": 223788
+        },
+        {
+          "month": "2026-06",
+          "pax": 183485
+        },
+        {
+          "month": "2026-07",
+          "pax": 170130
+        }
+      ]
+    },
+    {
+      "rank": 8,
+      "route": "MAA-BOM",
+      "source": {
+        "city": "Chennai",
+        "code": "MAA"
+      },
+      "destination": {
+        "city": "Mumbai",
+        "code": "BOM"
+      },
+      "total_pax_12_months": 2219067,
+      "average_monthly_pax": 184922.2,
+      "pax_weight": 0.027297,
+      "pax_weight_pct": 2.73,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 171819
+        },
+        {
+          "month": "2025-09",
+          "pax": 165341
+        },
+        {
+          "month": "2025-10",
+          "pax": 171888
+        },
+        {
+          "month": "2025-11",
+          "pax": 202574
+        },
+        {
+          "month": "2025-12",
+          "pax": 194997
+        },
+        {
+          "month": "2026-01",
+          "pax": 213276
+        },
+        {
+          "month": "2026-02",
+          "pax": 188431
+        },
+        {
+          "month": "2026-03",
+          "pax": 182306
+        },
+        {
+          "month": "2026-04",
+          "pax": 181314
+        },
+        {
+          "month": "2026-05",
+          "pax": 196594
+        },
+        {
+          "month": "2026-06",
+          "pax": 175086
+        },
+        {
+          "month": "2026-07",
+          "pax": 175441
+        }
+      ]
+    },
+    {
+      "rank": 9,
+      "route": "CCU-BOM",
+      "source": {
+        "city": "Kolkata",
+        "code": "CCU"
+      },
+      "destination": {
+        "city": "Mumbai",
+        "code": "BOM"
+      },
+      "total_pax_12_months": 2215829,
+      "average_monthly_pax": 184652.4,
+      "pax_weight": 0.027257,
+      "pax_weight_pct": 2.73,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 181020
+        },
+        {
+          "month": "2025-09",
+          "pax": 198904
+        },
+        {
+          "month": "2025-10",
+          "pax": 176650
+        },
+        {
+          "month": "2025-11",
+          "pax": 188236
+        },
+        {
+          "month": "2025-12",
+          "pax": 189122
+        },
+        {
+          "month": "2026-01",
+          "pax": 209239
+        },
+        {
+          "month": "2026-02",
+          "pax": 184786
+        },
+        {
+          "month": "2026-03",
+          "pax": 181313
+        },
+        {
+          "month": "2026-04",
+          "pax": 181509
+        },
+        {
+          "month": "2026-05",
+          "pax": 212158
+        },
+        {
+          "month": "2026-06",
+          "pax": 168754
+        },
+        {
+          "month": "2026-07",
+          "pax": 144138
+        }
+      ]
+    },
+    {
+      "rank": 10,
+      "route": "HYD-BOM",
+      "source": {
+        "city": "Hyderabad",
+        "code": "HYD"
+      },
+      "destination": {
+        "city": "Mumbai",
+        "code": "BOM"
+      },
+      "total_pax_12_months": 2192139,
+      "average_monthly_pax": 182678.2,
+      "pax_weight": 0.026966,
+      "pax_weight_pct": 2.7,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 198743
+        },
+        {
+          "month": "2025-09",
+          "pax": 187828
+        },
+        {
+          "month": "2025-10",
+          "pax": 179741
+        },
+        {
+          "month": "2025-11",
+          "pax": 178562
+        },
+        {
+          "month": "2025-12",
+          "pax": 161384
+        },
+        {
+          "month": "2026-01",
+          "pax": 199542
+        },
+        {
+          "month": "2026-02",
+          "pax": 168724
+        },
+        {
+          "month": "2026-03",
+          "pax": 177585
+        },
+        {
+          "month": "2026-04",
+          "pax": 183305
+        },
+        {
+          "month": "2026-05",
+          "pax": 202409
+        },
+        {
+          "month": "2026-06",
+          "pax": 181207
+        },
+        {
+          "month": "2026-07",
+          "pax": 173109
+        }
+      ]
+    },
+    {
+      "rank": 11,
+      "route": "MAA-DEL",
+      "source": {
+        "city": "Chennai",
+        "code": "MAA"
+      },
+      "destination": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "total_pax_12_months": 2184325,
+      "average_monthly_pax": 182027.1,
+      "pax_weight": 0.026869,
+      "pax_weight_pct": 2.69,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 180915
+        },
+        {
+          "month": "2025-09",
+          "pax": 176180
+        },
+        {
+          "month": "2025-10",
+          "pax": 176431
+        },
+        {
+          "month": "2025-11",
+          "pax": 192136
+        },
+        {
+          "month": "2025-12",
+          "pax": 181389
+        },
+        {
+          "month": "2026-01",
+          "pax": 190317
+        },
+        {
+          "month": "2026-02",
+          "pax": 193080
+        },
+        {
+          "month": "2026-03",
+          "pax": 198855
+        },
+        {
+          "month": "2026-04",
+          "pax": 171299
+        },
+        {
+          "month": "2026-05",
+          "pax": 193448
+        },
+        {
+          "month": "2026-06",
+          "pax": 166035
+        },
+        {
+          "month": "2026-07",
+          "pax": 164240
+        }
+      ]
+    },
+    {
+      "rank": 12,
+      "route": "BLR-HYD",
+      "source": {
+        "city": "Bengaluru",
+        "code": "BLR"
+      },
+      "destination": {
+        "city": "Hyderabad",
+        "code": "HYD"
+      },
+      "total_pax_12_months": 2169407,
+      "average_monthly_pax": 180783.9,
+      "pax_weight": 0.026686,
+      "pax_weight_pct": 2.67,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 203759
+        },
+        {
+          "month": "2025-09",
+          "pax": 180293
+        },
+        {
+          "month": "2025-10",
+          "pax": 186854
+        },
+        {
+          "month": "2025-11",
+          "pax": 202380
+        },
+        {
+          "month": "2025-12",
+          "pax": 178387
+        },
+        {
+          "month": "2026-01",
+          "pax": 179081
+        },
+        {
+          "month": "2026-02",
+          "pax": 172963
+        },
+        {
+          "month": "2026-03",
+          "pax": 173779
+        },
+        {
+          "month": "2026-04",
+          "pax": 169098
+        },
+        {
+          "month": "2026-05",
+          "pax": 182762
+        },
+        {
+          "month": "2026-06",
+          "pax": 174493
+        },
+        {
+          "month": "2026-07",
+          "pax": 165558
+        }
+      ]
+    },
+    {
+      "rank": 13,
+      "route": "BLR-CCU",
+      "source": {
+        "city": "Bengaluru",
+        "code": "BLR"
+      },
+      "destination": {
+        "city": "Kolkata",
+        "code": "CCU"
+      },
+      "total_pax_12_months": 2101705,
+      "average_monthly_pax": 175142.1,
+      "pax_weight": 0.025853,
+      "pax_weight_pct": 2.59,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 165452
+        },
+        {
+          "month": "2025-09",
+          "pax": 173148
+        },
+        {
+          "month": "2025-10",
+          "pax": 202231
+        },
+        {
+          "month": "2025-11",
+          "pax": 199464
+        },
+        {
+          "month": "2025-12",
+          "pax": 157297
+        },
+        {
+          "month": "2026-01",
+          "pax": 171997
+        },
+        {
+          "month": "2026-02",
+          "pax": 164496
+        },
+        {
+          "month": "2026-03",
+          "pax": 181059
+        },
+        {
+          "month": "2026-04",
+          "pax": 184646
+        },
+        {
+          "month": "2026-05",
+          "pax": 198331
+        },
+        {
+          "month": "2026-06",
+          "pax": 164880
+        },
+        {
+          "month": "2026-07",
+          "pax": 138704
+        }
+      ]
+    },
+    {
+      "rank": 14,
+      "route": "AMD-BOM",
+      "source": {
+        "city": "Ahmedabad",
+        "code": "AMD"
+      },
+      "destination": {
+        "city": "Mumbai",
+        "code": "BOM"
+      },
+      "total_pax_12_months": 2051728,
+      "average_monthly_pax": 170977.3,
+      "pax_weight": 0.025238,
+      "pax_weight_pct": 2.52,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 166646
+        },
+        {
+          "month": "2025-09",
+          "pax": 159772
+        },
+        {
+          "month": "2025-10",
+          "pax": 168007
+        },
+        {
+          "month": "2025-11",
+          "pax": 186472
+        },
+        {
+          "month": "2025-12",
+          "pax": 155745
+        },
+        {
+          "month": "2026-01",
+          "pax": 191958
+        },
+        {
+          "month": "2026-02",
+          "pax": 173744
+        },
+        {
+          "month": "2026-03",
+          "pax": 164726
+        },
+        {
+          "month": "2026-04",
+          "pax": 162177
+        },
+        {
+          "month": "2026-05",
+          "pax": 210521
+        },
+        {
+          "month": "2026-06",
+          "pax": 174542
+        },
+        {
+          "month": "2026-07",
+          "pax": 137418
+        }
+      ]
+    },
+    {
+      "rank": 15,
+      "route": "DEL-SXR",
+      "source": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "destination": {
+        "city": "Srinagar",
+        "code": "SXR"
+      },
+      "total_pax_12_months": 1872311,
+      "average_monthly_pax": 156025.9,
+      "pax_weight": 0.023031,
+      "pax_weight_pct": 2.3,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 130641
+        },
+        {
+          "month": "2025-09",
+          "pax": 141620
+        },
+        {
+          "month": "2025-10",
+          "pax": 161475
+        },
+        {
+          "month": "2025-11",
+          "pax": 151868
+        },
+        {
+          "month": "2025-12",
+          "pax": 145562
+        },
+        {
+          "month": "2026-01",
+          "pax": 154543
+        },
+        {
+          "month": "2026-02",
+          "pax": 143306
+        },
+        {
+          "month": "2026-03",
+          "pax": 153338
+        },
+        {
+          "month": "2026-04",
+          "pax": 164222
+        },
+        {
+          "month": "2026-05",
+          "pax": 190647
+        },
+        {
+          "month": "2026-06",
+          "pax": 192693
+        },
+        {
+          "month": "2026-07",
+          "pax": 142396
+        }
+      ]
+    },
+    {
+      "rank": 16,
+      "route": "BLR-PNQ",
+      "source": {
+        "city": "Bengaluru",
+        "code": "BLR"
+      },
+      "destination": {
+        "city": "Pune",
+        "code": "PNQ"
+      },
+      "total_pax_12_months": 1807395,
+      "average_monthly_pax": 150616.2,
+      "pax_weight": 0.022233,
+      "pax_weight_pct": 2.22,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 155590
+        },
+        {
+          "month": "2025-09",
+          "pax": 148931
+        },
+        {
+          "month": "2025-10",
+          "pax": 144986
+        },
+        {
+          "month": "2025-11",
+          "pax": 144380
+        },
+        {
+          "month": "2025-12",
+          "pax": 134155
+        },
+        {
+          "month": "2026-01",
+          "pax": 152411
+        },
+        {
+          "month": "2026-02",
+          "pax": 134005
+        },
+        {
+          "month": "2026-03",
+          "pax": 139371
+        },
+        {
+          "month": "2026-04",
+          "pax": 153181
+        },
+        {
+          "month": "2026-05",
+          "pax": 169942
+        },
+        {
+          "month": "2026-06",
+          "pax": 155767
+        },
+        {
+          "month": "2026-07",
+          "pax": 174676
+        }
+      ]
+    },
+    {
+      "rank": 17,
+      "route": "DEL-GAU",
+      "source": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "destination": {
+        "city": "Guwahati",
+        "code": "GAU"
+      },
+      "total_pax_12_months": 1577979,
+      "average_monthly_pax": 131498.2,
+      "pax_weight": 0.019411,
+      "pax_weight_pct": 1.94,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 115317
+        },
+        {
+          "month": "2025-09",
+          "pax": 110917
+        },
+        {
+          "month": "2025-10",
+          "pax": 134133
+        },
+        {
+          "month": "2025-11",
+          "pax": 144126
+        },
+        {
+          "month": "2025-12",
+          "pax": 135387
+        },
+        {
+          "month": "2026-01",
+          "pax": 143978
+        },
+        {
+          "month": "2026-02",
+          "pax": 133221
+        },
+        {
+          "month": "2026-03",
+          "pax": 143009
+        },
+        {
+          "month": "2026-04",
+          "pax": 134077
+        },
+        {
+          "month": "2026-05",
+          "pax": 136377
+        },
+        {
+          "month": "2026-06",
+          "pax": 130358
+        },
+        {
+          "month": "2026-07",
+          "pax": 117079
+        }
+      ]
+    },
+    {
+      "rank": 18,
+      "route": "DEL-PAT",
+      "source": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "destination": {
+        "city": "Patna",
+        "code": "PAT"
+      },
+      "total_pax_12_months": 1525446,
+      "average_monthly_pax": 127120.5,
+      "pax_weight": 0.018765,
+      "pax_weight_pct": 1.88,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 110693
+        },
+        {
+          "month": "2025-09",
+          "pax": 104048
+        },
+        {
+          "month": "2025-10",
+          "pax": 131222
+        },
+        {
+          "month": "2025-11",
+          "pax": 151429
+        },
+        {
+          "month": "2025-12",
+          "pax": 119700
+        },
+        {
+          "month": "2026-01",
+          "pax": 119295
+        },
+        {
+          "month": "2026-02",
+          "pax": 132518
+        },
+        {
+          "month": "2026-03",
+          "pax": 132737
+        },
+        {
+          "month": "2026-04",
+          "pax": 130819
+        },
+        {
+          "month": "2026-05",
+          "pax": 148087
+        },
+        {
+          "month": "2026-06",
+          "pax": 135999
+        },
+        {
+          "month": "2026-07",
+          "pax": 108899
+        }
+      ]
+    },
+    {
+      "rank": 19,
+      "route": "BLR-MAA",
+      "source": {
+        "city": "Bengaluru",
+        "code": "BLR"
+      },
+      "destination": {
+        "city": "Chennai",
+        "code": "MAA"
+      },
+      "total_pax_12_months": 1516377,
+      "average_monthly_pax": 126364.8,
+      "pax_weight": 0.018653,
+      "pax_weight_pct": 1.87,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 121960
+        },
+        {
+          "month": "2025-09",
+          "pax": 136217
+        },
+        {
+          "month": "2025-10",
+          "pax": 129885
+        },
+        {
+          "month": "2025-11",
+          "pax": 141123
+        },
+        {
+          "month": "2025-12",
+          "pax": 114669
+        },
+        {
+          "month": "2026-01",
+          "pax": 130412
+        },
+        {
+          "month": "2026-02",
+          "pax": 124513
+        },
+        {
+          "month": "2026-03",
+          "pax": 124725
+        },
+        {
+          "month": "2026-04",
+          "pax": 119497
+        },
+        {
+          "month": "2026-05",
+          "pax": 123628
+        },
+        {
+          "month": "2026-06",
+          "pax": 123012
+        },
+        {
+          "month": "2026-07",
+          "pax": 126736
+        }
+      ]
+    },
+    {
+      "rank": 20,
+      "route": "DEL-LKO",
+      "source": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "destination": {
+        "city": "Lucknow",
+        "code": "LKO"
+      },
+      "total_pax_12_months": 1384635,
+      "average_monthly_pax": 115386.2,
+      "pax_weight": 0.017032,
+      "pax_weight_pct": 1.7,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 88460
+        },
+        {
+          "month": "2025-09",
+          "pax": 91341
+        },
+        {
+          "month": "2025-10",
+          "pax": 101775
+        },
+        {
+          "month": "2025-11",
+          "pax": 129875
+        },
+        {
+          "month": "2025-12",
+          "pax": 118629
+        },
+        {
+          "month": "2026-01",
+          "pax": 124667
+        },
+        {
+          "month": "2026-02",
+          "pax": 126518
+        },
+        {
+          "month": "2026-03",
+          "pax": 124774
+        },
+        {
+          "month": "2026-04",
+          "pax": 122758
+        },
+        {
+          "month": "2026-05",
+          "pax": 134193
+        },
+        {
+          "month": "2026-06",
+          "pax": 119092
+        },
+        {
+          "month": "2026-07",
+          "pax": 102553
+        }
+      ]
+    },
+    {
+      "rank": 21,
+      "route": "MAA-HYD",
+      "source": {
+        "city": "Chennai",
+        "code": "MAA"
+      },
+      "destination": {
+        "city": "Hyderabad",
+        "code": "HYD"
+      },
+      "total_pax_12_months": 1376775,
+      "average_monthly_pax": 114731.2,
+      "pax_weight": 0.016936,
+      "pax_weight_pct": 1.69,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 132911
+        },
+        {
+          "month": "2025-09",
+          "pax": 127808
+        },
+        {
+          "month": "2025-10",
+          "pax": 134341
+        },
+        {
+          "month": "2025-11",
+          "pax": 141382
+        },
+        {
+          "month": "2025-12",
+          "pax": 108437
+        },
+        {
+          "month": "2026-01",
+          "pax": 121454
+        },
+        {
+          "month": "2026-02",
+          "pax": 112171
+        },
+        {
+          "month": "2026-03",
+          "pax": 114319
+        },
+        {
+          "month": "2026-04",
+          "pax": 102850
+        },
+        {
+          "month": "2026-05",
+          "pax": 97018
+        },
+        {
+          "month": "2026-06",
+          "pax": 92560
+        },
+        {
+          "month": "2026-07",
+          "pax": 91524
+        }
+      ]
+    },
+    {
+      "rank": 22,
+      "route": "BLR-COK",
+      "source": {
+        "city": "Bengaluru",
+        "code": "BLR"
+      },
+      "destination": {
+        "city": "Kochi",
+        "code": "COK"
+      },
+      "total_pax_12_months": 1363167,
+      "average_monthly_pax": 113597.2,
+      "pax_weight": 0.016768,
+      "pax_weight_pct": 1.68,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 116533
+        },
+        {
+          "month": "2025-09",
+          "pax": 117436
+        },
+        {
+          "month": "2025-10",
+          "pax": 108283
+        },
+        {
+          "month": "2025-11",
+          "pax": 116829
+        },
+        {
+          "month": "2025-12",
+          "pax": 113106
+        },
+        {
+          "month": "2026-01",
+          "pax": 129151
+        },
+        {
+          "month": "2026-02",
+          "pax": 107950
+        },
+        {
+          "month": "2026-03",
+          "pax": 108206
+        },
+        {
+          "month": "2026-04",
+          "pax": 111267
+        },
+        {
+          "month": "2026-05",
+          "pax": 118643
+        },
+        {
+          "month": "2026-06",
+          "pax": 109665
+        },
+        {
+          "month": "2026-07",
+          "pax": 106098
+        }
+      ]
+    },
+    {
+      "rank": 23,
+      "route": "COK-BOM",
+      "source": {
+        "city": "Kochi",
+        "code": "COK"
+      },
+      "destination": {
+        "city": "Mumbai",
+        "code": "BOM"
+      },
+      "total_pax_12_months": 1313024,
+      "average_monthly_pax": 109418.7,
+      "pax_weight": 0.016152,
+      "pax_weight_pct": 1.62,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 104457
+        },
+        {
+          "month": "2025-09",
+          "pax": 100484
+        },
+        {
+          "month": "2025-10",
+          "pax": 95079
+        },
+        {
+          "month": "2025-11",
+          "pax": 97957
+        },
+        {
+          "month": "2025-12",
+          "pax": 109234
+        },
+        {
+          "month": "2026-01",
+          "pax": 133412
+        },
+        {
+          "month": "2026-02",
+          "pax": 111540
+        },
+        {
+          "month": "2026-03",
+          "pax": 113022
+        },
+        {
+          "month": "2026-04",
+          "pax": 122591
+        },
+        {
+          "month": "2026-05",
+          "pax": 125099
+        },
+        {
+          "month": "2026-06",
+          "pax": 94818
+        },
+        {
+          "month": "2026-07",
+          "pax": 105331
+        }
+      ]
+    },
+    {
+      "rank": 24,
+      "route": "IXB-DEL",
+      "source": {
+        "city": "Bagdogra",
+        "code": "IXB"
+      },
+      "destination": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "total_pax_12_months": 1260830,
+      "average_monthly_pax": 105069.2,
+      "pax_weight": 0.01551,
+      "pax_weight_pct": 1.55,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 73066
+        },
+        {
+          "month": "2025-09",
+          "pax": 77745
+        },
+        {
+          "month": "2025-10",
+          "pax": 99963
+        },
+        {
+          "month": "2025-11",
+          "pax": 107562
+        },
+        {
+          "month": "2025-12",
+          "pax": 116213
+        },
+        {
+          "month": "2026-01",
+          "pax": 110041
+        },
+        {
+          "month": "2026-02",
+          "pax": 104735
+        },
+        {
+          "month": "2026-03",
+          "pax": 101765
+        },
+        {
+          "month": "2026-04",
+          "pax": 116469
+        },
+        {
+          "month": "2026-05",
+          "pax": 131757
+        },
+        {
+          "month": "2026-06",
+          "pax": 121766
+        },
+        {
+          "month": "2026-07",
+          "pax": 99748
+        }
+      ]
+    },
+    {
+      "rank": 25,
+      "route": "BBI-DEL",
+      "source": {
+        "city": "Bhubaneswar",
+        "code": "BBI"
+      },
+      "destination": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "total_pax_12_months": 1201331,
+      "average_monthly_pax": 100110.9,
+      "pax_weight": 0.014778,
+      "pax_weight_pct": 1.48,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 91565
+        },
+        {
+          "month": "2025-09",
+          "pax": 88064
+        },
+        {
+          "month": "2025-10",
+          "pax": 102334
+        },
+        {
+          "month": "2025-11",
+          "pax": 117071
+        },
+        {
+          "month": "2025-12",
+          "pax": 114724
+        },
+        {
+          "month": "2026-01",
+          "pax": 108685
+        },
+        {
+          "month": "2026-02",
+          "pax": 102099
+        },
+        {
+          "month": "2026-03",
+          "pax": 100859
+        },
+        {
+          "month": "2026-04",
+          "pax": 96677
+        },
+        {
+          "month": "2026-05",
+          "pax": 100759
+        },
+        {
+          "month": "2026-06",
+          "pax": 95026
+        },
+        {
+          "month": "2026-07",
+          "pax": 83468
+        }
+      ]
+    },
+    {
+      "rank": 26,
+      "route": "AMD-BLR",
+      "source": {
+        "city": "Ahmedabad",
+        "code": "AMD"
+      },
+      "destination": {
+        "city": "Bengaluru",
+        "code": "BLR"
+      },
+      "total_pax_12_months": 1160344,
+      "average_monthly_pax": 96695.3,
+      "pax_weight": 0.014273,
+      "pax_weight_pct": 1.43,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 85573
+        },
+        {
+          "month": "2025-09",
+          "pax": 93446
+        },
+        {
+          "month": "2025-10",
+          "pax": 98508
+        },
+        {
+          "month": "2025-11",
+          "pax": 100946
+        },
+        {
+          "month": "2025-12",
+          "pax": 93388
+        },
+        {
+          "month": "2026-01",
+          "pax": 99224
+        },
+        {
+          "month": "2026-02",
+          "pax": 87755
+        },
+        {
+          "month": "2026-03",
+          "pax": 101871
+        },
+        {
+          "month": "2026-04",
+          "pax": 121711
+        },
+        {
+          "month": "2026-05",
+          "pax": 115955
+        },
+        {
+          "month": "2026-06",
+          "pax": 93686
+        },
+        {
+          "month": "2026-07",
+          "pax": 68281
+        }
+      ]
+    },
+    {
+      "rank": 27,
+      "route": "JAI-BOM",
+      "source": {
+        "city": "Jaipur",
+        "code": "JAI"
+      },
+      "destination": {
+        "city": "Mumbai",
+        "code": "BOM"
+      },
+      "total_pax_12_months": 1156436,
+      "average_monthly_pax": 96369.7,
+      "pax_weight": 0.014225,
+      "pax_weight_pct": 1.42,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 88560
+        },
+        {
+          "month": "2025-09",
+          "pax": 84060
+        },
+        {
+          "month": "2025-10",
+          "pax": 88237
+        },
+        {
+          "month": "2025-11",
+          "pax": 108037
+        },
+        {
+          "month": "2025-12",
+          "pax": 115536
+        },
+        {
+          "month": "2026-01",
+          "pax": 127770
+        },
+        {
+          "month": "2026-02",
+          "pax": 119223
+        },
+        {
+          "month": "2026-03",
+          "pax": 118619
+        },
+        {
+          "month": "2026-04",
+          "pax": 94605
+        },
+        {
+          "month": "2026-05",
+          "pax": 89325
+        },
+        {
+          "month": "2026-06",
+          "pax": 64290
+        },
+        {
+          "month": "2026-07",
+          "pax": 58174
+        }
+      ]
+    },
+    {
+      "rank": 28,
+      "route": "MAA-CCU",
+      "source": {
+        "city": "Chennai",
+        "code": "MAA"
+      },
+      "destination": {
+        "city": "Kolkata",
+        "code": "CCU"
+      },
+      "total_pax_12_months": 1141602,
+      "average_monthly_pax": 95133.5,
+      "pax_weight": 0.014043,
+      "pax_weight_pct": 1.4,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 81585
+        },
+        {
+          "month": "2025-09",
+          "pax": 74664
+        },
+        {
+          "month": "2025-10",
+          "pax": 88134
+        },
+        {
+          "month": "2025-11",
+          "pax": 104974
+        },
+        {
+          "month": "2025-12",
+          "pax": 102008
+        },
+        {
+          "month": "2026-01",
+          "pax": 100006
+        },
+        {
+          "month": "2026-02",
+          "pax": 94011
+        },
+        {
+          "month": "2026-03",
+          "pax": 99615
+        },
+        {
+          "month": "2026-04",
+          "pax": 108855
+        },
+        {
+          "month": "2026-05",
+          "pax": 111832
+        },
+        {
+          "month": "2026-06",
+          "pax": 87206
+        },
+        {
+          "month": "2026-07",
+          "pax": 88712
+        }
+      ]
+    },
+    {
+      "rank": 29,
+      "route": "DEL-IDR",
+      "source": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "destination": {
+        "city": "Indore",
+        "code": "IDR"
+      },
+      "total_pax_12_months": 1125785,
+      "average_monthly_pax": 93815.4,
+      "pax_weight": 0.013848,
+      "pax_weight_pct": 1.38,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 93626
+        },
+        {
+          "month": "2025-09",
+          "pax": 82103
+        },
+        {
+          "month": "2025-10",
+          "pax": 90481
+        },
+        {
+          "month": "2025-11",
+          "pax": 102083
+        },
+        {
+          "month": "2025-12",
+          "pax": 88645
+        },
+        {
+          "month": "2026-01",
+          "pax": 98444
+        },
+        {
+          "month": "2026-02",
+          "pax": 92343
+        },
+        {
+          "month": "2026-03",
+          "pax": 96332
+        },
+        {
+          "month": "2026-04",
+          "pax": 100211
+        },
+        {
+          "month": "2026-05",
+          "pax": 106296
+        },
+        {
+          "month": "2026-06",
+          "pax": 91178
+        },
+        {
+          "month": "2026-07",
+          "pax": 84043
+        }
+      ]
+    },
+    {
+      "rank": 30,
+      "route": "ATQ-DEL",
+      "source": {
+        "city": "Amritsar",
+        "code": "ATQ"
+      },
+      "destination": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "total_pax_12_months": 1080890,
+      "average_monthly_pax": 90074.2,
+      "pax_weight": 0.013296,
+      "pax_weight_pct": 1.33,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 74502
+        },
+        {
+          "month": "2025-09",
+          "pax": 74952
+        },
+        {
+          "month": "2025-10",
+          "pax": 89236
+        },
+        {
+          "month": "2025-11",
+          "pax": 113377
+        },
+        {
+          "month": "2025-12",
+          "pax": 91933
+        },
+        {
+          "month": "2026-01",
+          "pax": 100194
+        },
+        {
+          "month": "2026-02",
+          "pax": 101718
+        },
+        {
+          "month": "2026-03",
+          "pax": 107599
+        },
+        {
+          "month": "2026-04",
+          "pax": 89560
+        },
+        {
+          "month": "2026-05",
+          "pax": 87311
+        },
+        {
+          "month": "2026-06",
+          "pax": 79574
+        },
+        {
+          "month": "2026-07",
+          "pax": 70934
+        }
+      ]
+    },
+    {
+      "rank": 31,
+      "route": "HYD-CCU",
+      "source": {
+        "city": "Hyderabad",
+        "code": "HYD"
+      },
+      "destination": {
+        "city": "Kolkata",
+        "code": "CCU"
+      },
+      "total_pax_12_months": 988302,
+      "average_monthly_pax": 82358.5,
+      "pax_weight": 0.012157,
+      "pax_weight_pct": 1.22,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 89577
+        },
+        {
+          "month": "2025-09",
+          "pax": 80315
+        },
+        {
+          "month": "2025-10",
+          "pax": 92920
+        },
+        {
+          "month": "2025-11",
+          "pax": 84268
+        },
+        {
+          "month": "2025-12",
+          "pax": 71802
+        },
+        {
+          "month": "2026-01",
+          "pax": 88837
+        },
+        {
+          "month": "2026-02",
+          "pax": 78181
+        },
+        {
+          "month": "2026-03",
+          "pax": 81113
+        },
+        {
+          "month": "2026-04",
+          "pax": 84498
+        },
+        {
+          "month": "2026-05",
+          "pax": 89354
+        },
+        {
+          "month": "2026-06",
+          "pax": 75281
+        },
+        {
+          "month": "2026-07",
+          "pax": 72156
+        }
+      ]
+    },
+    {
+      "rank": 32,
+      "route": "DEL-VNS",
+      "source": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "destination": {
+        "city": "Varanasi",
+        "code": "VNS"
+      },
+      "total_pax_12_months": 986296,
+      "average_monthly_pax": 82191.3,
+      "pax_weight": 0.012132,
+      "pax_weight_pct": 1.21,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 63883
+        },
+        {
+          "month": "2025-09",
+          "pax": 56726
+        },
+        {
+          "month": "2025-10",
+          "pax": 86990
+        },
+        {
+          "month": "2025-11",
+          "pax": 128939
+        },
+        {
+          "month": "2025-12",
+          "pax": 84526
+        },
+        {
+          "month": "2026-01",
+          "pax": 82398
+        },
+        {
+          "month": "2026-02",
+          "pax": 100228
+        },
+        {
+          "month": "2026-03",
+          "pax": 97898
+        },
+        {
+          "month": "2026-04",
+          "pax": 71647
+        },
+        {
+          "month": "2026-05",
+          "pax": 73247
+        },
+        {
+          "month": "2026-06",
+          "pax": 74735
+        },
+        {
+          "month": "2026-07",
+          "pax": 65079
+        }
+      ]
+    },
+    {
+      "rank": 33,
+      "route": "GAU-CCU",
+      "source": {
+        "city": "Guwahati",
+        "code": "GAU"
+      },
+      "destination": {
+        "city": "Kolkata",
+        "code": "CCU"
+      },
+      "total_pax_12_months": 983341,
+      "average_monthly_pax": 81945.1,
+      "pax_weight": 0.012096,
+      "pax_weight_pct": 1.21,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 77483
+        },
+        {
+          "month": "2025-09",
+          "pax": 77303
+        },
+        {
+          "month": "2025-10",
+          "pax": 93875
+        },
+        {
+          "month": "2025-11",
+          "pax": 96407
+        },
+        {
+          "month": "2025-12",
+          "pax": 87216
+        },
+        {
+          "month": "2026-01",
+          "pax": 89008
+        },
+        {
+          "month": "2026-02",
+          "pax": 81725
+        },
+        {
+          "month": "2026-03",
+          "pax": 87329
+        },
+        {
+          "month": "2026-04",
+          "pax": 75635
+        },
+        {
+          "month": "2026-05",
+          "pax": 75964
+        },
+        {
+          "month": "2026-06",
+          "pax": 72181
+        },
+        {
+          "month": "2026-07",
+          "pax": 69215
+        }
+      ]
+    },
+    {
+      "rank": 34,
+      "route": "LKO-BOM",
+      "source": {
+        "city": "Lucknow",
+        "code": "LKO"
+      },
+      "destination": {
+        "city": "Mumbai",
+        "code": "BOM"
+      },
+      "total_pax_12_months": 978307,
+      "average_monthly_pax": 81525.6,
+      "pax_weight": 0.012034,
+      "pax_weight_pct": 1.2,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 75592
+        },
+        {
+          "month": "2025-09",
+          "pax": 80226
+        },
+        {
+          "month": "2025-10",
+          "pax": 82367
+        },
+        {
+          "month": "2025-11",
+          "pax": 62257
+        },
+        {
+          "month": "2025-12",
+          "pax": 62270
+        },
+        {
+          "month": "2026-01",
+          "pax": 79078
+        },
+        {
+          "month": "2026-02",
+          "pax": 70236
+        },
+        {
+          "month": "2026-03",
+          "pax": 71971
+        },
+        {
+          "month": "2026-04",
+          "pax": 95345
+        },
+        {
+          "month": "2026-05",
+          "pax": 123734
+        },
+        {
+          "month": "2026-06",
+          "pax": 105072
+        },
+        {
+          "month": "2026-07",
+          "pax": 70159
+        }
+      ]
+    },
+    {
+      "rank": 35,
+      "route": "DEL-COK",
+      "source": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "destination": {
+        "city": "Kochi",
+        "code": "COK"
+      },
+      "total_pax_12_months": 955132,
+      "average_monthly_pax": 79594.3,
+      "pax_weight": 0.011749,
+      "pax_weight_pct": 1.17,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 79102
+        },
+        {
+          "month": "2025-09",
+          "pax": 72391
+        },
+        {
+          "month": "2025-10",
+          "pax": 69625
+        },
+        {
+          "month": "2025-11",
+          "pax": 83576
+        },
+        {
+          "month": "2025-12",
+          "pax": 80191
+        },
+        {
+          "month": "2026-01",
+          "pax": 85600
+        },
+        {
+          "month": "2026-02",
+          "pax": 77429
+        },
+        {
+          "month": "2026-03",
+          "pax": 80874
+        },
+        {
+          "month": "2026-04",
+          "pax": 79743
+        },
+        {
+          "month": "2026-05",
+          "pax": 92740
+        },
+        {
+          "month": "2026-06",
+          "pax": 81488
+        },
+        {
+          "month": "2026-07",
+          "pax": 72373
+        }
+      ]
+    },
+    {
+      "rank": 36,
+      "route": "BOM-VNS",
+      "source": {
+        "city": "Mumbai",
+        "code": "BOM"
+      },
+      "destination": {
+        "city": "Varanasi",
+        "code": "VNS"
+      },
+      "total_pax_12_months": 911684,
+      "average_monthly_pax": 75973.7,
+      "pax_weight": 0.011215,
+      "pax_weight_pct": 1.12,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 77867
+        },
+        {
+          "month": "2025-09",
+          "pax": 74262
+        },
+        {
+          "month": "2025-10",
+          "pax": 73526
+        },
+        {
+          "month": "2025-11",
+          "pax": 67861
+        },
+        {
+          "month": "2025-12",
+          "pax": 61396
+        },
+        {
+          "month": "2026-01",
+          "pax": 66416
+        },
+        {
+          "month": "2026-02",
+          "pax": 67688
+        },
+        {
+          "month": "2026-03",
+          "pax": 77032
+        },
+        {
+          "month": "2026-04",
+          "pax": 88234
+        },
+        {
+          "month": "2026-05",
+          "pax": 104038
+        },
+        {
+          "month": "2026-06",
+          "pax": 89623
+        },
+        {
+          "month": "2026-07",
+          "pax": 63741
+        }
+      ]
+    },
+    {
+      "rank": 37,
+      "route": "DEL-IXR",
+      "source": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "destination": {
+        "city": "Ranchi",
+        "code": "IXR"
+      },
+      "total_pax_12_months": 895733,
+      "average_monthly_pax": 74644.4,
+      "pax_weight": 0.011018,
+      "pax_weight_pct": 1.1,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 69095
+        },
+        {
+          "month": "2025-09",
+          "pax": 69144
+        },
+        {
+          "month": "2025-10",
+          "pax": 84495
+        },
+        {
+          "month": "2025-11",
+          "pax": 86209
+        },
+        {
+          "month": "2025-12",
+          "pax": 75668
+        },
+        {
+          "month": "2026-01",
+          "pax": 68167
+        },
+        {
+          "month": "2026-02",
+          "pax": 70345
+        },
+        {
+          "month": "2026-03",
+          "pax": 73112
+        },
+        {
+          "month": "2026-04",
+          "pax": 69050
+        },
+        {
+          "month": "2026-05",
+          "pax": 82407
+        },
+        {
+          "month": "2026-06",
+          "pax": 82930
+        },
+        {
+          "month": "2026-07",
+          "pax": 65111
+        }
+      ]
+    },
+    {
+      "rank": 38,
+      "route": "IXC-DEL",
+      "source": {
+        "city": "Chandigarh",
+        "code": "IXC"
+      },
+      "destination": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "total_pax_12_months": 866357,
+      "average_monthly_pax": 72196.4,
+      "pax_weight": 0.010657,
+      "pax_weight_pct": 1.07,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 63646
+        },
+        {
+          "month": "2025-09",
+          "pax": 60948
+        },
+        {
+          "month": "2025-10",
+          "pax": 61798
+        },
+        {
+          "month": "2025-11",
+          "pax": 65642
+        },
+        {
+          "month": "2025-12",
+          "pax": 75472
+        },
+        {
+          "month": "2026-01",
+          "pax": 92093
+        },
+        {
+          "month": "2026-02",
+          "pax": 73728
+        },
+        {
+          "month": "2026-03",
+          "pax": 84636
+        },
+        {
+          "month": "2026-04",
+          "pax": 75567
+        },
+        {
+          "month": "2026-05",
+          "pax": 79415
+        },
+        {
+          "month": "2026-06",
+          "pax": 69554
+        },
+        {
+          "month": "2026-07",
+          "pax": 63858
+        }
+      ]
+    },
+    {
+      "rank": 39,
+      "route": "MAA-CJB",
+      "source": {
+        "city": "Chennai",
+        "code": "MAA"
+      },
+      "destination": {
+        "city": "Coimbatore",
+        "code": "CJB"
+      },
+      "total_pax_12_months": 843300,
+      "average_monthly_pax": 70275.0,
+      "pax_weight": 0.010373,
+      "pax_weight_pct": 1.04,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 72593
+        },
+        {
+          "month": "2025-09",
+          "pax": 68135
+        },
+        {
+          "month": "2025-10",
+          "pax": 74002
+        },
+        {
+          "month": "2025-11",
+          "pax": 77324
+        },
+        {
+          "month": "2025-12",
+          "pax": 65902
+        },
+        {
+          "month": "2026-01",
+          "pax": 75549
+        },
+        {
+          "month": "2026-02",
+          "pax": 60823
+        },
+        {
+          "month": "2026-03",
+          "pax": 62294
+        },
+        {
+          "month": "2026-04",
+          "pax": 67496
+        },
+        {
+          "month": "2026-05",
+          "pax": 82224
+        },
+        {
+          "month": "2026-06",
+          "pax": 69969
+        },
+        {
+          "month": "2026-07",
+          "pax": 66989
+        }
+      ]
+    },
+    {
+      "rank": 40,
+      "route": "DEL-RPR",
+      "source": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "destination": {
+        "city": "Raipur",
+        "code": "RPR"
+      },
+      "total_pax_12_months": 837128,
+      "average_monthly_pax": 69760.7,
+      "pax_weight": 0.010298,
+      "pax_weight_pct": 1.03,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 56535
+        },
+        {
+          "month": "2025-09",
+          "pax": 56091
+        },
+        {
+          "month": "2025-10",
+          "pax": 64643
+        },
+        {
+          "month": "2025-11",
+          "pax": 79106
+        },
+        {
+          "month": "2025-12",
+          "pax": 73392
+        },
+        {
+          "month": "2026-01",
+          "pax": 70518
+        },
+        {
+          "month": "2026-02",
+          "pax": 75733
+        },
+        {
+          "month": "2026-03",
+          "pax": 75171
+        },
+        {
+          "month": "2026-04",
+          "pax": 71221
+        },
+        {
+          "month": "2026-05",
+          "pax": 77874
+        },
+        {
+          "month": "2026-06",
+          "pax": 72690
+        },
+        {
+          "month": "2026-07",
+          "pax": 64154
+        }
+      ]
+    },
+    {
+      "rank": 41,
+      "route": "IXA-CCU",
+      "source": {
+        "city": "Agartala",
+        "code": "IXA"
+      },
+      "destination": {
+        "city": "Kolkata",
+        "code": "CCU"
+      },
+      "total_pax_12_months": 834406,
+      "average_monthly_pax": 69533.8,
+      "pax_weight": 0.010264,
+      "pax_weight_pct": 1.03,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 64645
+        },
+        {
+          "month": "2025-09",
+          "pax": 60748
+        },
+        {
+          "month": "2025-10",
+          "pax": 70639
+        },
+        {
+          "month": "2025-11",
+          "pax": 74506
+        },
+        {
+          "month": "2025-12",
+          "pax": 70507
+        },
+        {
+          "month": "2026-01",
+          "pax": 76410
+        },
+        {
+          "month": "2026-02",
+          "pax": 62547
+        },
+        {
+          "month": "2026-03",
+          "pax": 68838
+        },
+        {
+          "month": "2026-04",
+          "pax": 70184
+        },
+        {
+          "month": "2026-05",
+          "pax": 77768
+        },
+        {
+          "month": "2026-06",
+          "pax": 70974
+        },
+        {
+          "month": "2026-07",
+          "pax": 66640
+        }
+      ]
+    },
+    {
+      "rank": 42,
+      "route": "DEL-IXL",
+      "source": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "destination": {
+        "city": "Leh",
+        "code": "IXL"
+      },
+      "total_pax_12_months": 829715,
+      "average_monthly_pax": 69142.9,
+      "pax_weight": 0.010206,
+      "pax_weight_pct": 1.02,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 77746
+        },
+        {
+          "month": "2025-09",
+          "pax": 79127
+        },
+        {
+          "month": "2025-10",
+          "pax": 64571
+        },
+        {
+          "month": "2025-11",
+          "pax": 49802
+        },
+        {
+          "month": "2025-12",
+          "pax": 45316
+        },
+        {
+          "month": "2026-01",
+          "pax": 42223
+        },
+        {
+          "month": "2026-02",
+          "pax": 41854
+        },
+        {
+          "month": "2026-03",
+          "pax": 43525
+        },
+        {
+          "month": "2026-04",
+          "pax": 87602
+        },
+        {
+          "month": "2026-05",
+          "pax": 105614
+        },
+        {
+          "month": "2026-06",
+          "pax": 98211
+        },
+        {
+          "month": "2026-07",
+          "pax": 94124
+        }
+      ]
+    },
+    {
+      "rank": 43,
+      "route": "BLR-BBI",
+      "source": {
+        "city": "Bengaluru",
+        "code": "BLR"
+      },
+      "destination": {
+        "city": "Bhubaneswar",
+        "code": "BBI"
+      },
+      "total_pax_12_months": 827734,
+      "average_monthly_pax": 68977.8,
+      "pax_weight": 0.010182,
+      "pax_weight_pct": 1.02,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 59889
+        },
+        {
+          "month": "2025-09",
+          "pax": 60111
+        },
+        {
+          "month": "2025-10",
+          "pax": 60215
+        },
+        {
+          "month": "2025-11",
+          "pax": 67772
+        },
+        {
+          "month": "2025-12",
+          "pax": 75747
+        },
+        {
+          "month": "2026-01",
+          "pax": 88761
+        },
+        {
+          "month": "2026-02",
+          "pax": 67631
+        },
+        {
+          "month": "2026-03",
+          "pax": 72829
+        },
+        {
+          "month": "2026-04",
+          "pax": 76338
+        },
+        {
+          "month": "2026-05",
+          "pax": 79507
+        },
+        {
+          "month": "2026-06",
+          "pax": 68246
+        },
+        {
+          "month": "2026-07",
+          "pax": 50688
+        }
+      ]
+    },
+    {
+      "rank": 44,
+      "route": "BLR-VNS",
+      "source": {
+        "city": "Bengaluru",
+        "code": "BLR"
+      },
+      "destination": {
+        "city": "Varanasi",
+        "code": "VNS"
+      },
+      "total_pax_12_months": 825577,
+      "average_monthly_pax": 68798.1,
+      "pax_weight": 0.010155,
+      "pax_weight_pct": 1.02,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 53039
+        },
+        {
+          "month": "2025-09",
+          "pax": 58207
+        },
+        {
+          "month": "2025-10",
+          "pax": 77403
+        },
+        {
+          "month": "2025-11",
+          "pax": 82352
+        },
+        {
+          "month": "2025-12",
+          "pax": 69315
+        },
+        {
+          "month": "2026-01",
+          "pax": 68356
+        },
+        {
+          "month": "2026-02",
+          "pax": 84476
+        },
+        {
+          "month": "2026-03",
+          "pax": 90679
+        },
+        {
+          "month": "2026-04",
+          "pax": 73046
+        },
+        {
+          "month": "2026-05",
+          "pax": 74835
+        },
+        {
+          "month": "2026-06",
+          "pax": 59558
+        },
+        {
+          "month": "2026-07",
+          "pax": 34311
+        }
+      ]
+    },
+    {
+      "rank": 45,
+      "route": "BLR-LKO",
+      "source": {
+        "city": "Bengaluru",
+        "code": "BLR"
+      },
+      "destination": {
+        "city": "Lucknow",
+        "code": "LKO"
+      },
+      "total_pax_12_months": 823200,
+      "average_monthly_pax": 68600.0,
+      "pax_weight": 0.010126,
+      "pax_weight_pct": 1.01,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 65938
+        },
+        {
+          "month": "2025-09",
+          "pax": 64263
+        },
+        {
+          "month": "2025-10",
+          "pax": 76301
+        },
+        {
+          "month": "2025-11",
+          "pax": 78044
+        },
+        {
+          "month": "2025-12",
+          "pax": 56527
+        },
+        {
+          "month": "2026-01",
+          "pax": 58088
+        },
+        {
+          "month": "2026-02",
+          "pax": 51984
+        },
+        {
+          "month": "2026-03",
+          "pax": 64166
+        },
+        {
+          "month": "2026-04",
+          "pax": 82885
+        },
+        {
+          "month": "2026-05",
+          "pax": 90113
+        },
+        {
+          "month": "2026-06",
+          "pax": 75397
+        },
+        {
+          "month": "2026-07",
+          "pax": 59494
+        }
+      ]
+    },
+    {
+      "rank": 46,
+      "route": "MAA-PNQ",
+      "source": {
+        "city": "Chennai",
+        "code": "MAA"
+      },
+      "destination": {
+        "city": "Pune",
+        "code": "PNQ"
+      },
+      "total_pax_12_months": 805417,
+      "average_monthly_pax": 67118.1,
+      "pax_weight": 0.009907,
+      "pax_weight_pct": 0.99,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 63111
+        },
+        {
+          "month": "2025-09",
+          "pax": 61987
+        },
+        {
+          "month": "2025-10",
+          "pax": 68791
+        },
+        {
+          "month": "2025-11",
+          "pax": 75105
+        },
+        {
+          "month": "2025-12",
+          "pax": 62276
+        },
+        {
+          "month": "2026-01",
+          "pax": 74488
+        },
+        {
+          "month": "2026-02",
+          "pax": 68352
+        },
+        {
+          "month": "2026-03",
+          "pax": 68547
+        },
+        {
+          "month": "2026-04",
+          "pax": 61031
+        },
+        {
+          "month": "2026-05",
+          "pax": 69454
+        },
+        {
+          "month": "2026-06",
+          "pax": 65034
+        },
+        {
+          "month": "2026-07",
+          "pax": 67241
+        }
+      ]
+    },
+    {
+      "rank": 47,
+      "route": "BOM-NAG",
+      "source": {
+        "city": "Mumbai",
+        "code": "BOM"
+      },
+      "destination": {
+        "city": "Nagpur",
+        "code": "NAG"
+      },
+      "total_pax_12_months": 782868,
+      "average_monthly_pax": 65239.0,
+      "pax_weight": 0.00963,
+      "pax_weight_pct": 0.96,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 62383
+        },
+        {
+          "month": "2025-09",
+          "pax": 65757
+        },
+        {
+          "month": "2025-10",
+          "pax": 66817
+        },
+        {
+          "month": "2025-11",
+          "pax": 67976
+        },
+        {
+          "month": "2025-12",
+          "pax": 57055
+        },
+        {
+          "month": "2026-01",
+          "pax": 73636
+        },
+        {
+          "month": "2026-02",
+          "pax": 69525
+        },
+        {
+          "month": "2026-03",
+          "pax": 65640
+        },
+        {
+          "month": "2026-04",
+          "pax": 68247
+        },
+        {
+          "month": "2026-05",
+          "pax": 72896
+        },
+        {
+          "month": "2026-06",
+          "pax": 59856
+        },
+        {
+          "month": "2026-07",
+          "pax": 53080
+        }
+      ]
+    },
+    {
+      "rank": 48,
+      "route": "IDR-BOM",
+      "source": {
+        "city": "Indore",
+        "code": "IDR"
+      },
+      "destination": {
+        "city": "Mumbai",
+        "code": "BOM"
+      },
+      "total_pax_12_months": 760660,
+      "average_monthly_pax": 63388.3,
+      "pax_weight": 0.009357,
+      "pax_weight_pct": 0.94,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 56271
+        },
+        {
+          "month": "2025-09",
+          "pax": 53276
+        },
+        {
+          "month": "2025-10",
+          "pax": 51499
+        },
+        {
+          "month": "2025-11",
+          "pax": 62201
+        },
+        {
+          "month": "2025-12",
+          "pax": 61295
+        },
+        {
+          "month": "2026-01",
+          "pax": 72479
+        },
+        {
+          "month": "2026-02",
+          "pax": 69300
+        },
+        {
+          "month": "2026-03",
+          "pax": 68997
+        },
+        {
+          "month": "2026-04",
+          "pax": 65467
+        },
+        {
+          "month": "2026-05",
+          "pax": 66150
+        },
+        {
+          "month": "2026-06",
+          "pax": 68725
+        },
+        {
+          "month": "2026-07",
+          "pax": 65000
+        }
+      ]
+    },
+    {
+      "rank": 49,
+      "route": "DEL-NAG",
+      "source": {
+        "city": "Delhi",
+        "code": "DEL"
+      },
+      "destination": {
+        "city": "Nagpur",
+        "code": "NAG"
+      },
+      "total_pax_12_months": 760429,
+      "average_monthly_pax": 63369.1,
+      "pax_weight": 0.009354,
+      "pax_weight_pct": 0.94,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 51247
+        },
+        {
+          "month": "2025-09",
+          "pax": 45830
+        },
+        {
+          "month": "2025-10",
+          "pax": 56700
+        },
+        {
+          "month": "2025-11",
+          "pax": 75395
+        },
+        {
+          "month": "2025-12",
+          "pax": 60386
+        },
+        {
+          "month": "2026-01",
+          "pax": 69387
+        },
+        {
+          "month": "2026-02",
+          "pax": 73843
+        },
+        {
+          "month": "2026-03",
+          "pax": 69243
+        },
+        {
+          "month": "2026-04",
+          "pax": 62390
+        },
+        {
+          "month": "2026-05",
+          "pax": 74235
+        },
+        {
+          "month": "2026-06",
+          "pax": 66176
+        },
+        {
+          "month": "2026-07",
+          "pax": 55597
+        }
+      ]
+    },
+    {
+      "rank": 50,
+      "route": "BLR-GAU",
+      "source": {
+        "city": "Bengaluru",
+        "code": "BLR"
+      },
+      "destination": {
+        "city": "Guwahati",
+        "code": "GAU"
+      },
+      "total_pax_12_months": 759197,
+      "average_monthly_pax": 63266.4,
+      "pax_weight": 0.009339,
+      "pax_weight_pct": 0.93,
+      "months_available": 12,
+      "monthly_pax": [
+        {
+          "month": "2025-08",
+          "pax": 56549
+        },
+        {
+          "month": "2025-09",
+          "pax": 57160
+        },
+        {
+          "month": "2025-10",
+          "pax": 71108
+        },
+        {
+          "month": "2025-11",
+          "pax": 69053
+        },
+        {
+          "month": "2025-12",
+          "pax": 68133
+        },
+        {
+          "month": "2026-01",
+          "pax": 70109
+        },
+        {
+          "month": "2026-02",
+          "pax": 50012
+        },
+        {
+          "month": "2026-03",
+          "pax": 54034
+        },
+        {
+          "month": "2026-04",
+          "pax": 61082
+        },
+        {
+          "month": "2026-05",
+          "pax": 76224
+        },
+        {
+          "month": "2026-06",
+          "pax": 63933
+        },
+        {
+          "month": "2026-07",
+          "pax": 61800
+        }
+      ]
+    }
+  ]
+}

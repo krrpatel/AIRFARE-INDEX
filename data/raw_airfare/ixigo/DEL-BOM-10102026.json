@@ -1,0 +1,10 @@
+{
+  "route": "DEL-BOM",
+  "status": "SOURCE_ERROR",
+  "reason": "Ixigo returned no successful stream response; responses=[]",
+  "observations": [],
+  "observation_count": 0,
+  "captured_streams": 0,
+  "response_count": 0,
+  "source_url": "https://www.ixigo.com/search/result/flight?from=DEL&to=BOM&date=10102026&adults=1&children=0&infants=0&class=e&source=Search+Form"
+}

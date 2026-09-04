@@ -1,0 +1,10 @@
+{
+  "route": "DEL-BOM",
+  "status": "SOURCE_ERROR",
+  "reason": "Ixigo returned no successful stream response; responses=[{'status': 403, 'url': 'https://www.ixigo.com/search/result/flight?from=DEL&to=BOM&date=05092026&adults=1&children=0&infants=0&class=e&source=Search+Form', 'resource_type': 'document'}, {'status': 204, 'url': 'https://www.ixigo.com/cdn-cgi/rum?', 'resource_type': 'xhr'}]",
+  "observations": [],
+  "observation_count": 0,
+  "captured_streams": 0,
+  "response_count": 2,
+  "source_url": "https://www.ixigo.com/search/result/flight?from=DEL&to=BOM&date=05092026&adults=1&children=0&infants=0&class=e&source=Search+Form"
+}

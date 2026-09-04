@@ -1,0 +1,157 @@
+"""
+Worker entrypoint: runs the scheduled daily airfare collection and monthly
+DGCA basket refresh using APScheduler.
+
+Wired to the real pipeline: each cycle calls
+scripts/run_pipeline_demo.run() to regenerate mock data and recompute the
+index/alerts/airline-index/revisions, exactly like a manual invocation of
+run_pipeline_demo.py would. In live mode, the source-adapter loop is still
+a documented TODO -- see scraper/airlines/indigo.py for why (pending
+robots.txt/ToS review).
+"""
+import logging
+import os
+import json
+import time
+from datetime import date, timedelta
+
+logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
+logger = logging.getLogger("worker")
+
+MODE = os.getenv("MODE", "mock")
+SCRAPE_HOUR = int(os.getenv("SCRAPE_HOUR", "6"))
+SCRAPE_MINUTE = int(os.getenv("SCRAPE_MINUTE", "0"))
+COMPAREFLIGHTS_SCRAPE_HOUR = int(os.getenv("COMPAREFLIGHTS_SCRAPE_HOUR", str(SCRAPE_HOUR)))
+COMPAREFLIGHTS_SCRAPE_MINUTE = int(os.getenv("COMPAREFLIGHTS_SCRAPE_MINUTE", str(SCRAPE_MINUTE)))
+IXIGO_SCRAPE_HOUR = int(os.getenv("IXIGO_SCRAPE_HOUR", "6"))
+IXIGO_SCRAPE_MINUTE = int(os.getenv("IXIGO_SCRAPE_MINUTE", "30"))
+MAX_RETRIES = int(os.getenv("SCRAPE_MAX_RETRIES", "3"))
+BACKOFF_BASE = int(os.getenv("SCRAPE_BACKOFF_BASE_SECONDS", "5"))
+SQLITE_DB_PATH = os.getenv("SQLITE_DB_PATH", "database/airfare_demo.db")
+MOCK_SEED = int(os.getenv("MOCK_SEED", "42"))
+DGCA_CHECK_HOUR = int(os.getenv("DGCA_CHECK_HOUR", "9"))
+DGCA_CHECK_MINUTE = int(os.getenv("DGCA_CHECK_MINUTE", "30"))
+DGCA_TOP_N = int(os.getenv("DGCA_TOP_N", "50"))
+DGCA_DIRECTION_MODE = os.getenv("DGCA_DIRECTION_MODE", "bidirectional")
+DAILY_ROUTE_PAIRS = int(os.getenv("DAILY_ROUTE_PAIRS", "20"))
+DAILY_DIRECTION_MODE = os.getenv("DGCA_DIRECTION_MODE", "bidirectional")
+IXIGO_DRIVER = os.getenv("IXIGO_DRIVER", "chromium")
+IXIGO_HEADLESS = os.getenv("IXIGO_HEADLESS", "0").lower() in {"1", "true", "yes"}
+RUNTIME_CONFIG_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "runtime", "scraper_config.json")
+
+try:
+    with open(RUNTIME_CONFIG_PATH, encoding="utf-8") as config_file:
+        _runtime = json.load(config_file)
+    DAILY_ROUTE_PAIRS = int(_runtime.get("daily_route_pairs", DAILY_ROUTE_PAIRS))
+    DAILY_DIRECTION_MODE = _runtime.get("direction_mode", DAILY_DIRECTION_MODE)
+    IXIGO_DRIVER = _runtime.get("ixigo_driver", IXIGO_DRIVER)
+    IXIGO_HEADLESS = bool(_runtime.get("ixigo_headless", IXIGO_HEADLESS))
+    COMPAREFLIGHTS_SCRAPE_HOUR, COMPAREFLIGHTS_SCRAPE_MINUTE = (int(value) for value in _runtime.get("compareflights_time", f"{COMPAREFLIGHTS_SCRAPE_HOUR:02d}:{COMPAREFLIGHTS_SCRAPE_MINUTE:02d}").split(":", 1))
+    IXIGO_SCRAPE_HOUR, IXIGO_SCRAPE_MINUTE = (int(value) for value in _runtime.get("ixigo_time", f"{IXIGO_SCRAPE_HOUR:02d}:{IXIGO_SCRAPE_MINUTE:02d}").split(":", 1))
+except (OSError, ValueError, TypeError):
+    pass
+
+
+def scheduled_routes():
+    from airfare.dgca.basket import load_route_basket
+    return load_route_basket(top_n=DAILY_ROUTE_PAIRS, direction_mode=DAILY_DIRECTION_MODE)
+
+
+def run_collection_cycle():
+    """One full cycle: collect -> validate -> store -> recompute index."""
+    logger.info("Starting collection cycle (mode=%s)", MODE)
+    logger.info("CompareFlights route scope: top %d pairs -> %d directed routes.", DAILY_ROUTE_PAIRS, len(scheduled_routes()))
+
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            if MODE == "mock":
+                logger.info("Mock mode: running the real pipeline (scripts/run_pipeline_demo.run).")
+                from scripts.run_pipeline_demo import run as run_pipeline
+                # Re-runs the deterministic generator + full pipeline through today.
+                # In a real deployment this would be replaced by an incremental
+                # append of only the latest interval's observations rather than
+                # a full regeneration -- documented simplification for the demo.
+                run_pipeline(date(2026, 1, 1), date.today(), MOCK_SEED, SQLITE_DB_PATH)
+            else:
+                logger.info("Live mode: invoking source adapters.")
+                # TODO(Phase 6): iterate enabled sources from `sources` table, call each adapter.
+                # Blocked on robots.txt/ToS review -- see scraper/airlines/indigo.py.
+                raise NotImplementedError(
+                    "Live mode has no cleared source adapters yet. Use MODE=mock."
+                )
+            logger.info("Collection cycle completed successfully.")
+            return
+        except Exception as exc:  # noqa: BLE001 - top-level cycle guard, logged not swallowed
+            wait = BACKOFF_BASE * (2 ** (attempt - 1))
+            logger.error("Cycle attempt %d/%d failed: %s", attempt, MAX_RETRIES, exc)
+            if attempt < MAX_RETRIES:
+                logger.info("Retrying in %ds (exponential backoff).", wait)
+                time.sleep(wait)
+            else:
+                logger.error("All retries exhausted. Marking source unavailable, "
+                              "preserving last valid observation, raising data-quality warning.")
+                try:
+                    from database.sqlite_store import get_conn, init_db
+                    init_db(SQLITE_DB_PATH)
+                    with get_conn(SQLITE_DB_PATH) as conn:
+                        conn.execute(
+                            "INSERT OR REPLACE INTO sources (name, status, last_success) "
+                            "VALUES (?, 'OFFLINE', (SELECT last_success FROM sources WHERE name=?))",
+                            (MODE, MODE),
+                        )
+                except Exception:  # noqa: BLE001 - best-effort status write, never crash the worker on this
+                    logger.exception("Could not persist source-offline status.")
+
+
+def run_ixigo_collection_cycle():
+    """Run the Ixigo route queue independently from the CompareFlights job."""
+    routes = scheduled_routes()
+    logger.info("Starting Ixigo collection: top %d pairs -> %d directed routes.", DAILY_ROUTE_PAIRS, len(routes))
+    if MODE != "live":
+        logger.info("MODE=%s: Ixigo queue validated; live browser collection is disabled in non-live mode.", MODE)
+        return
+    from scraper.ota.ixigo import collect_route
+    from datetime import timedelta
+    travel_date = (date.today() + timedelta(days=1)).strftime("%d%m%Y")
+    import asyncio
+    for route in routes:
+        try:
+            result = asyncio.run(collect_route(route.origin, route.destination, travel_date, headless=IXIGO_HEADLESS, browser_engine=IXIGO_DRIVER))
+            logger.info("Ixigo %s-%s: %s observations=%s", route.origin, route.destination, result["status"], result["observation_count"])
+        except Exception:
+            logger.exception("Ixigo collection failed for %s-%s", route.origin, route.destination)
+
+
+def run_dgca_route_basket_check():
+    """Daily DGCA check.
+
+    DGCA can publish the previous month's file a few days late. This job runs
+    every day at a fixed local time and only updates the latest basket when the
+    full latest 12-complete-month window is available. Existing fare rows keep
+    their route/basket context; new snapshots are versioned under data/dgca/output.
+    """
+    logger.info("Checking DGCA route basket (top_n=%s, direction_mode=%s).", DGCA_TOP_N, DGCA_DIRECTION_MODE)
+    try:
+        from airfare.dgca.pipeline import run as run_dgca
+        result = run_dgca(top_n=DGCA_TOP_N, direction_mode=DGCA_DIRECTION_MODE)
+        logger.info("DGCA check result: %s window=%s..%s output=%s",
+                    result.reason, result.window_start, result.window_end, result.output_path)
+    except FileNotFoundError as exc:
+        logger.warning("DGCA latest complete-month file is not available yet: %s", exc)
+    except Exception:
+        logger.exception("DGCA route basket check failed.")
+
+
+if __name__ == "__main__":
+    from apscheduler.schedulers.blocking import BlockingScheduler  # deferred: not needed to test run_collection_cycle directly
+
+    scheduler = BlockingScheduler()
+    scheduler.add_job(run_collection_cycle, "cron", hour=COMPAREFLIGHTS_SCRAPE_HOUR, minute=COMPAREFLIGHTS_SCRAPE_MINUTE, id="compareflights_daily")
+    scheduler.add_job(run_ixigo_collection_cycle, "cron", hour=IXIGO_SCRAPE_HOUR, minute=IXIGO_SCRAPE_MINUTE, id="ixigo_daily")
+    scheduler.add_job(run_dgca_route_basket_check, "cron", day=1, hour=DGCA_CHECK_HOUR, minute=DGCA_CHECK_MINUTE)
+    logger.info("Worker started. CompareFlights scheduled at %02d:%02d; Ixigo at %02d:%02d local time, mode=%s, top pairs=%d.", COMPAREFLIGHTS_SCRAPE_HOUR, COMPAREFLIGHTS_SCRAPE_MINUTE, IXIGO_SCRAPE_HOUR, IXIGO_SCRAPE_MINUTE, MODE, DAILY_ROUTE_PAIRS)
+    logger.info("DGCA monthly refresh scheduled on day 1 at %02d:%02d local time.", DGCA_CHECK_HOUR, DGCA_CHECK_MINUTE)
+    run_dgca_route_basket_check()
+    run_collection_cycle()  # run once immediately on startup
+    run_ixigo_collection_cycle()  # validate/run the second source queue too
+    scheduler.start()

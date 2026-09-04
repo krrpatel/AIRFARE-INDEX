@@ -1,0 +1,11 @@
+FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY scraper/ scraper/
+COPY data_pipeline/ data_pipeline/
+COPY index_engine/ index_engine/
+COPY ml/ ml/
+COPY scripts/ scripts/
+ENV PYTHONPATH=/app
+CMD ["python", "scripts/run_worker.py"]

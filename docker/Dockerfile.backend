@@ -1,0 +1,15 @@
+FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY backend/ backend/
+COPY index_engine/ index_engine/
+COPY data_pipeline/ data_pipeline/
+COPY ml/ ml/
+COPY scraper/ scraper/
+COPY scripts/ scripts/
+COPY database/ database/
+COPY docker/entrypoint-backend.sh /app/entrypoint-backend.sh
+RUN chmod +x /app/entrypoint-backend.sh
+ENV PYTHONPATH=/app
+CMD ["/app/entrypoint-backend.sh"]

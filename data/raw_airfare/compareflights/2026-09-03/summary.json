@@ -1,0 +1,14 @@
+{
+  "total_raw_tickets": 46232,
+  "unique_itineraries": 31008,
+  "unique_physical_flights": 10835,
+  "unique_route_date_combinations": 170,
+  "economy_itineraries": 31008,
+  "business_itineraries": 0,
+  "non_stop": 3419,
+  "one_stop": 24593,
+  "two_or_more_stops": 2996,
+  "duplicate_chunks_skipped": 15,
+  "term_mismatch_count": 133963,
+  "generated_at": "2026-09-03T19:38:43+05:30"
+}
