@@ -234,20 +234,47 @@ def get_routes(db_path: str) -> list[dict]:
         return [dict(r) for r in rows]
 
 
-def get_route_analytics(db_path: str) -> list[dict]:
-    """Return one auditable row per route and airline for dashboard tables/export."""
+def get_route_analytics(
+    db_path: str,
+    start: str | None = None,
+    end: str | None = None,
+    limit: int | None = 500,
+    offset: int = 0,
+) -> list[dict]:
+    """Return one auditable row per route and airline for dashboard tables/export.
+
+    `start`/`end` (YYYY-MM-DD, both optional) filter observations by their
+    real `booking_date`. Kept in the fare_observations JOIN's ON clause
+    (not WHERE) so routes with zero observations in the chosen window still
+    appear instead of being silently dropped by the LEFT JOIN.
+
+    `limit`/`offset` slice the final aggregated (route, airline) rows, never
+    the raw joined observation rows -- slicing before aggregation would
+    compute average/median/etc. from a partial, arbitrary subset of a
+    group's observations. Pass limit=None for the full unpaginated list
+    (used internally by get_analytics's per-route rollup).
+    """
+    date_filter_sql = ""
+    date_params: list[str] = []
+    if start:
+        date_filter_sql += " AND fo.booking_date >= ?"
+        date_params.append(start)
+    if end:
+        date_filter_sql += " AND fo.booking_date <= ?"
+        date_params.append(end)
     with get_conn(db_path) as conn:
         rows = conn.execute(
-            """SELECT r.origin, r.destination, r.label, w.weight,
+            f"""SELECT r.origin, r.destination, r.label, w.weight,
                       fo.airline_code, fo.booking_date, fo.total_fare,
                       riv.index_value
                FROM routes r
                LEFT JOIN route_weights w ON w.route_id = r.route_id
                LEFT JOIN fare_observations fo ON fo.route_id = r.route_id
-                    AND fo.quality_status='valid'
+                    AND fo.quality_status='valid'{date_filter_sql}
                LEFT JOIN route_index_values riv ON riv.route_id = r.route_id
                     AND riv.index_date = (SELECT MAX(index_date) FROM route_index_values)
-               ORDER BY w.weight DESC, r.origin, r.destination, fo.airline_code"""
+               ORDER BY w.weight DESC, r.origin, r.destination, fo.airline_code""",
+            date_params,
         ).fetchall()
     grouped = {}
     for row in rows:
@@ -278,11 +305,22 @@ def get_route_analytics(db_path: str) -> list[dict]:
             "highest_fare": round(fares[-1], 2),
         })
         output.append(item)
+    if limit is not None:
+        output = output[offset:offset + limit]
     return output
 
 
-def get_analytics(db_path: str) -> dict:
-    routes = get_route_analytics(db_path)
+def get_analytics(
+    db_path: str,
+    start: str | None = None,
+    end: str | None = None,
+    limit: int = 500,
+    offset: int = 0,
+) -> dict:
+    # Unpaginated (limit=None): the rollup below needs every airline row for
+    # a route to compute that route's average correctly, regardless of how
+    # many routes the caller ultimately wants back.
+    routes = get_route_analytics(db_path, start, end, limit=None)
     route_rollup = {}
     for row in routes:
         key = f"{row['origin']}-{row['destination']}"
@@ -293,28 +331,54 @@ def get_analytics(db_path: str) -> dict:
         row["average_fare"] = round(sum(row["fares"]) / len(row["fares"]), 2)
         row.pop("fares")
         route_rows.append(row)
+    where_sql = "WHERE quality_status='valid'"
+    where_params: list[str] = []
+    if start:
+        where_sql += " AND booking_date >= ?"
+        where_params.append(start)
+    if end:
+        where_sql += " AND booking_date <= ?"
+        where_params.append(end)
     with get_conn(db_path) as conn:
         buckets = conn.execute(
-            """SELECT CASE WHEN total_fare < 3000 THEN '< Rs 3k'
+            f"""SELECT CASE WHEN total_fare < 3000 THEN '< Rs 3k'
                     WHEN total_fare < 6000 THEN 'Rs 3k-6k'
                     WHEN total_fare < 10000 THEN 'Rs 6k-10k'
                     WHEN total_fare < 15000 THEN 'Rs 10k-15k'
                     ELSE 'Rs 15k+' END AS bucket, COUNT(*) AS count
-               FROM fare_observations WHERE quality_status='valid'
-               GROUP BY bucket ORDER BY MIN(total_fare)"""
+               FROM fare_observations {where_sql}
+               GROUP BY bucket ORDER BY MIN(total_fare)""",
+            where_params,
         ).fetchall()
         season = conn.execute(
-            """SELECT substr(booking_date, 1, 7) AS month, AVG(total_fare) AS average_fare,
+            f"""SELECT substr(booking_date, 1, 7) AS month, AVG(total_fare) AS average_fare,
                       COUNT(*) AS observation_count
-               FROM fare_observations WHERE quality_status='valid'
-               GROUP BY month ORDER BY month"""
+               FROM fare_observations {where_sql}
+               GROUP BY month ORDER BY month""",
+            where_params,
         ).fetchall()
+    # route_count stays the total (unpaginated) route count; route_ranking
+    # itself is paginated since it's the one list here that scales with
+    # basket size.
+    route_ranking = sorted(route_rows, key=lambda row: row["average_fare"])
     return {
-        "route_ranking": sorted(route_rows, key=lambda row: row["average_fare"]),
+        "route_ranking": route_ranking[offset:offset + limit],
         "fare_distribution": [dict(row) for row in buckets],
         "seasonality": [{**dict(row), "average_fare": round(row["average_fare"], 2)} for row in season],
         "route_count": len(route_rows),
     }
+
+
+def get_observation_date_bounds(db_path: str) -> dict:
+    """Real min/max booking_date across all valid fare observations, so the
+    dashboard's date filters are bounded by dates that actually exist in the
+    data instead of an assumed or invented range."""
+    with get_conn(db_path) as conn:
+        row = conn.execute(
+            "SELECT MIN(booking_date) AS min_date, MAX(booking_date) AS max_date "
+            "FROM fare_observations WHERE quality_status='valid'"
+        ).fetchone()
+        return {"min": row["min_date"], "max": row["max_date"]}
 
 
 def get_route_detail(db_path: str, origin: str, destination: str) -> dict | None:

@@ -18,7 +18,7 @@ export default function TrendChart({ data = [], yLabel = "Index value", color = 
       <AreaChart data={clean} margin={{ top: 12, right: 20, left: 4, bottom: 22 }}>
         <defs><linearGradient id={`trend-fill-${color.replace("#", "")}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={color} stopOpacity={0.28} /><stop offset="100%" stopColor={color} stopOpacity={0.03} /></linearGradient></defs>
         <CartesianGrid stroke="#dfe7ee" strokeDasharray="3 3" vertical={false} />
-        <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#5d6978" }} minTickGap={28} tickMargin={8} />
+        <XAxis dataKey="date" type="category" tick={{ fontSize: 11, fill: "#5d6978" }} minTickGap={28} tickMargin={8} />
         <YAxis domain={yDomain} allowDataOverflow={false} tick={{ fontSize: 11, fill: "#5d6978" }} tickFormatter={value => indexChart ? Number(value).toFixed(0) : money(value)} width={58} label={{ value: yLabel, angle: -90, position: "insideLeft", fill: "#5d6978", fontSize: 11 }} />
         <Tooltip content={({ active, payload, label }) => active && payload?.length ? <div className="recharts-tooltip"><strong>{label}</strong><span>{yLabel}: {money(payload[0].value)}</span></div> : null} />
         {indexChart && <ReferenceLine y={100} stroke="#9aa8b6" strokeDasharray="5 5" label={{ value: "Base 100", position: "insideTopRight", fill: "#5d6978", fontSize: 11 }} />}

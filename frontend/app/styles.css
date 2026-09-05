@@ -216,6 +216,7 @@ button {
 }
 
 input { width: 82px; text-transform: uppercase; }
+input[type="date"] { width: 150px; text-transform: none; }
 .route-picker { margin-top: 12px; }
 .error { color: var(--danger); font-size: 13px; margin: 10px 0 0; }
 .metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }

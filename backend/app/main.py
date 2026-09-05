@@ -115,13 +115,31 @@ def list_routes():
 
 
 @app.get("/api/routes/analytics")
-def route_analytics():
-    return {"routes": sqlite_store.get_route_analytics(SQLITE_DB_PATH), "disclaimer": DISCLAIMER}
+def route_analytics(
+    start: str | None = Query(None, description="YYYY-MM-DD, filters by booking_date"),
+    end: str | None = Query(None, description="YYYY-MM-DD, filters by booking_date"),
+    limit: int = Query(500, ge=1, le=5000, description="Max (route, airline) rows to return"),
+    offset: int = Query(0, ge=0),
+):
+    return {
+        "routes": sqlite_store.get_route_analytics(SQLITE_DB_PATH, start, end, limit, offset),
+        "date_range": sqlite_store.get_observation_date_bounds(SQLITE_DB_PATH),
+        "disclaimer": DISCLAIMER,
+    }
 
 
 @app.get("/api/analytics")
-def analytics():
-    return {**sqlite_store.get_analytics(SQLITE_DB_PATH), "disclaimer": DISCLAIMER}
+def analytics(
+    start: str | None = Query(None, description="YYYY-MM-DD, filters by booking_date"),
+    end: str | None = Query(None, description="YYYY-MM-DD, filters by booking_date"),
+    limit: int = Query(500, ge=1, le=5000, description="Max route_ranking rows to return"),
+    offset: int = Query(0, ge=0),
+):
+    return {
+        **sqlite_store.get_analytics(SQLITE_DB_PATH, start, end, limit, offset),
+        "date_range": sqlite_store.get_observation_date_bounds(SQLITE_DB_PATH),
+        "disclaimer": DISCLAIMER,
+    }
 
 
 @app.get("/api/routes/{origin}/{destination}")

@@ -18,17 +18,21 @@ export default function Home() {
   const [alerts, setAlerts] = useState([]);
   const [movers, setMovers] = useState(null);
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const check = (label) => (r) => { if (!r.ok) throw new Error(`${label} request failed (${r.status})`); return r.json(); };
+    setIsLoading(true);
+    setError(null);
     Promise.all([
-      fetch(`${API_URL}/api/index/current`).then(r => r.json()),
-      fetch(`${API_URL}/api/index/history`).then(r => r.json()),
-      fetch(`${API_URL}/api/data-quality`).then(r => r.json()),
-      fetch(`${API_URL}/api/dgca/basket?top_n=50&direction_mode=bidirectional`).then(r => r.json()),
-      fetch(`${API_URL}/api/lead-time`).then(r => r.json()),
-      fetch(`${API_URL}/api/source-health`).then(r => r.json()),
-      fetch(`${API_URL}/api/alerts?limit=5`).then(r => r.json()),
-      fetch(`${API_URL}/api/index/top-movers?limit=5`).then(r => r.json()),
+      fetch(`${API_URL}/api/index/current`).then(check("Current index")),
+      fetch(`${API_URL}/api/index/history`).then(check("Index history")),
+      fetch(`${API_URL}/api/data-quality`).then(check("Data quality")),
+      fetch(`${API_URL}/api/dgca/basket?top_n=50&direction_mode=bidirectional`).then(check("DGCA basket")),
+      fetch(`${API_URL}/api/lead-time`).then(check("Lead-time")),
+      fetch(`${API_URL}/api/source-health`).then(check("Source health")),
+      fetch(`${API_URL}/api/alerts?limit=5`).then(check("Alerts")),
+      fetch(`${API_URL}/api/index/top-movers?limit=5`).then(check("Top movers")),
     ]).then(([cur, hist, quality, basket, leadTime, sources, alertData, moverData]) => {
       setCurrent(cur);
       setHistory(hist.series || []);
@@ -38,7 +42,8 @@ export default function Home() {
       setSourceHealth(Array.isArray(sources) ? sources : []);
       setAlerts(alertData.alerts || []);
       setMovers(moverData);
-    }).catch(e => setError(String(e)));
+    }).catch(e => setError(e instanceof TypeError ? "Network error: could not reach the server. Please check your connection and try again." : e.message))
+      .finally(() => setIsLoading(false));
   }, []);
 
   const leadRows = lead?.series || [];
@@ -69,7 +74,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="grid">
+      {error ? null : isLoading ? <section className="grid"><div className="panel full"><p className="muted">Loading data...</p></div></section> : <section className="grid">
         <div className="panel">
           <h2>Current Index</h2>
           <div className="metric">{current?.index_value?.toFixed(2) ?? "..."}</div>
@@ -131,14 +136,14 @@ export default function Home() {
 
         <div className="panel wide">
           <h2>Route Movement Watch</h2>
-          <table><thead><tr><th>Route</th><th>Current index</th><th>Change</th></tr></thead><tbody>{(movers?.top_increasing || []).slice(0, 5).map(r => <tr key={`up-${r.origin}-${r.destination}`}><td>{r.origin}-{r.destination}</td><td>{r.current_value?.toFixed(2) ?? "n/a"}</td><td className="positive">+{r.change_pct?.toFixed(2)}%</td></tr>)}{(movers?.top_decreasing || []).slice(0, 5).map(r => <tr key={`down-${r.origin}-${r.destination}`}><td>{r.origin}-{r.destination}</td><td>{r.current_value?.toFixed(2) ?? "n/a"}</td><td className="negative">{r.change_pct?.toFixed(2)}%</td></tr>)}</tbody></table>
+          {(movers?.top_increasing?.length || movers?.top_decreasing?.length) ? <table><thead><tr><th>Route</th><th>Current index</th><th>Change</th></tr></thead><tbody>{(movers?.top_increasing || []).slice(0, 5).map(r => <tr key={`up-${r.origin}-${r.destination}`}><td>{r.origin}-{r.destination}</td><td>{r.current_value?.toFixed(2) ?? "n/a"}</td><td className="positive">+{r.change_pct?.toFixed(2)}%</td></tr>)}{(movers?.top_decreasing || []).slice(0, 5).map(r => <tr key={`down-${r.origin}-${r.destination}`}><td>{r.origin}-{r.destination}</td><td>{r.current_value?.toFixed(2) ?? "n/a"}</td><td className="negative">{r.change_pct?.toFixed(2)}%</td></tr>)}</tbody></table> : <p className="muted">No data available.</p>}
         </div>
         <div className="panel wide">
           <h2>Lead-Time Analysis</h2>
-          <table>
+          {lead?.series?.length ? <table>
             <thead><tr><th>Advance days</th><th>Median fare</th><th>Observations</th><th>Routes</th></tr></thead>
             <tbody>
-              {(lead?.series || []).map(row => (
+              {lead.series.map(row => (
                 <tr key={row.advance_purchase_days}>
                   <td>T+{row.advance_purchase_days}</td>
                   <td>Rs {row.median_fare.toLocaleString()}</td>
@@ -147,7 +152,7 @@ export default function Home() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table> : <p className="muted">No data available.</p>}
           <p className="muted">{lead?.note}</p>
         </div>
 
@@ -157,10 +162,10 @@ export default function Home() {
             Window {dgca?.metadata?.window_start ?? "..."} to {dgca?.metadata?.window_end ?? "..."}.
             Showing {dgca?.count ?? 0} directed routes from Top {dgca?.top_n ?? 50} route pairs.
           </p>
-          <table>
+          {dgca?.routes?.length ? <table>
             <thead><tr><th>Rank</th><th>Route</th><th>Direction</th><th>Directional weight</th><th>12-month passengers</th></tr></thead>
             <tbody>
-              {(dgca?.routes || []).slice(0, 12).map((r, i) => (
+              {dgca.routes.slice(0, 12).map((r, i) => (
                 <tr key={`${r.origin}-${r.destination}-${i}`}>
                   <td>{r.rank}</td>
                   <td>{r.pair_route}</td>
@@ -170,9 +175,9 @@ export default function Home() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table> : <p className="muted">No data available.</p>}
         </div>
-      </section>
+      </section>}
     </main>
   );
 }

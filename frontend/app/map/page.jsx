@@ -23,21 +23,26 @@ export default function IndiaMap() {
   const [routes, setRoutes] = useState([]);
   const [boundary, setBoundary] = useState(null);
   const [filter, setFilter] = useState("all");
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     // Wait until the browser has mounted the page.
     setMounted(true);
 
+    setIsLoading(true);
+    setError(null);
     fetch(`${API_URL}/api/map`)
-      .then((r) => r.json())
-      .then((data) => {
-        setRoutes(data.routes || []);
-      })
-      .catch((error) => {
-        console.error("Failed to load map routes:", error);
+      .then((r) => { if (!r.ok) throw new Error(`Map data request failed (${r.status})`); return r.json(); })
+      .then((data) => setRoutes(data.routes || []))
+      .catch((e) => {
         setRoutes([]);
-      });
+        setError(e instanceof TypeError ? "Network error: could not reach the server. Please check your connection and try again." : e.message);
+      })
+      .finally(() => setIsLoading(false));
 
+    // The country boundary overlay is decorative; a missing/failed fetch
+    // just means the map renders without the outline, not a broken page.
     fetch("/india-composite.geojson")
       .then((r) => r.json())
       .then(setBoundary)
@@ -74,36 +79,44 @@ export default function IndiaMap() {
         <div className="panel full">
           <h2>India Domestic Route Map</h2>
 
-          <div className="button-row">
-            <label htmlFor="airport">
-              Airport filter
-            </label>
+          {error && <div className="notice">{error}</div>}
 
-            <select
-              id="airport"
-              value={filter}
-              onChange={(event) =>
-                setFilter(event.target.value)
-              }
-            >
-              <option value="all">
-                All airports
-              </option>
+          {error ? null : isLoading ? (
+            <p className="muted">Loading data...</p>
+          ) : (
+            <>
+              <div className="button-row">
+                <label htmlFor="airport">
+                  Airport filter
+                </label>
 
-              {airports.map((code) => (
-                <option key={code} value={code}>
-                  {code}
-                </option>
-              ))}
-            </select>
-          </div>
+                <select
+                  id="airport"
+                  value={filter}
+                  onChange={(event) =>
+                    setFilter(event.target.value)
+                  }
+                >
+                  <option value="all">
+                    All airports
+                  </option>
 
-          <p className="muted">
-            DGCA-weighted domestic route network. Hover a
-            route or airport for a quick overview; click for
-            persistent details. Map tiles and boundaries are
-            loaded from open geographic sources.
-          </p>
+                  {airports.map((code) => (
+                    <option key={code} value={code}>
+                      {code}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <p className="muted">
+                DGCA-weighted domestic route network. Hover a
+                route or airport for a quick overview; click for
+                persistent details. Map tiles and boundaries are
+                loaded from open geographic sources.
+              </p>
+            </>
+          )}
         </div>
 
         <div className="panel full">
@@ -123,38 +136,44 @@ export default function IndiaMap() {
         <div className="panel full">
           <h2>Displayed Routes</h2>
 
-          <table>
-            <thead>
-              <tr>
-                <th>Route</th>
-                <th>Latest index</th>
-                <th>Weight</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {shown.slice(0, 50).map((route) => (
-                <tr
-                  key={`${route.origin}-${route.destination}`}
-                >
-                  <td>
-                    {route.origin}-{route.destination}
-                  </td>
-
-                  <td>
-                    {route.latest_index_value?.toFixed(2) ||
-                      "n/a"}
-                  </td>
-
-                  <td>
-                    {route.weight != null
-                      ? `${(route.weight * 100).toFixed(3)}%`
-                      : "n/a"}
-                  </td>
+          {error ? null : isLoading ? (
+            <p className="muted">Loading data...</p>
+          ) : shown.length ? (
+            <table>
+              <thead>
+                <tr>
+                  <th>Route</th>
+                  <th>Latest index</th>
+                  <th>Weight</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+                {shown.slice(0, 50).map((route) => (
+                  <tr
+                    key={`${route.origin}-${route.destination}`}
+                  >
+                    <td>
+                      {route.origin}-{route.destination}
+                    </td>
+
+                    <td>
+                      {route.latest_index_value?.toFixed(2) ||
+                        "n/a"}
+                    </td>
+
+                    <td>
+                      {route.weight != null
+                        ? `${(route.weight * 100).toFixed(3)}%`
+                        : "n/a"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p className="muted">No data available.</p>
+          )}
         </div>
       </section>
     </main>
