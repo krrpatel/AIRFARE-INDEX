@@ -226,10 +226,11 @@ async def collect_route(origin: str, destination: str, travel_date: str, cabin: 
     return await asyncio.to_thread(_collect_route_selenium, origin, destination, travel_date, cabin, viewport, headless)
 
 
-def save_route_result(result: dict[str, Any], run_date: str | None = None) -> Path:
+def save_route_result(result: dict[str, Any], run_date: str | None = None, suffix: str | None = None) -> Path:
     folder = OUTPUT_DIR / (run_date or date.today().isoformat())
     folder.mkdir(parents=True, exist_ok=True)
-    path = folder / f"{result['route']}.json"
+    filename = result["route"] if not suffix else f"{result['route']}-{suffix}"
+    path = folder / f"{filename}.json"
     path.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
     return path
 
