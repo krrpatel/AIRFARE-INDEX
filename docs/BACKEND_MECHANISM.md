@@ -2,7 +2,10 @@
 
 ## Service
 
-`backend/app/main.py` is a FastAPI service backed locally by `database/sqlite_store.py`. It serves index, route, airline, map, source, DGCA, quality, forecast, analytics, and scraper-job endpoints.
+`backend/app/main.py` is a FastAPI service backed by the file read model in
+`airfare/sources/file_read_model.py`. It serves index, route, airline, map,
+source, DGCA, quality, forecast, analytics, holiday, and scraper-job
+endpoints without opening SQLite.
 
 ## Important Endpoint Groups
 
@@ -14,6 +17,9 @@
 - `/api/scrape/compareflights`, `/api/scrape/ixigo`: start background collection jobs.
 - `/api/scrape/status/{job_id}`: route/lead-window progress and timestamps; `/api/scrape/stop/{job_id}` requests cooperative cancellation.
 - `/api/source-data/dates` and `/api/source-data`: date catalog and normalized source rows for the Source Data Explorer and CSV export.
+- `/api/source-data/routes`: lightweight route catalog for route-first loading.
+- `/api/adaptor/validate`, `/api/adaptor/run`, `/api/adaptor/status/{job_id}`: validate route coverage, publish a dated clean file, and monitor progress.
+- `/api/holiday-analytics`: holiday calendar context and holiday-vs-normal fare summary.
 - `/api/source-health`, `/api/dgca/status`: monitoring and publication-cycle state.
 
 ## Background Jobs
@@ -24,7 +30,7 @@ On-demand scraper requests return immediately with a job id. A daemon thread pro
 
 ## Configuration
 
-`data/runtime/scraper_config.json` is the shared local configuration. It includes the maximum parallel-driver count and independent source headless flags. The API validates route count and direction mode before writing it. Environment variables remain available for deployment defaults. CORS is configured through `CORS_ORIGINS`.
+`data/runtime/scraper_config.json` is the shared local configuration. It includes the maximum parallel-driver count, independent source headless flags, source schedules, route scope, lead windows, and retry settings. The API validates route count and direction mode before writing it. Environment variables remain available for deployment defaults. CORS is configured through `CORS_ORIGINS`.
 
 ## Run and Inspect
 

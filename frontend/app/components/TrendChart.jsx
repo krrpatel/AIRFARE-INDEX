@@ -13,7 +13,9 @@ export default function TrendChart({ data = [], yLabel = "Index value", color = 
   const spread = maxValue - minValue || Math.max(1, Math.abs(maxValue) * 0.02);
   const padding = Math.max(spread * 0.12, indexChart ? 1.5 : spread * 0.05);
   const yDomain = [Math.floor(minValue - padding), Math.ceil(maxValue + padding)];
-  return <div className="chart-shell chart-recharts" role="img" aria-label={yLabel}>
+  const chartWidth = Math.max(860, clean.length * 34);
+  return <div className="chart-shell chart-recharts chart-scroll" role="img" aria-label={yLabel}>
+    <div className="chart-canvas" style={{ minWidth: `${chartWidth}px` }}>
     <ResponsiveContainer width="100%" height={310}>
       <AreaChart data={clean} margin={{ top: 12, right: 20, left: 4, bottom: 22 }}>
         <defs><linearGradient id={`trend-fill-${color.replace("#", "")}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={color} stopOpacity={0.28} /><stop offset="100%" stopColor={color} stopOpacity={0.03} /></linearGradient></defs>
@@ -24,6 +26,6 @@ export default function TrendChart({ data = [], yLabel = "Index value", color = 
         {indexChart && <ReferenceLine y={100} stroke="#9aa8b6" strokeDasharray="5 5" label={{ value: "Base 100", position: "insideTopRight", fill: "#5d6978", fontSize: 11 }} />}
         <Area type="monotone" dataKey="value" stroke={color} strokeWidth={2.5} fill={`url(#trend-fill-${color.replace("#", "")})`} dot={{ r: clean.length > 80 ? 2 : 3, strokeWidth: 1.5, fill: color }} activeDot={{ r: 6, stroke: "#fff", strokeWidth: 2 }} isAnimationActive animationDuration={650} />
       </AreaChart>
-    </ResponsiveContainer>
+    </ResponsiveContainer></div>
   </div>;
 }

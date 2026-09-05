@@ -20,6 +20,7 @@ SOURCE_LABELS = {
     "ixigo": "Ixigo OTA",
 }
 _LEGACY_IXIGO_FILE = re.compile(r"^(?P<route>[A-Z]{3}-[A-Z]{3})-T\+(?P<days>\d+)\.json$")
+_AIRLINE_NAMES = {"6E": "IndiGo", "AI": "Air India", "IX": "Air India Express", "QP": "Akasa Air", "SG": "SpiceJet", "UK": "Vistara", "G8": "Go First"}
 
 
 class SourceRunAdapter:
@@ -85,6 +86,13 @@ class SourceRunAdapter:
                 "currency": record.currency,
                 "availability_status": record.availability_status,
                 "fare_code": record.fare_code,
+                "number_of_stops": record.stops,
+                "departure": record.departure_datetime.isoformat() if record.departure_datetime else None,
+                "arrival": record.arrival_datetime.isoformat() if record.arrival_datetime else None,
+                "duration_minutes": record.duration_minutes,
+                "cabin_class": record.cabin_class,
+                "checkin_baggage_kg": record.baggage.get("checkin_baggage_kg"),
+                "cabin_baggage_kg": record.baggage.get("cabin_baggage_kg"),
             })
         return rows
 
@@ -112,6 +120,11 @@ class SourceRunAdapter:
                 observations = result.get("observations") or []
                 for observation in observations:
                     fare = observation.get("fare") if isinstance(observation.get("fare"), dict) else {}
+                    flight_number = observation.get("flight_number")
+                    airline_code = observation.get("airline_code")
+                    if not airline_code and flight_number:
+                        match = re.match(r"([A-Za-z0-9]{2})", str(flight_number))
+                        airline_code = match.group(1).upper() if match else None
                     rows.append({
                         "source": "ixigo",
                         "run_date": run_date,
@@ -122,12 +135,19 @@ class SourceRunAdapter:
                         "travel_date": observation.get("travel_date"),
                         "lead_window": label,
                         "lead_days": int(label[2:]) if label and label.startswith("T+") and label[2:].isdigit() else observation.get("advance_purchase_days"),
-                        "airline_code": observation.get("airline_code"),
-                        "airline_name": observation.get("airline_name"),
-                        "flight_number": observation.get("flight_number"),
+                        "airline_code": airline_code,
+                        "airline_name": observation.get("airline_name") or _AIRLINE_NAMES.get(airline_code, airline_code),
+                        "flight_number": flight_number,
                         "fare": fare.get("amount") if fare else observation.get("fare_amount"),
                         "currency": fare.get("currency") if fare else observation.get("currency", "INR"),
                         "availability_status": "AVAILABLE",
                         "fare_code": observation.get("fare_code"),
+                        "number_of_stops": observation.get("number_of_stops", observation.get("stops")),
+                        "departure": observation.get("departure"),
+                        "arrival": observation.get("arrival"),
+                        "duration_minutes": observation.get("duration_minutes"),
+                        "cabin_class": observation.get("cabin_class", "Economy"),
+                        "checkin_baggage_kg": observation.get("checkin_baggage_kg"),
+                        "cabin_baggage_kg": observation.get("cabin_baggage_kg"),
                     })
         return rows

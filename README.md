@@ -28,14 +28,14 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 2. Prepare or refresh the local index database
+### 2. Prepare source files
 
-The repository includes `database/airfare_demo.db`. To regenerate the deterministic research dataset:
-
-```powershell
-$env:PYTHONPATH = "."
-python scripts/run_pipeline_demo.py --start 2026-01-01 --end 2026-08-24 --seed 42
-```
+The dashboard currently uses date-partitioned JSON files and does not require
+SQLite. Raw runs live under `data/raw_airfare/<source>/YYYY-MM-DD/`. After a
+complete run is available, open **Settings → Clean Data Adaptor**, validate the
+source/date, confirm the prompt, and publish
+`data/clean_airfare/<source>/DDMMYYYY.json`. Incomplete route coverage is
+rejected before any clean file is written.
 
 ### 3. Start the backend
 
@@ -97,6 +97,11 @@ $env:PYTHONPATH = "."
 python -m scraper.ota.ixigo DEL BOM --date 10102026 --headless
 ```
 
+The collector checks `CHROME_BINARY`, installed Chrome/Chromium, and then
+project-local fallback binaries at `browser/chrome.exe` or
+`chromium/chrome.exe`. `setup.bat` verifies the selected executable and
+installs application and scraper Python dependencies.
+
 The dashboard Settings page provides independent background actions for CompareFlights and Ixigo. Direct airline scrapers remain disabled until their permissions and collection paths are approved.
 
 ## Worker Scheduling
@@ -115,6 +120,7 @@ Default schedule:
 - DGCA basket check: day 1 at `09:30`
 - Daily source scope: 20 DGCA pairs in bidirectional mode = 40 directed routes per source
 - Browser collection is queued in the background and continues when the dashboard page changes
+- The worker validates and publishes complete clean source files without writing SQLite
 
 Environment variables can override defaults for deployment, including `COMPAREFLIGHTS_SCRAPE_HOUR`, `COMPAREFLIGHTS_SCRAPE_MINUTE`, `IXIGO_SCRAPE_HOUR`, `IXIGO_SCRAPE_MINUTE`, `DAILY_ROUTE_PAIRS`, `DGCA_TOP_N`, and `DGCA_DIRECTION_MODE`.
 
@@ -143,9 +149,9 @@ npm run build
 ```text
 airfare/       DGCA basket, airport registry, source contracts
 backend/       FastAPI service and API endpoints
-data/          DGCA files, imported airfare, runtime scraper settings
+    data/          DGCA files, raw/clean airfare, runtime scraper settings
 data_pipeline/ Validation, outlier handling, representative fare preparation
-database/      SQLite persistence and PostgreSQL target schema
+database/      Legacy pipeline schemas; not used by the current dashboard read path
 frontend/      Next.js dashboard, charts, Leaflet map, settings
 index_engine/  Basket weights, relatives, index, alerts, revisions
 ml/            Forecasting and anomaly detection
@@ -156,4 +162,8 @@ tests/         Automated unit tests
 
 ## Limitations
 
-The checked-in database contains research/backcast observations and an imported OTA run. A production deployment still needs permissioned live-source credentials or APIs, durable job storage, retry/observability infrastructure, database migrations, and compliance review for every source. The worker never bypasses CAPTCHA, robots rules, access controls, or terms of service.
+The current dashboard deliberately reads date-partitioned files instead of a
+database. A production deployment still needs permissioned live-source
+credentials or APIs, durable job storage, retry/observability infrastructure,
+and compliance review for every source. The worker never bypasses CAPTCHA,
+robots rules, access controls, or terms of service.

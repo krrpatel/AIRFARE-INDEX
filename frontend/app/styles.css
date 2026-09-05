@@ -287,6 +287,8 @@ button {
 .chart-svg { width: 100%; height: auto; min-height: 250px; background: linear-gradient(180deg, #fbfdff, #f4f8fb); border: 1px solid #dce5ec; border-radius: 8px; display: block; }
 .chart-shell { position: relative; }
 .chart-recharts { width: 100%; min-height: 280px; }
+.chart-scroll { overflow-x: auto; overscroll-behavior-x: contain; }
+.chart-canvas { min-height: 310px; }
 .recharts-tooltip { display: grid; gap: 5px; min-width: 160px; padding: 10px 12px; background: rgba(255,255,255,.98); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 6px 18px rgba(9,54,95,.12); font-size: 12px; }
 .recharts-tooltip strong { color: var(--gov-blue-dark); }
 .chart-note { margin: 5px 0 0; color: var(--muted); font-size: 12px; }

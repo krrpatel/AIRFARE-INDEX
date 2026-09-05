@@ -1,7 +1,8 @@
 # API Reference
 
-Base URL: `http://localhost:8000`. All responses are JSON. All endpoints
-are GET (read-only). Interactive docs: `/docs` (FastAPI auto-generated).
+Base URL: `http://localhost:8000`. All responses are JSON. Read endpoints are
+GET; source adaptation and scraper controls use POST/PUT. Interactive docs:
+`/docs` (FastAPI auto-generated).
 
 Every index-related response includes a `disclaimer` field. Do not strip
 it in any downstream use — see docs/METHODOLOGY.md for why.
@@ -68,8 +69,26 @@ Per-source status (ONLINE/DEGRADED/OFFLINE, last successful run).
 ## `GET /api/source-data/dates`
 Returns available date-partitioned runs for the `compareflights` and `ixigo` source adapters.
 
-## `GET /api/source-data?source=ixigo&run_date=YYYY-MM-DD`
-Returns normalized, paginated source rows for the selected date. Use a larger `limit` for a complete CSV export. The adapter presents legacy Ixigo window files and the current merged route files through the same response shape.
+## `GET /api/source-data/routes?source=ixigo&run_date=YYYY-MM-DD`
+Returns a lightweight route catalog for the selected source/date. Use its
+route value to avoid loading a whole date snapshot.
+
+## `GET /api/source-data?source=ixigo&run_date=YYYY-MM-DD&route=DEL-BOM`
+Returns normalized, paginated source rows for one route. Omitting `route`
+returns the full date snapshot for whole-date export. Rows include
+`number_of_stops`, airline identity, lead window, fare, and availability.
+
+## `POST /api/adaptor/validate`
+Validate a raw source run against the configured DGCA route scope. The response
+lists missing routes and rejects incomplete coverage.
+
+## `POST /api/adaptor/run`
+With `{"source":"compareflights","run_date":"YYYY-MM-DD","confirmed":true}`
+publishes `data/clean_airfare/<source>/DDMMYYYY.json` in a background job.
+Poll `/api/adaptor/status/{job_id}` for progress.
+
+## `GET /api/holiday-analytics`
+Returns cached holiday calendar entries and a holiday-vs-normal fare summary.
 
 ## `GET /api/anomalies?limit=50`
 Most recent flagged anomalies (route, date, detection method) — flags,

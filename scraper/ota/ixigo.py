@@ -26,6 +26,7 @@ LEGACY_PROFILE = BASE_DIR.parent / "ixigo_browser_profile"
 PROFILE_ROOT = Path(os.getenv("IXIGO_PROFILE_DIR", str(LEGACY_PROFILE if LEGACY_PROFILE.exists() else BASE_DIR / "data" / "runtime" / "ixigo_browser_profiles")))
 STREAM_HINT = "/flights/v2/search/stream"
 CLASSES = {"e": "Economy", "w": "Premium Economy", "b": "Business"}
+AIRLINE_NAMES = {"6E": "IndiGo", "AI": "Air India", "IX": "Air India Express", "QP": "Akasa Air", "SG": "SpiceJet", "UK": "Vistara", "G8": "Go First"}
 OUTPUT_LOCK = threading.RLock()
 
 
@@ -98,7 +99,10 @@ def extract_observations(frames: list[Any], origin: str, destination: str, trave
                     for part in keys.split("*"):
                         pieces = part.split("-")
                         if len(pieces) >= 4:
-                            segments.append({"origin": pieces[0], "destination": pieces[1], "flight_number": pieces[2], "travel_date": _iso(pieces[3])})
+                            flight_number = pieces[2]
+                            carrier_match = re.match(r"([A-Za-z0-9]{2})", flight_number)
+                            carrier_code = carrier_match.group(1).upper() if carrier_match else None
+                            segments.append({"origin": pieces[0], "destination": pieces[1], "flight_number": flight_number, "airline_code": carrier_code, "airline_name": AIRLINE_NAMES.get(carrier_code, carrier_code), "travel_date": _iso(pieces[3])})
                     if not segments or segments[0]["origin"] != origin or segments[-1]["destination"] != destination:
                         continue
                     for fare in flight_fare.get("fares") or []:
@@ -108,7 +112,8 @@ def extract_observations(frames: list[Any], origin: str, destination: str, trave
                             continue
                         metadata = fare.get("fareMetadata") or []
                         provider = metadata[0].get("providerId") if metadata and isinstance(metadata[0], dict) else None
-                        output.append({"source": "ixigo", "observed_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "origin": origin, "destination": destination, "travel_date": _iso(travel_date), "advance_purchase_days": None, "cabin_class": CLASSES.get(cabin, cabin), "airline_code": segments[0].get("airline_code"), "flight_number": "|".join(segment["flight_number"] for segment in segments), "stops": len(segments) - 1, "fare": {"amount": amount, "currency": "INR"}, "provider_id": provider, "fare_token_present": bool(details.get("fareToken")), "segments": segments})
+                        carrier_code = segments[0].get("airline_code")
+                        output.append({"source": "ixigo", "observed_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "origin": origin, "destination": destination, "travel_date": _iso(travel_date), "advance_purchase_days": None, "cabin_class": CLASSES.get(cabin, cabin), "airline_code": carrier_code, "airline_name": AIRLINE_NAMES.get(carrier_code, carrier_code), "flight_number": "|".join(segment["flight_number"] for segment in segments), "stops": len(segments) - 1, "fare": {"amount": amount, "currency": "INR"}, "provider_id": provider, "fare_token_present": bool(details.get("fareToken")), "segments": segments})
     unique = {}
     for row in output:
         key = (row["origin"], row["destination"], row["travel_date"], row["flight_number"], row["fare"]["amount"], row["cabin_class"])
@@ -139,6 +144,10 @@ def _collect_route_selenium(origin: str, destination: str, travel_date: str, cab
         os.path.expandvars(r"%LocalAppData%\Google\Chrome\Application\chrome.exe"),
         os.path.expandvars(r"%ProgramFiles%\Chromium\Application\chrome.exe"),
         os.path.expandvars(r"%LocalAppData%\Chromium\Application\chrome.exe"),
+        str(BASE_DIR / "browser" / "chrome.exe"),
+        str(BASE_DIR / "browser" / "chrome-win" / "chrome.exe"),
+        str(BASE_DIR / "chromium" / "chrome.exe"),
+        str(BASE_DIR / "chromium" / "chrome-win" / "chrome.exe"),
     ]
     browser_binary = next((path for path in candidates if path and Path(path).exists()), None)
     if browser_binary:

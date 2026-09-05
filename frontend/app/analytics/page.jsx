@@ -15,6 +15,7 @@ export default function AnalyticsPage() {
   const [endDate, setEndDate] = useState("");
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [holiday, setHoliday] = useState(null);
   useEffect(() => {
     // `ignore` guards against out-of-order responses: startDate and endDate
     // are two separate state updates, so a quick filter change can fire this
@@ -31,15 +32,17 @@ export default function AnalyticsPage() {
     const qs = params.toString();
     setIsLoading(true);
     setError(null);
-    Promise.all([fetch(`${API_URL}/api/analytics?${qs}`), fetch(`${API_URL}/api/routes/analytics?${qs}`)]).then(async ([analyticsResponse, routesResponse]) => {
+    Promise.all([fetch(`${API_URL}/api/analytics?${qs}`), fetch(`${API_URL}/api/routes/analytics?${qs}`), fetch(`${API_URL}/api/holiday-analytics`)]).then(async ([analyticsResponse, routesResponse, holidayResponse]) => {
       if (!analyticsResponse.ok) throw new Error(`Analytics request failed (${analyticsResponse.status})`);
       if (!routesResponse.ok) throw new Error(`Route analytics request failed (${routesResponse.status})`);
       const analytics = await analyticsResponse.json();
       const routes = await routesResponse.json();
+      const holidayData = holidayResponse.ok ? await holidayResponse.json() : null;
       if (ignore) return;
       setData(analytics);
       setRouteData(routes.routes || []);
       setDateRange(analytics.date_range || routes.date_range || null);
+      setHoliday(holidayData);
     }).catch(e => { if (!ignore) setError(e instanceof TypeError ? "Network error: could not reach the server. Please check your connection and try again." : e.message); })
       .finally(() => { if (!ignore) setIsLoading(false); });
     return () => { ignore = true; };
@@ -60,5 +63,6 @@ export default function AnalyticsPage() {
     <div className="panel"><h2>Highest Sectors</h2>{error ? null : isLoading ? <p className="muted">Loading data...</p> : ranking.length ? <table><thead><tr><th>Route</th><th>Average fare</th></tr></thead><tbody>{[...ranking].reverse().slice(0, 8).map(row => <tr key={`high-${row.route}`}><td>{row.route}</td><td>Rs {row.average_fare.toLocaleString("en-IN")}</td></tr>)}</tbody></table> : <p className="muted">No data available for the selected filters.</p>}</div>
     <div className="panel wide"><h2>Fare Distribution</h2>{error ? null : isLoading ? <p className="muted">Loading data...</p> : <BarChart data={(data?.fare_distribution || []).map(row => ({ label: row.bucket, value: row.count }))} valueLabel="Valid observations" />}</div>
     <div className="panel wide"><h2>Monthly Seasonality</h2>{error ? null : isLoading ? <p className="muted">Loading data...</p> : <TrendChart data={(data?.seasonality || []).map(row => ({ date: row.month, value: row.average_fare }))} yLabel="Average fare (Rs)" color="#b42318" />}</div>
+    <div className="panel wide"><h2>Holiday Fare Analytics</h2><p className="muted">Holiday calendar source: {holiday?.source || "Holiday calendar"}. Compare travel-date fares that fall on a listed Indian holiday with normal travel dates.</p>{holiday?.summary?.holiday_observations ? <BarChart data={[{ label: "Holiday dates", value: holiday.summary.holiday_average_fare }, { label: "Normal dates", value: holiday.summary.normal_average_fare }]} valueLabel="Average fare (Rs)" /> : <p className="muted">No holiday-date airfare observations are available in the selected source files yet.</p>}<p className="muted">{holiday?.holidays?.length || 0} calendar entries loaded. Prices are not imputed when a holiday has no matching flight observation.</p>{holiday?.holiday_breakdown?.length ? <div className="table-scroll"><table><thead><tr><th>Holiday</th><th>Travel window</th><th>Available observations</th><th>Average fare</th></tr></thead><tbody>{holiday.holiday_breakdown.map(item => <tr key={`${item.name}-${item.start_date}`}><td>{item.name}</td><td>{item.start_date} to {item.end_date}</td><td>{item.observation_count.toLocaleString("en-IN")}</td><td>{item.average_fare == null ? "No matching flights" : `Rs ${item.average_fare.toLocaleString("en-IN")}`}</td></tr>)}</tbody></table></div> : null}</div>
   </section></main>;
 }

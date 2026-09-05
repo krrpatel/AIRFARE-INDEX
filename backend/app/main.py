@@ -1,13 +1,4 @@
-"""
-FastAPI backend for the Airfare Price Index.
-
-Data layer: uses database/sqlite_store.py (stdlib sqlite3, no extra
-dependencies) against the file produced by scripts/run_pipeline_demo.py.
-This is the LOCAL/DEMO path. Production deployment (Docker + Postgres)
-swaps this for backend/app/db/queries.py + models.py -- same response
-shapes, different storage -- once that path is validated against a live
-Postgres instance (not available in the environment this was built in).
-"""
+"""FastAPI backend for the file-backed Airfare Price Index dashboard."""
 import logging
 import os
 import asyncio
@@ -17,24 +8,25 @@ import json
 import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import uuid
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
 from collections import defaultdict
+from typing import Any
 
 from fastapi import Body, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from database import sqlite_store
 from airfare.airports.registry import airport_coords, require_domestic_route
 from airfare.dgca.basket import load_basket_metadata, load_route_basket
 from airfare.sources.compareflights.offline_adapter import CompareFlightsOfflineAdapter
+from airfare.sources.clean_adapter import CleanDataValidationError, CleanSourceAdapter
+from airfare.sources.file_read_model import FileAirfareReadModel
 from airfare.sources.run_adapter import SOURCE_LABELS, SourceRunAdapter
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("airfare_api")
 
 DATA_MODE = os.getenv("MODE", "research")  # 'research' | 'live'
-SQLITE_DB_PATH = os.getenv("SQLITE_DB_PATH", "database/airfare_demo.db")
 DGCA_TOP_N = int(os.getenv("DGCA_TOP_N", "50"))
 DGCA_DIRECTION_MODE = os.getenv("DGCA_DIRECTION_MODE", "bidirectional")
 SCRAPE_JOBS: dict[str, dict] = {}
@@ -45,7 +37,12 @@ SCRAPE_STATUS_PATH = os.path.join(PROJECT_ROOT, "data", "runtime", "status.json"
 SCRAPER_CONFIG_PATH = os.path.join(PROJECT_ROOT, "data", "runtime", "scraper_config.json")
 DEFAULT_SCRAPER_CONFIG = {"daily_route_pairs": 20, "compareflights_time": "06:00", "ixigo_time": "06:30", "direction_mode": "bidirectional", "ixigo_driver": "chromium", "compareflights_headless": False, "ixigo_headless": False, "scraper_driver_count": 4, "ixigo_lead_days": [1, 7, 15, 30, 45], "ixigo_route_delay_seconds": 3, "ixigo_retry_count": 2, "ixigo_viewport_width": 1920, "ixigo_viewport_height": 1080}
 SOURCE_RUN_ADAPTER = SourceRunAdapter()
+CLEAN_DATA_ADAPTER = CleanSourceAdapter(SOURCE_RUN_ADAPTER)
+FILE_MODEL = FileAirfareReadModel(SOURCE_RUN_ADAPTER, CLEAN_DATA_ADAPTER)
 SOURCE_DATA_CACHE: dict[tuple[str, str], tuple[float, list[dict]]] = {}
+ADAPTOR_JOBS: dict[str, dict] = {}
+ADAPTOR_LOCK = threading.RLock()
+FORECAST_CACHE: dict[tuple[str, str], dict] = {}
 
 
 def _write_scrape_status(job: dict) -> None:
@@ -149,9 +146,9 @@ def health() -> HealthResponse:
 
 @app.get("/api/index/current")
 def index_current():
-    row = sqlite_store.get_current_index(SQLITE_DB_PATH)
+    row = FILE_MODEL.current_index()
     if row is None:
-        raise HTTPException(status_code=404, detail="No index computed yet. Run scripts/run_pipeline_demo.py first.")
+        raise HTTPException(status_code=404, detail="No adapted source data is available yet. Run the source adaptor from Settings.")
     row["disclaimer"] = DISCLAIMER
     return row
 
@@ -161,20 +158,13 @@ def index_history(
     start: str | None = Query(None, description="YYYY-MM-DD"),
     end: str | None = Query(None, description="YYYY-MM-DD"),
 ):
-    rows = sqlite_store.get_index_history(SQLITE_DB_PATH, start, end)
+    rows = FILE_MODEL.index_history(start=start, end=end)
     return {"count": len(rows), "disclaimer": DISCLAIMER, "series": rows}
 
 
 @app.get("/api/routes")
 def list_routes():
-    rows = sqlite_store.get_routes(SQLITE_DB_PATH)
-    if rows:
-        return rows
-    # Fall back to the DGCA-derived basket if the DB hasn't been populated yet.
-    return [
-        {"origin": r.origin, "destination": r.destination, "label": r.label, "weight": r.directional_weight}
-        for r in load_route_basket(top_n=DGCA_TOP_N, direction_mode=DGCA_DIRECTION_MODE)
-    ]
+    return FILE_MODEL.routes()
 
 
 @app.get("/api/routes/analytics")
@@ -185,8 +175,8 @@ def route_analytics(
     offset: int = Query(0, ge=0),
 ):
     return {
-        "routes": sqlite_store.get_route_analytics(SQLITE_DB_PATH, start, end, limit, offset),
-        "date_range": sqlite_store.get_observation_date_bounds(SQLITE_DB_PATH),
+        "routes": FILE_MODEL.route_analytics(start=start, end=end, limit=limit, offset=offset),
+        "date_range": FILE_MODEL.date_range(),
         "disclaimer": DISCLAIMER,
     }
 
@@ -198,11 +188,13 @@ def analytics(
     limit: int = Query(500, ge=1, le=5000, description="Max route_ranking rows to return"),
     offset: int = Query(0, ge=0),
 ):
-    return {
-        **sqlite_store.get_analytics(SQLITE_DB_PATH, start, end, limit, offset),
-        "date_range": sqlite_store.get_observation_date_bounds(SQLITE_DB_PATH),
-        "disclaimer": DISCLAIMER,
-    }
+    return {**FILE_MODEL.analytics(start=start, end=end, limit=limit, offset=offset), "disclaimer": DISCLAIMER}
+
+
+@app.get("/api/holiday-analytics")
+def holiday_analytics():
+    """Compare travel-date fares falling on the cached holiday calendar."""
+    return FILE_MODEL.holiday_analytics()
 
 
 @app.get("/api/routes/{origin}/{destination}")
@@ -211,94 +203,12 @@ def route_detail(origin: str, destination: str):
         require_domestic_route(origin, destination)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
-    adapter = CompareFlightsOfflineAdapter()
-    cache_key = (origin.upper(), destination.upper(), adapter._run_dir().name)
+    cache_key = (origin.upper(), destination.upper(), "file-model")
     if cache_key in ROUTE_DETAIL_CACHE:
         return ROUTE_DETAIL_CACHE[cache_key]
-    detail = sqlite_store.get_route_detail(SQLITE_DB_PATH, origin.upper(), destination.upper())
+    detail = FILE_MODEL.route_detail(origin, destination)
     if detail is None:
-        basket_route = next(
-            (item for item in load_route_basket(top_n=100, direction_mode="bidirectional")
-             if item.origin == origin.upper() and item.destination == destination.upper()),
-            None,
-        )
-        if basket_route is None:
-            raise HTTPException(status_code=404, detail=f"Route {origin}-{destination} not found in basket.")
-        detail = {"label": basket_route.label, "history": []}
-    imported = [
-        record for record in adapter.iter_all_records()
-        if record.origin == origin.upper() and record.destination == destination.upper()
-        and record.availability_status == "AVAILABLE"
-    ]
-    fares = [record.components.total_payable_fare or record.components.offered_fare for record in imported]
-    fares = [fare for fare in fares if fare is not None]
-    airline_rows = defaultdict(lambda: {"airline_name": None, "fares": [], "records": 0})
-    lead_rows = defaultdict(lambda: defaultdict(list))
-    for record in imported:
-        key = record.airline_code or "UNKNOWN"
-        airline_rows[key]["airline_name"] = record.airline_name or key
-        airline_rows[key]["records"] += 1
-        fare = record.components.total_payable_fare or record.components.offered_fare
-        if fare is not None:
-            airline_rows[key]["fares"].append(fare)
-            lead_rows[key][record.advance_purchase_days].append(fare)
-    detail["route"] = {"origin": origin.upper(), "destination": destination.upper()}
-    detail["market_snapshot"] = {
-        "source": "CompareFlights imported observations",
-        "observation_count": len(imported),
-        "fare_count": len(fares),
-        "lowest_payable_fare": round(min(fares), 2) if fares else None,
-        "average_payable_fare": round(sum(fares) / len(fares), 2) if fares else None,
-        "airlines": [
-            {
-                "airline_code": code,
-                "airline_name": row["airline_name"],
-                "record_count": row["records"],
-                "lowest_fare": round(min(row["fares"]), 2) if row["fares"] else None,
-                "average_fare": round(sum(row["fares"]) / len(row["fares"]), 2) if row["fares"] else None,
-            }
-            for code, row in sorted(airline_rows.items())
-        ],
-        "lead_time_series": [
-            {
-                "route": code,
-                "label": row["airline_name"],
-                "series": [
-                    {"date": f"T+{days}", "value": round(sum(fares_for_day) / len(fares_for_day), 2), "observation_count": len(fares_for_day)}
-                    for days, fares_for_day in sorted(lead_rows[code].items())
-                ],
-            }
-            for code, row in sorted(airline_rows.items())
-            if lead_rows[code]
-        ],
-        "fare_components": {
-            "base_fare": None,
-            "taxes": None,
-            "airport_charges": None,
-            "mandatory_total": "Not separately exposed by the imported source",
-        },
-        "note": "Values are computed from imported available offers. Base fare, taxes and statutory fee components remain unavailable until the source exposes them separately.",
-    }
-    detail["offers"] = [
-        {
-            "airline_code": record.airline_code,
-            "airline_name": record.airline_name or record.airline_code,
-            "flight_number": record.flight_number,
-            "travel_date": record.travel_date.isoformat(),
-            "advance_purchase_days": record.advance_purchase_days,
-            "departure": record.departure_datetime.isoformat() if record.departure_datetime else None,
-            "arrival": record.arrival_datetime.isoformat() if record.arrival_datetime else None,
-            "duration_minutes": record.duration_minutes,
-            "stops": record.stops,
-            "fare_code": record.fare_code,
-            "currency": record.currency,
-            "payable_fare": record.components.total_payable_fare or record.components.offered_fare,
-            "checkin_baggage_kg": record.baggage.get("checkin_baggage_kg"),
-            "cabin_baggage_kg": record.baggage.get("cabin_baggage_kg"),
-            "source": record.source_name,
-        }
-        for record in sorted(imported, key=lambda item: item.components.total_payable_fare or item.components.offered_fare or float("inf"))[:100]
-    ]
+        raise HTTPException(status_code=404, detail=f"Route {origin}-{destination} has no adapted observations.")
     detail["disclaimer"] = DISCLAIMER
     ROUTE_DETAIL_CACHE[cache_key] = detail
     return detail
@@ -306,12 +216,12 @@ def route_detail(origin: str, destination: str):
 
 @app.get("/api/data-quality")
 def data_quality():
-    return sqlite_store.get_data_quality_summary(SQLITE_DB_PATH)
+    return FILE_MODEL.data_quality()
 
 
 @app.get("/api/source-health")
 def source_health():
-    sources = sqlite_store.get_source_health(SQLITE_DB_PATH)
+    sources = []
     known = {item["name"] for item in sources}
     latest_jobs = {}
     with SCRAPE_LOCK:
@@ -328,9 +238,17 @@ def source_health():
                 latest_jobs[source_key] = _safe_job(job)
     except (OSError, ValueError, TypeError):
         pass
-    for name, label, url in [("compareflights", "CompareFlights OTA", "https://compareflights.co.in"), ("ixigo", "Ixigo OTA", "https://www.ixigo.com"), ("ixigo_holiday", "Ixigo holiday calendar", "https://www.ixigo.com/growth/api/v1/holidayCalendar")]:
+    for name, label, url in [("compareflights", "CompareFlights OTA", "https://compareflights.co.in"), ("ixigo", "Ixigo OTA", "https://www.ixigo.com"), ("ixigo_holiday", "Holiday calendar", "https://www.ixigo.com/growth/api/v1/holidayCalendar")]:
         if name not in known:
-            sources.append({"name": name, "label": label, "status": "CONFIGURED" if name != "ixigo_holiday" else "ONLINE", "source_url": url, "last_success": None})
+            if name == "ixigo_holiday":
+                holiday_file = SOURCE_RUN_ADAPTER.root / "ixigo" / "holidays.json"
+                status = "ONLINE" if holiday_file.exists() else "CONFIGURED"
+                last_success = datetime.fromtimestamp(holiday_file.stat().st_mtime, tz=timezone.utc).isoformat(timespec="seconds") if holiday_file.exists() else None
+            else:
+                dates = FILE_MODEL.dates(name)
+                status = "ONLINE" if dates else "CONFIGURED"
+                last_success = dates[-1] if dates else None
+            sources.append({"name": name, "label": label, "status": status, "source_url": url, "last_success": last_success, "data_mode": "date-partitioned files"})
         job = latest_jobs.get(name)
         if job:
             entry = next(item for item in sources if item["name"] == name)
@@ -565,7 +483,9 @@ def stop_scrape(job_id: str):
 def _source_run_signature(source: str, run_date: str) -> float:
     run_dir = SOURCE_RUN_ADAPTER.root / source / run_date
     files = list(run_dir.glob("*.json")) if run_dir.exists() else []
-    return max((path.stat().st_mtime for path in files), default=0.0)
+    raw_signature = max((path.stat().st_mtime for path in files), default=0.0)
+    clean_path = CLEAN_DATA_ADAPTER.path(source, run_date)
+    return max(raw_signature, clean_path.stat().st_mtime if clean_path.exists() else 0.0)
 
 
 @app.get("/api/source-data/dates")
@@ -577,44 +497,151 @@ def source_data_dates(source: str | None = Query(None)):
     output = []
     for name in names:
         dates = []
-        for run_date in reversed(SOURCE_RUN_ADAPTER.run_dates(name)):
+        all_dates = sorted(set(SOURCE_RUN_ADAPTER.run_dates(name)) | set(CLEAN_DATA_ADAPTER.clean_dates(name)))
+        for run_date in reversed(all_dates):
             manifest = SOURCE_RUN_ADAPTER.manifest(name, run_date)
             run_dir = SOURCE_RUN_ADAPTER.root / name / run_date
             collection = run_dir / "collection.json"
-            dates.append({"run_date": run_date, "label": run_date, "file": str(collection.relative_to(SOURCE_RUN_ADAPTER.root.parent.parent)) if collection.exists() else None, "file_count": manifest.get("file_count", 0), "format": manifest.get("format", "route-files")})
+            clean_path = CLEAN_DATA_ADAPTER.path(name, run_date)
+            dates.append({"run_date": run_date, "label": run_date, "file": str(collection.relative_to(SOURCE_RUN_ADAPTER.root.parent.parent)) if collection.exists() else None, "clean_file": str(clean_path.relative_to(SOURCE_RUN_ADAPTER.root.parent.parent)) if clean_path.exists() else None, "file_count": manifest.get("file_count", 0), "format": "clean-json" if clean_path.exists() else manifest.get("format", "route-files"), "data_mode": "clean" if clean_path.exists() else "raw-fallback"})
         output.append({"source": name, "label": SOURCE_LABELS[name], "dates": dates})
     return {"sources": output}
 
 
 @app.get("/api/source-data")
-def source_data(source: str = Query(...), run_date: str = Query(...), offset: int = Query(0, ge=0), limit: int = Query(1000, ge=1, le=200000)):
+def source_data(source: str = Query(...), run_date: str = Query(...), route: str | None = Query(None), offset: int = Query(0, ge=0), limit: int = Query(1000, ge=1, le=200000)):
     source = source.lower()
     if source not in SOURCE_LABELS:
         raise HTTPException(status_code=400, detail=f"Unsupported source: {source}")
-    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", run_date) or run_date not in SOURCE_RUN_ADAPTER.run_dates(source):
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", run_date) or run_date not in set(SOURCE_RUN_ADAPTER.run_dates(source)) | set(CLEAN_DATA_ADAPTER.clean_dates(source)):
         raise HTTPException(status_code=404, detail=f"No {source} run found for {run_date}.")
     key = (source, run_date)
     signature = _source_run_signature(source, run_date)
     cached = SOURCE_DATA_CACHE.get(key)
     if not cached or cached[0] != signature:
         try:
-            rows = SOURCE_RUN_ADAPTER.rows(source, run_date)
+            rows = FILE_MODEL.rows(source, run_date)
         except (OSError, ValueError, KeyError) as exc:
             raise HTTPException(status_code=500, detail=f"Could not read {source} data: {exc}") from exc
         SOURCE_DATA_CACHE[key] = (signature, rows)
     else:
         rows = cached[1]
-    return {"source": source, "label": SOURCE_LABELS[source], "run_date": run_date, "total_rows": len(rows), "offset": offset, "limit": limit, "rows": rows[offset:offset + limit], "manifest": SOURCE_RUN_ADAPTER.manifest(source, run_date)}
+    filtered = [row for row in rows if not route or row.get("route", "").upper() == route.upper()]
+    return {"source": source, "label": SOURCE_LABELS[source], "run_date": run_date, "route": route, "data_mode": FILE_MODEL.row_source_mode(source, run_date), "total_rows": len(filtered), "offset": offset, "limit": limit, "rows": filtered[offset:offset + limit], "manifest": SOURCE_RUN_ADAPTER.manifest(source, run_date)}
+
+
+@app.get("/api/source-data/routes")
+def source_data_routes(source: str = Query(...), run_date: str = Query(...)):
+    source = source.lower()
+    if source not in SOURCE_LABELS:
+        raise HTTPException(status_code=400, detail=f"Unsupported source: {source}")
+    if run_date not in set(SOURCE_RUN_ADAPTER.run_dates(source)) | set(CLEAN_DATA_ADAPTER.clean_dates(source)):
+        raise HTTPException(status_code=404, detail=f"No {source} run found for {run_date}.")
+    rows = FILE_MODEL.rows(source, run_date)
+    grouped: dict[str, dict[str, Any]] = {}
+    for row in rows:
+        key = row.get("route") or "UNKNOWN"
+        item = grouped.setdefault(key, {"route": key, "origin": row.get("origin"), "destination": row.get("destination"), "row_count": 0, "usable_count": 0, "airlines": set(), "lead_windows": set(), "lowest_fare": None, "average_fare": None, "_fares": []})
+        item["row_count"] += 1
+        if row.get("airline_code"):
+            item["airlines"].add(row["airline_code"])
+        if row.get("lead_window"):
+            item["lead_windows"].add(row["lead_window"])
+        try:
+            fare = float(row.get("fare"))
+        except (TypeError, ValueError):
+            fare = None
+        if fare is not None and fare > 0:
+            item["usable_count"] += 1
+            item["_fares"].append(fare)
+    output = []
+    for item in sorted(grouped.values(), key=lambda value: value["route"]):
+        fares = item.pop("_fares")
+        item["airlines"] = sorted(item["airlines"])
+        item["lead_windows"] = sorted(item["lead_windows"], key=lambda value: int(value[2:]) if str(value).startswith("T+") and str(value)[2:].isdigit() else 999)
+        item["lowest_fare"] = round(min(fares), 2) if fares else None
+        item["average_fare"] = round(sum(fares) / len(fares), 2) if fares else None
+        output.append(item)
+    return {"source": source, "run_date": run_date, "data_mode": FILE_MODEL.row_source_mode(source, run_date), "routes": output}
+
+
+def _adaptor_job_safe(job: dict) -> dict:
+    return {key: value for key, value in job.items() if key != "stop_event"}
+
+
+def _run_clean_adaptor(job_id: str, source: str, run_date: str) -> None:
+    try:
+        expected = [f"{item.origin}-{item.destination}" for item in _source_routes()]
+        with ADAPTOR_LOCK:
+            ADAPTOR_JOBS[job_id].update({"status": "RUNNING", "started_at": _now(), "total_routes": len(expected)})
+        def progress(done: int, total: int) -> None:
+            with ADAPTOR_LOCK:
+                job = ADAPTOR_JOBS[job_id]
+                job.update({"processed_routes": done, "total_routes": total, "progress_pct": round(done * 100 / total, 1) if total else 0})
+        result = CLEAN_DATA_ADAPTER.build(source, run_date, expected, progress)
+        FILE_MODEL.invalidate(source, run_date)
+        with ADAPTOR_LOCK:
+            ADAPTOR_JOBS[job_id].update({"status": "COMPLETED", "finished_at": _now(), "processed_routes": result["route_count"], "rows_written": result["row_count"], "output_file": result["path"], "progress_pct": 100})
+    except CleanDataValidationError as exc:
+        with ADAPTOR_LOCK:
+            ADAPTOR_JOBS[job_id].update({"status": "REJECTED", "finished_at": _now(), "error": str(exc)})
+    except Exception as exc:
+        logger.exception("Clean adaptor failed")
+        with ADAPTOR_LOCK:
+            ADAPTOR_JOBS[job_id].update({"status": "ERROR", "finished_at": _now(), "error": str(exc)})
+
+
+def _adaptor_payload(payload: dict[str, Any]) -> tuple[str, str]:
+    source = str(payload.get("source") or "compareflights").lower()
+    if source not in SOURCE_LABELS:
+        raise HTTPException(status_code=400, detail=f"Unsupported source: {source}")
+    run_date = str(payload.get("run_date") or "")
+    available = sorted(set(SOURCE_RUN_ADAPTER.run_dates(source)) | set(CLEAN_DATA_ADAPTER.clean_dates(source)))
+    if not run_date:
+        if not available:
+            raise HTTPException(status_code=404, detail=f"No {source} source run is available.")
+        run_date = available[-1]
+    if run_date not in available:
+        raise HTTPException(status_code=404, detail=f"No {source} source run found for {run_date}.")
+    return source, run_date
+
+
+@app.post("/api/adaptor/validate")
+def adaptor_validate(payload: dict[str, Any] = Body(default={} )):
+    source, run_date = _adaptor_payload(payload)
+    expected = [f"{item.origin}-{item.destination}" for item in _source_routes()]
+    return CLEAN_DATA_ADAPTER.validate(source, run_date, expected)
+
+
+@app.post("/api/adaptor/run")
+def adaptor_run(payload: dict[str, Any] = Body(default={} )):
+    source, run_date = _adaptor_payload(payload)
+    expected = [f"{item.origin}-{item.destination}" for item in _source_routes()]
+    validation = CLEAN_DATA_ADAPTER.validate(source, run_date, expected)
+    if not validation["valid"]:
+        raise HTTPException(status_code=409, detail=validation)
+    if not bool(payload.get("confirmed", False)):
+        return {"requires_confirmation": True, "validation": validation}
+    with ADAPTOR_LOCK:
+        job_id = uuid.uuid4().hex
+        ADAPTOR_JOBS[job_id] = {"job_id": job_id, "source": source, "run_date": run_date, "status": "QUEUED", "created_at": _now(), "processed_routes": 0, "total_routes": validation["expected_route_count"], "rows_written": 0, "progress_pct": 0}
+    threading.Thread(target=_run_clean_adaptor, args=(job_id, source, run_date), daemon=True).start()
+    return {"job_id": job_id, "status": "QUEUED", "validation": validation}
+
+
+@app.get("/api/adaptor/status/{job_id}")
+def adaptor_status(job_id: str):
+    with ADAPTOR_LOCK:
+        job = ADAPTOR_JOBS.get(job_id)
+        if not job:
+            raise HTTPException(status_code=404, detail="Adaptor job not found or expired.")
+        return _adaptor_job_safe(job)
 
 
 @app.get("/api/scrape-overview")
 def scrape_overview():
-    weekly = sqlite_store.get_weekly_fare_overview(SQLITE_DB_PATH)
-    latest_run = None
-    root = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data", "raw_airfare", "compareflights")
-    if os.path.isdir(root):
-        runs = sorted(name for name in os.listdir(root) if os.path.isdir(os.path.join(root, name)))
-        latest_run = runs[-1] if runs else None
+    weekly = FILE_MODEL.weekly()
+    latest_run = FILE_MODEL.dates()[-1] if FILE_MODEL.dates() else None
     weekly["source"] = "CompareFlights OTA import"
     weekly["latest_import_run"] = latest_run
     weekly["latest_database_date"] = weekly["date_range"]["end"]
@@ -624,12 +651,13 @@ def scrape_overview():
 
 @app.get("/api/anomalies")
 def anomalies(limit: int = Query(50, le=500)):
-    return {"count": limit, "disclaimer": DISCLAIMER, "anomalies": sqlite_store.get_anomalies(SQLITE_DB_PATH, limit)}
+    quality = FILE_MODEL.data_quality()
+    return {"count": min(limit, quality["anomaly_count"]), "disclaimer": DISCLAIMER, "anomalies": [], "note": "File-backed view retains source rows and reports quality counts; no database anomaly table is used."}
 
 
 @app.get("/api/index/top-movers")
 def top_movers(limit: int = Query(5, le=27)):
-    result = sqlite_store.get_top_movers(SQLITE_DB_PATH, limit)
+    result = FILE_MODEL.top_movers(limit=limit)
     result["disclaimer"] = DISCLAIMER
     return result
 
@@ -638,12 +666,12 @@ def top_movers(limit: int = Query(5, le=27)):
 def airlines():
     return {"disclaimer": DISCLAIMER + " Airline index is a simplified avg-fare-ratio, "
                                         "not the full geometric-mean methodology used nationally.",
-            "airlines": sqlite_store.get_airlines_summary(SQLITE_DB_PATH)}
+            "airlines": FILE_MODEL.airlines()}
 
 
 @app.get("/api/airlines/{airline_code}")
 def airline_history(airline_code: str):
-    rows = sqlite_store.get_airline_history(SQLITE_DB_PATH, airline_code.upper())
+    rows = FILE_MODEL.airline_history(airline_code.upper())
     if not rows:
         raise HTTPException(status_code=404, detail=f"No data for airline {airline_code}.")
     return {"airline_code": airline_code.upper(), "history": rows, "disclaimer": DISCLAIMER}
@@ -651,7 +679,7 @@ def airline_history(airline_code: str):
 
 @app.get("/api/airlines/{airline_code}/routes")
 def airline_route_history(airline_code: str, top_n: int = Query(5, ge=1, le=20)):
-    result = sqlite_store.get_airline_route_history(SQLITE_DB_PATH, airline_code.upper(), top_n)
+    result = FILE_MODEL.airline_route_history(airline_code.upper(), top_n)
     if not result["routes"]:
         raise HTTPException(status_code=404, detail=f"No route observations for airline {airline_code}.")
     result["disclaimer"] = DISCLAIMER + " Route lines show average observed payable fare by booking date."
@@ -665,12 +693,12 @@ def airports():
 
 @app.get("/api/alerts")
 def alerts(limit: int = Query(50, le=500)):
-    return {"count": limit, "alerts": sqlite_store.get_alerts(SQLITE_DB_PATH, limit)}
+    return {"count": 0, "alerts": [], "note": "No persisted alert table is used. Review source health and route movement for current file-backed signals."}
 
 
 @app.get("/api/index/revisions")
 def index_revisions(limit: int = Query(50, le=500)):
-    return {"revisions": sqlite_store.get_revision_history(SQLITE_DB_PATH, limit)}
+    return {"revisions": [], "note": "Revision history is unavailable in temporary file-only mode."}
 
 
 @app.get("/api/map")
@@ -678,15 +706,10 @@ def route_map():
     """Route basket with airport coordinates and latest index value, for
     the India route map dashboard page."""
     coords = airport_coords()
-    routes = sqlite_store.get_routes(SQLITE_DB_PATH)
-    if not routes:
-        routes = [
-            {"origin": r.origin, "destination": r.destination, "label": r.label, "weight": r.directional_weight}
-            for r in load_route_basket(top_n=DGCA_TOP_N, direction_mode=DGCA_DIRECTION_MODE)
-        ]
+    routes = FILE_MODEL.routes()
     out = []
     for r in routes:
-        detail = sqlite_store.get_route_detail(SQLITE_DB_PATH, r["origin"], r["destination"])
+        detail = FILE_MODEL.route_detail(r["origin"], r["destination"])
         latest_index = None
         if detail and detail["history"]:
             latest_index = detail["history"][-1]["index_value"]
@@ -735,19 +758,19 @@ def dgca_status():
 
 @app.get("/api/lead-time")
 def lead_time(run_date: str | None = Query(None)):
-    adapter = CompareFlightsOfflineAdapter(run_date=run_date)
-    records = [r for r in adapter.iter_all_records() if r.availability_status == "AVAILABLE"]
     grouped: dict[int, list[float]] = defaultdict(list)
     route_coverage: dict[int, set[str]] = defaultdict(set)
     airline_coverage: dict[int, set[str]] = defaultdict(set)
-    for record in records:
-        fare = record.components.total_payable_fare or record.components.offered_fare
-        if fare is None:
+    rows = FILE_MODEL.rows("compareflights", run_date)
+    for row in rows:
+        fare = row.get("fare")
+        days = row.get("lead_days")
+        if fare is None or days is None:
             continue
-        grouped[record.advance_purchase_days].append(fare)
-        route_coverage[record.advance_purchase_days].add(f"{record.origin}-{record.destination}")
-        if record.airline_code:
-            airline_coverage[record.advance_purchase_days].add(record.airline_code)
+        grouped[int(days)].append(float(fare))
+        route_coverage[int(days)].add(row.get("route", "UNKNOWN"))
+        if row.get("airline_code"):
+            airline_coverage[int(days)].add(row["airline_code"])
 
     series = []
     for days in sorted(grouped):
@@ -764,10 +787,10 @@ def lead_time(run_date: str | None = Query(None)):
         })
     return {
         "run_date": run_date,
-        "source": "compareflights_offline",
+        "source": "CompareFlights OTA file data",
         "count": sum(row["observation_count"] for row in series),
         "series": series,
-        "note": "Computed from imported observed CompareFlights output; no missing lead-time values are fabricated.",
+        "note": "Computed from date-partitioned source files; no missing lead-time values are fabricated.",
     }
 
 
@@ -784,6 +807,7 @@ def source_field_mapping():
             {"source_field": "segments[*].flight_number", "standard_field": "flight_number", "transformation": "joined with | for connecting itineraries"},
             {"source_field": "offers[*].price", "standard_field": "total_payable_fare/offered_fare", "transformation": "numeric INR when present"},
             {"source_field": "offers[*].fare_code", "standard_field": "fare_code", "transformation": "preserved as source fare code"},
+            {"source_field": "itinerary.stops / segments length", "standard_field": "number_of_stops", "transformation": "zero for non-stop; connecting segment count otherwise"},
             {"source_field": "offers[*].checkin_baggage_kg/cabin_baggage_kg", "standard_field": "baggage", "transformation": "preserved nullable"},
             {"source_field": "base fare/taxes/fees", "standard_field": "fare components", "transformation": "NULL because current source output does not expose components separately"},
         ],
@@ -795,10 +819,9 @@ def forecast(origin: str, destination: str):
     """
     Trains a quick forecast on the fly from stored valid observations for
     this route, cached for FORECAST_CACHE_TTL_MINUTES to avoid retraining
-    on every request (see database/sqlite_store.py forecast_cache table).
+    on every request.
     """
     import pandas as pd
-    from datetime import datetime, timedelta
     from ml.forecasting import build_features, time_aware_split, evaluate_model, FEATURES
     from sklearn.linear_model import LinearRegression
     from sklearn.ensemble import RandomForestRegressor
@@ -806,41 +829,48 @@ def forecast(origin: str, destination: str):
     origin, destination = origin.upper(), destination.upper()
     ttl_minutes = int(os.getenv("FORECAST_CACHE_TTL_MINUTES", "60"))
 
-    cached = sqlite_store.get_cached_forecast(SQLITE_DB_PATH, origin, destination)
+    cache_key = (origin, destination)
+    cached = FORECAST_CACHE.get(cache_key)
     if cached:
-        age = datetime.utcnow() - datetime.fromisoformat(cached["computed_at"])
+        computed = datetime.fromisoformat(cached["computed_at"])
+        if computed.tzinfo is None:
+            computed = computed.replace(tzinfo=timezone.utc)
+        age = datetime.now(timezone.utc) - computed
         if age < timedelta(minutes=ttl_minutes):
-            result = cached["payload"]
+            result = dict(cached["payload"])
             result["cached"] = True
-            result["cache_age_seconds"] = int(age.total_seconds())
+            result["cache_age_seconds"] = max(0, int(age.total_seconds()))
             return result
 
-    rows = sqlite_store.get_route_fare_history(SQLITE_DB_PATH, origin, destination)
+    rows = FILE_MODEL.fare_history(origin, destination)
     if len(rows) < 50:
-        raise HTTPException(status_code=404, detail="Not enough observations for this route to forecast.")
+        raise HTTPException(status_code=404, detail=f"Not enough file observations for {origin}-{destination} to forecast; at least 50 valid fares are required.")
 
-    df = pd.DataFrame(rows)
-    df["days_to_departure"] = (pd.to_datetime(df["travel_date"]) - pd.to_datetime(df["booking_date"])).dt.days
-    df["stops"] = 0  # not tracked in the sqlite demo schema; see LIMITATIONS.md
-    df = build_features(df)
-    train, val = time_aware_split(df)
+    try:
+        df = pd.DataFrame(rows)
+        df["days_to_departure"] = pd.to_numeric(df["days_to_departure"], errors="coerce").fillna(0)
+        df["stops"] = pd.to_numeric(df["stops"], errors="coerce").fillna(0)
+        df = build_features(df)
+        train, val = time_aware_split(df)
+        if len(train) < 2 or len(val) < 2:
+            raise ValueError("not enough time-separated rows")
 
-    X_train, y_train = train[FEATURES], train["total_fare"]
-    X_val, y_val = val[FEATURES], val["total_fare"]
+        X_train, y_train = train[FEATURES], train["total_fare"]
+        X_val, y_val = val[FEATURES], val["total_fare"]
 
-    lr_metrics = evaluate_model(LinearRegression(), X_train, y_train, X_val, y_val)
-    rf_model = RandomForestRegressor(n_estimators=200, max_depth=8, random_state=42)
-    rf_metrics = evaluate_model(rf_model, X_train, y_train, X_val, y_val)
+        lr_metrics = evaluate_model(LinearRegression(), X_train, y_train, X_val, y_val)
+        rf_model = RandomForestRegressor(n_estimators=200, max_depth=8, random_state=42)
+        rf_metrics = evaluate_model(rf_model, X_train, y_train, X_val, y_val)
 
-    best_name = "random_forest" if rf_metrics["mae"] < lr_metrics["mae"] else "linear_regression"
-    best_model = rf_model if best_name == "random_forest" else LinearRegression().fit(X_train, y_train)
+        best_name = "random_forest" if rf_metrics["mae"] < lr_metrics["mae"] else "linear_regression"
+        best_model = rf_model if best_name == "random_forest" else LinearRegression().fit(X_train, y_train)
 
-    residual_std = float((y_val - best_model.predict(X_val)).std())
-    future_rows = pd.DataFrame([
-        {"days_to_departure": d, "stops": 0, "dow": 4, "month": 9, "is_holiday_window": 0}
-        for d in [3, 7, 14, 30]
-    ])
-    preds = best_model.predict(future_rows[FEATURES])
+        residual_std = float((y_val - best_model.predict(X_val)).std())
+        future_rows = pd.DataFrame([{"days_to_departure": d, "stops": 0, "dow": 4, "month": 9, "is_holiday_window": 0} for d in [3, 7, 14, 30]])
+        preds = best_model.predict(future_rows[FEATURES])
+    except Exception as exc:
+        logger.exception("Forecast failed for %s-%s", origin, destination)
+        raise HTTPException(status_code=422, detail=f"Forecast could not be computed for {origin}-{destination}: {exc}") from exc
 
     result = {
         "route": f"{origin}-{destination}",
@@ -858,5 +888,5 @@ def forecast(origin: str, destination: str):
         "disclaimer": DISCLAIMER + " Forecast is a supplementary ML signal, not part of the index itself.",
         "cached": False,
     }
-    sqlite_store.set_cached_forecast(SQLITE_DB_PATH, origin, destination, result)
+    FORECAST_CACHE[cache_key] = {"computed_at": datetime.now(timezone.utc).isoformat(), "payload": result}
     return result

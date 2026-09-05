@@ -10,7 +10,7 @@ The pipeline runs in this order:
 4. Daily representative fares are calculated per route and departure bucket using the median of valid observations.
 5. Route price relatives are compared with the base period.
 6. DGCA passenger weights aggregate route relatives into the national index.
-7. Route, airline, anomaly, alert, and revision records are persisted in SQLite.
+7. The clean adapter writes one compact, source/date JSON artifact only after all configured routes have usable observations.
 
 ## DGCA Basket
 
@@ -20,13 +20,18 @@ The expected missing-month behavior is explicit: `/api/dgca/status` returns `NOT
 
 ## Storage
 
-The local path is `database/sqlite_store.py` and `database/airfare_demo.db`. The PostgreSQL schema in `database/schema.sql` is the deployment target. Route and basket context are preserved so a future basket refresh does not rewrite historical observations.
+Raw audit data stays in `data/raw_airfare/<source>/YYYY-MM-DD/`. The clean
+publication layer writes `data/clean_airfare/<source>/DDMMYYYY.json` with
+schema version, validation metadata, route summaries, lead windows, airline
+identity, fare, and `number_of_stops`. The dashboard reads clean files first
+and uses raw files only as a temporary fallback before adaptation. SQLite is
+not used by the current dashboard or worker path.
 
 ## Useful Commands
 
 ```powershell
 $env:PYTHONPATH = "."
 python scripts/build_route_basket.py --help
-python scripts/run_pipeline_demo.py --start 2026-01-01 --end 2026-08-24 --seed 42
-python -c "from database import sqlite_store; print(sqlite_store.get_current_index('database/airfare_demo.db'))"
+python -m scraper.ota.ixigo_holiday
+python -m compileall -q backend airfare scraper scripts
 ```

@@ -2,12 +2,8 @@
 Worker entrypoint: runs the scheduled daily airfare collection and monthly
 DGCA basket refresh using APScheduler.
 
-Wired to the real pipeline: each cycle calls
-scripts/run_pipeline_demo.run() to regenerate mock data and recompute the
-index/alerts/airline-index/revisions, exactly like a manual invocation of
-run_pipeline_demo.py would. In live mode, the source-adapter loop is still
-a documented TODO -- see scraper/airlines/indigo.py for why (pending
-robots.txt/ToS review).
+The dashboard is file-backed. A cycle validates and publishes a clean source
+file when the configured route basket is complete; it never writes SQLite.
 """
 import logging
 import os
@@ -19,7 +15,7 @@ from datetime import date, timedelta
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 logger = logging.getLogger("worker")
 
-MODE = os.getenv("MODE", "mock")
+MODE = os.getenv("MODE", "file")
 SCRAPE_HOUR = int(os.getenv("SCRAPE_HOUR", "6"))
 SCRAPE_MINUTE = int(os.getenv("SCRAPE_MINUTE", "0"))
 COMPAREFLIGHTS_SCRAPE_HOUR = int(os.getenv("COMPAREFLIGHTS_SCRAPE_HOUR", str(SCRAPE_HOUR)))
@@ -28,8 +24,6 @@ IXIGO_SCRAPE_HOUR = int(os.getenv("IXIGO_SCRAPE_HOUR", "6"))
 IXIGO_SCRAPE_MINUTE = int(os.getenv("IXIGO_SCRAPE_MINUTE", "30"))
 MAX_RETRIES = int(os.getenv("SCRAPE_MAX_RETRIES", "3"))
 BACKOFF_BASE = int(os.getenv("SCRAPE_BACKOFF_BASE_SECONDS", "5"))
-SQLITE_DB_PATH = os.getenv("SQLITE_DB_PATH", "database/airfare_demo.db")
-MOCK_SEED = int(os.getenv("MOCK_SEED", "42"))
 DGCA_CHECK_HOUR = int(os.getenv("DGCA_CHECK_HOUR", "9"))
 DGCA_CHECK_MINUTE = int(os.getenv("DGCA_CHECK_MINUTE", "30"))
 DGCA_TOP_N = int(os.getenv("DGCA_TOP_N", "50"))
@@ -63,49 +57,28 @@ def scheduled_routes():
 
 
 def run_collection_cycle():
-    """One full cycle: collect -> validate -> store -> recompute index."""
+    """Validate the latest OTA run and publish a clean file when complete."""
     logger.info("Starting collection cycle (mode=%s)", MODE)
     logger.info("CompareFlights route scope: top %d pairs -> %d directed routes.", DAILY_ROUTE_PAIRS, len(scheduled_routes()))
-
-    for attempt in range(1, MAX_RETRIES + 1):
-        try:
-            if MODE == "mock":
-                logger.info("Mock mode: running the real pipeline (scripts/run_pipeline_demo.run).")
-                from scripts.run_pipeline_demo import run as run_pipeline
-                # Re-runs the deterministic generator + full pipeline through today.
-                # In a real deployment this would be replaced by an incremental
-                # append of only the latest interval's observations rather than
-                # a full regeneration -- documented simplification for the demo.
-                run_pipeline(date(2026, 1, 1), date.today(), MOCK_SEED, SQLITE_DB_PATH)
-            else:
-                logger.info("Live mode: invoking source adapters.")
-                # TODO(Phase 6): iterate enabled sources from `sources` table, call each adapter.
-                # Blocked on robots.txt/ToS review -- see scraper/airlines/indigo.py.
-                raise NotImplementedError(
-                    "Live mode has no cleared source adapters yet. Use MODE=mock."
-                )
-            logger.info("Collection cycle completed successfully.")
-            return
-        except Exception as exc:  # noqa: BLE001 - top-level cycle guard, logged not swallowed
-            wait = BACKOFF_BASE * (2 ** (attempt - 1))
-            logger.error("Cycle attempt %d/%d failed: %s", attempt, MAX_RETRIES, exc)
-            if attempt < MAX_RETRIES:
-                logger.info("Retrying in %ds (exponential backoff).", wait)
-                time.sleep(wait)
-            else:
-                logger.error("All retries exhausted. Marking source unavailable, "
-                              "preserving last valid observation, raising data-quality warning.")
-                try:
-                    from database.sqlite_store import get_conn, init_db
-                    init_db(SQLITE_DB_PATH)
-                    with get_conn(SQLITE_DB_PATH) as conn:
-                        conn.execute(
-                            "INSERT OR REPLACE INTO sources (name, status, last_success) "
-                            "VALUES (?, 'OFFLINE', (SELECT last_success FROM sources WHERE name=?))",
-                            (MODE, MODE),
-                        )
-                except Exception:  # noqa: BLE001 - best-effort status write, never crash the worker on this
-                    logger.exception("Could not persist source-offline status.")
+    from airfare.sources.clean_adapter import CleanDataValidationError, CleanSourceAdapter
+    from airfare.sources.run_adapter import SourceRunAdapter
+    raw = SourceRunAdapter()
+    clean = CleanSourceAdapter(raw)
+    dates = raw.run_dates("compareflights")
+    if not dates:
+        logger.warning("No CompareFlights date-partitioned run is available.")
+        return
+    run_date = dates[-1]
+    expected = [f"{route.origin}-{route.destination}" for route in scheduled_routes()]
+    validation = clean.validate("compareflights", run_date, expected)
+    if not validation["valid"]:
+        logger.warning("Clean adaptation rejected for %s: %s", run_date, validation["message"])
+        return
+    try:
+        result = clean.build("compareflights", run_date, expected)
+        logger.info("Clean adaptation completed: %s", result["path"])
+    except CleanDataValidationError as exc:
+        logger.warning("Clean adaptation rejected: %s", exc)
 
 
 def run_ixigo_collection_cycle():
