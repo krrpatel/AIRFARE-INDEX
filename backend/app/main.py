@@ -35,6 +35,7 @@ DGCA_TOP_N = int(os.getenv("DGCA_TOP_N", "50"))
 DGCA_DIRECTION_MODE = os.getenv("DGCA_DIRECTION_MODE", "bidirectional")
 SCRAPE_JOBS: dict[str, dict] = {}
 SCRAPE_LOCK = threading.Lock()
+ROUTE_DETAIL_CACHE: dict[tuple[str, str, str], dict] = {}
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 SCRAPER_CONFIG_PATH = os.path.join(PROJECT_ROOT, "data", "runtime", "scraper_config.json")
 DEFAULT_SCRAPER_CONFIG = {"daily_route_pairs": 20, "compareflights_time": "06:00", "ixigo_time": "06:30", "direction_mode": "bidirectional", "ixigo_driver": "chromium", "ixigo_headless": False, "ixigo_route_delay_seconds": 3, "ixigo_retry_count": 2, "ixigo_viewport_width": 1920, "ixigo_viewport_height": 1080}
@@ -148,6 +149,10 @@ def route_detail(origin: str, destination: str):
         require_domestic_route(origin, destination)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+    adapter = CompareFlightsOfflineAdapter()
+    cache_key = (origin.upper(), destination.upper(), adapter._run_dir().name)
+    if cache_key in ROUTE_DETAIL_CACHE:
+        return ROUTE_DETAIL_CACHE[cache_key]
     detail = sqlite_store.get_route_detail(SQLITE_DB_PATH, origin.upper(), destination.upper())
     if detail is None:
         basket_route = next(
@@ -158,7 +163,6 @@ def route_detail(origin: str, destination: str):
         if basket_route is None:
             raise HTTPException(status_code=404, detail=f"Route {origin}-{destination} not found in basket.")
         detail = {"label": basket_route.label, "history": []}
-    adapter = CompareFlightsOfflineAdapter()
     imported = [
         record for record in adapter.iter_all_records()
         if record.origin == origin.upper() and record.destination == destination.upper()
@@ -234,6 +238,7 @@ def route_detail(origin: str, destination: str):
         for record in sorted(imported, key=lambda item: item.components.total_payable_fare or item.components.offered_fare or float("inf"))[:100]
     ]
     detail["disclaimer"] = DISCLAIMER
+    ROUTE_DETAIL_CACHE[cache_key] = detail
     return detail
 
 
