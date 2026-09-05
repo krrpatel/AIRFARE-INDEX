@@ -11,7 +11,8 @@ The dashboard is a Next.js App Router application. Recharts provides responsive 
 - Airlines: sortable airline summary, weekly source overview, and configurable Top N route mix.
 - Analytics: fare distribution, route ranking, cheapest/highest sectors, and seasonality.
 - India Map: geographic route and airport inspection.
-- Settings: DGCA cycle, daily source schedule, route scope, source links, and background job status.
+- Settings: DGCA cycle, daily source schedule, shared driver limit, per-source browser visibility, source links, and background job status.
+- Source data: choose an available source/date snapshot, inspect normalized observations, and export the complete selected snapshot as CSV.
 
 ## Data Loading
 

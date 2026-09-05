@@ -22,6 +22,7 @@ export default function RootLayout({ children }) {
             <a href="/airlines">Airlines</a>
             <a href="/map">India Map</a>
             <a href="/analytics">Analytics</a>
+            <a href="/data">Source data</a>
             <a href="/settings">Settings</a>
           </div>
         </nav>

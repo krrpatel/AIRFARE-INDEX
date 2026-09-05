@@ -183,6 +183,16 @@ table {
   background: white;
 }
 
+.table-scroll {
+  overflow: auto;
+  max-height: 560px;
+  border: 1px solid var(--line);
+}
+
+.table-scroll table {
+  min-width: 980px;
+}
+
 tbody tr:hover { background: #f1f7fb; }
 button, select, input { border-radius: 6px; }
 button { background: var(--gov-blue); color: white; border-color: var(--gov-blue); font-weight: 700; }

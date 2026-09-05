@@ -65,6 +65,12 @@ Total/valid/suspicious observation counts and anomaly count.
 ## `GET /api/source-health`
 Per-source status (ONLINE/DEGRADED/OFFLINE, last successful run).
 
+## `GET /api/source-data/dates`
+Returns available date-partitioned runs for the `compareflights` and `ixigo` source adapters.
+
+## `GET /api/source-data?source=ixigo&run_date=YYYY-MM-DD`
+Returns normalized, paginated source rows for the selected date. Use a larger `limit` for a complete CSV export. The adapter presents legacy Ixigo window files and the current merged route files through the same response shape.
+
 ## `GET /api/anomalies?limit=50`
 Most recent flagged anomalies (route, date, detection method) — flags,
 never deletions, per docs/METHODOLOGY.md §8.

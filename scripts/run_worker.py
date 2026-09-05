@@ -13,6 +13,7 @@ import logging
 import os
 import json
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, timedelta
 
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
@@ -37,6 +38,8 @@ DAILY_ROUTE_PAIRS = int(os.getenv("DAILY_ROUTE_PAIRS", "20"))
 DAILY_DIRECTION_MODE = os.getenv("DGCA_DIRECTION_MODE", "bidirectional")
 IXIGO_DRIVER = os.getenv("IXIGO_DRIVER", "chromium")
 IXIGO_HEADLESS = os.getenv("IXIGO_HEADLESS", "0").lower() in {"1", "true", "yes"}
+SCRAPER_DRIVER_COUNT = int(os.getenv("SCRAPER_DRIVER_COUNT", "4"))
+IXIGO_LEAD_DAYS = [1, 7, 15, 30, 45]
 RUNTIME_CONFIG_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "runtime", "scraper_config.json")
 
 try:
@@ -46,6 +49,8 @@ try:
     DAILY_DIRECTION_MODE = _runtime.get("direction_mode", DAILY_DIRECTION_MODE)
     IXIGO_DRIVER = _runtime.get("ixigo_driver", IXIGO_DRIVER)
     IXIGO_HEADLESS = bool(_runtime.get("ixigo_headless", IXIGO_HEADLESS))
+    SCRAPER_DRIVER_COUNT = max(1, min(16, int(_runtime.get("scraper_driver_count", SCRAPER_DRIVER_COUNT))))
+    IXIGO_LEAD_DAYS = sorted({int(value) for value in _runtime.get("ixigo_lead_days", IXIGO_LEAD_DAYS) if int(value) > 0}) or [1]
     COMPAREFLIGHTS_SCRAPE_HOUR, COMPAREFLIGHTS_SCRAPE_MINUTE = (int(value) for value in _runtime.get("compareflights_time", f"{COMPAREFLIGHTS_SCRAPE_HOUR:02d}:{COMPAREFLIGHTS_SCRAPE_MINUTE:02d}").split(":", 1))
     IXIGO_SCRAPE_HOUR, IXIGO_SCRAPE_MINUTE = (int(value) for value in _runtime.get("ixigo_time", f"{IXIGO_SCRAPE_HOUR:02d}:{IXIGO_SCRAPE_MINUTE:02d}").split(":", 1))
 except (OSError, ValueError, TypeError):
@@ -104,22 +109,54 @@ def run_collection_cycle():
 
 
 def run_ixigo_collection_cycle():
-    """Run the Ixigo route queue independently from the CompareFlights job."""
+    """Run Ixigo's date/route/lead-window queue independently."""
     routes = scheduled_routes()
-    logger.info("Starting Ixigo collection: top %d pairs -> %d directed routes.", DAILY_ROUTE_PAIRS, len(routes))
+    logger.info("Starting Ixigo collection: top %d pairs -> %d directed routes x %s.", DAILY_ROUTE_PAIRS, len(routes), IXIGO_LEAD_DAYS)
     if MODE != "live":
         logger.info("MODE=%s: Ixigo queue validated; live browser collection is disabled in non-live mode.", MODE)
         return
-    from scraper.ota.ixigo import collect_route
+    from scraper.ota.ixigo import collect_route, consolidate_legacy_run, save_route_result
     from datetime import timedelta
-    travel_date = (date.today() + timedelta(days=1)).strftime("%d%m%Y")
     import asyncio
-    for route in routes:
+    run_date = date.today().isoformat()
+    consolidate_legacy_run(run_date)
+    output_root = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "raw_airfare", "ixigo", run_date)
+
+    def window_completed(route, lead_days):
+        path = os.path.join(output_root, f"{route.origin}-{route.destination}.json")
         try:
-            result = asyncio.run(collect_route(route.origin, route.destination, travel_date, headless=IXIGO_HEADLESS, browser_engine=IXIGO_DRIVER))
-            logger.info("Ixigo %s-%s: %s observations=%s", route.origin, route.destination, result["status"], result["observation_count"])
-        except Exception:
-            logger.exception("Ixigo collection failed for %s-%s", route.origin, route.destination)
+            with open(path, encoding="utf-8") as result_file:
+                payload = json.load(result_file)
+            return payload.get("lead_windows", {}).get(f"T+{lead_days}", {}).get("status") == "SUCCESS"
+        except (OSError, ValueError, TypeError):
+            return False
+
+    tasks = [(route, days) for route in routes for days in IXIGO_LEAD_DAYS if not window_completed(route, days)]
+    logger.info("Ixigo resume check: %d windows already complete; %d remain.", len(routes) * len(IXIGO_LEAD_DAYS) - len(tasks), len(tasks))
+
+    def collect_task(task):
+        route, lead_days = task
+        result = None
+        travel_date = (date.today() + timedelta(days=lead_days)).strftime("%d%m%Y")
+        for attempt in range(1, MAX_RETRIES + 1):
+            try:
+                result = asyncio.run(collect_route(route.origin, route.destination, travel_date, headless=IXIGO_HEADLESS, browser_engine=IXIGO_DRIVER))
+                result.update({"lead_days": lead_days, "lead_label": f"T+{lead_days}"})
+                save_route_result(result, run_date=run_date, suffix=f"T+{lead_days}")
+                if result.get("status") == "SUCCESS" or attempt == MAX_RETRIES:
+                    return route, lead_days, result
+            except Exception as exc:
+                result = {"route": f"{route.origin}-{route.destination}", "status": "SOURCE_ERROR", "reason": str(exc), "observation_count": 0}
+                if attempt == MAX_RETRIES:
+                    return route, lead_days, result
+            time.sleep(min(30, BACKOFF_BASE * (2 ** (attempt - 1))))
+        return route, lead_days, result or {"route": f"{route.origin}-{route.destination}", "status": "SOURCE_ERROR", "observation_count": 0}
+
+    with ThreadPoolExecutor(max_workers=SCRAPER_DRIVER_COUNT, thread_name_prefix="ixigo-driver") as pool:
+        futures = [pool.submit(collect_task, task) for task in tasks]
+        for future in as_completed(futures):
+            route, lead_days, result = future.result()
+            logger.info("Ixigo %s-%s %s: %s observations=%s", route.origin, route.destination, f"T+{lead_days}", result["status"], result.get("observation_count", 0))
 
 
 def run_dgca_route_basket_check():

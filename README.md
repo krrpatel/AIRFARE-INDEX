@@ -72,16 +72,16 @@ npm run start
 
 ## Scraper Setup
 
-The active local OTA source is the normalized CompareFlights import. Ixigo collection is implemented as a permission-aware Playwright stream collector. Install its optional browser dependency only when running Ixigo:
+The active local OTA source is the normalized CompareFlights import. Ixigo collection is implemented as a permission-aware Selenium Chromium stream collector. Install its scraper dependencies only when running Ixigo:
 
 ```powershell
 pip install -r requirements-scrapers.txt
 Install Chrome or Chromium on the VPS and ensure it is available on `PATH`.
 ```
 
-Ixigo uses the same Selenium Chromium/CDP capture path as CompareFlights and defaults to headless mode. Set `ixigo_headless` to `false` only for an explicitly attended diagnostic run. A source-side HTTP 403 or rate limit is recorded as `SOURCE_ERROR`, not as a false `NO_DATA` result.
+Ixigo uses Selenium Chromium/CDP capture. Each source has an independent `headless` setting in the dashboard: `true` hides its browser, while `false` opens a visible browser for diagnostics. A source-side HTTP 403 or rate limit is recorded as `SOURCE_ERROR`, not as a false `NO_DATA` result.
 
-VPS stability defaults are also stored in `data/runtime/scraper_config.json`: 1920x1080 viewport, one route at a time, a 3-second route delay, and two bounded retries. These settings reduce accidental request bursts; they do not bypass source access controls.
+VPS stability defaults are also stored in `data/runtime/scraper_config.json`: 1920x1080 viewport, a shared maximum parallel-driver count, a 3-second route delay, and two bounded retries. Ixigo writes one route file per date containing all T+ lead-time windows, plus a small date-level collection manifest. These settings reduce accidental request bursts; they do not bypass source access controls.
 
 Run the holiday calendar collector:
 

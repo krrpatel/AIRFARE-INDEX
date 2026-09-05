@@ -14,6 +14,7 @@ import asyncio
 import threading
 import time
 import json
+import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import uuid
 from datetime import date
@@ -27,6 +28,7 @@ from database import sqlite_store
 from airfare.airports.registry import airport_coords, require_domestic_route
 from airfare.dgca.basket import load_basket_metadata, load_route_basket
 from airfare.sources.compareflights.offline_adapter import CompareFlightsOfflineAdapter
+from airfare.sources.run_adapter import SOURCE_LABELS, SourceRunAdapter
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("airfare_api")
@@ -41,14 +43,16 @@ ROUTE_DETAIL_CACHE: dict[tuple[str, str, str], dict] = {}
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 SCRAPE_STATUS_PATH = os.path.join(PROJECT_ROOT, "data", "runtime", "status.json")
 SCRAPER_CONFIG_PATH = os.path.join(PROJECT_ROOT, "data", "runtime", "scraper_config.json")
-DEFAULT_SCRAPER_CONFIG = {"daily_route_pairs": 20, "compareflights_time": "06:00", "ixigo_time": "06:30", "direction_mode": "bidirectional", "ixigo_driver": "chromium", "ixigo_headless": False, "scraper_driver_count": 4, "compareflights_driver_count": 4, "ixigo_driver_count": 4, "ixigo_lead_days": [1, 7, 15, 30, 45], "ixigo_route_delay_seconds": 3, "ixigo_retry_count": 2, "ixigo_viewport_width": 1920, "ixigo_viewport_height": 1080}
+DEFAULT_SCRAPER_CONFIG = {"daily_route_pairs": 20, "compareflights_time": "06:00", "ixigo_time": "06:30", "direction_mode": "bidirectional", "ixigo_driver": "chromium", "compareflights_headless": False, "ixigo_headless": False, "scraper_driver_count": 4, "ixigo_lead_days": [1, 7, 15, 30, 45], "ixigo_route_delay_seconds": 3, "ixigo_retry_count": 2, "ixigo_viewport_width": 1920, "ixigo_viewport_height": 1080}
+SOURCE_RUN_ADAPTER = SourceRunAdapter()
+SOURCE_DATA_CACHE: dict[tuple[str, str], tuple[float, list[dict]]] = {}
 
 
 def _write_scrape_status(job: dict) -> None:
     os.makedirs(os.path.dirname(SCRAPE_STATUS_PATH), exist_ok=True)
     jobs = {}
     for job_id, current in SCRAPE_JOBS.items():
-        jobs[job_id] = {key: value for key, value in current.items() if key != "stop_event"}
+        jobs[job_id] = _safe_job(current)
     with open(SCRAPE_STATUS_PATH, "w", encoding="utf-8") as handle:
         json.dump({"updated_at": __import__("datetime").datetime.now().astimezone().isoformat(timespec="seconds"), "jobs": jobs}, handle, indent=2)
 
@@ -65,10 +69,10 @@ def _driver_budget(source: str) -> int:
     config = _scraper_config()
     total = max(1, int(config.get("scraper_driver_count", 4)))
     with SCRAPE_LOCK:
-        active_sources = {job.get("source") for job in SCRAPE_JOBS.values() if job.get("status") in {"QUEUED", "RUNNING"}}
+        active_sources = {job.get("source") for job in SCRAPE_JOBS.values() if job.get("status") in {"QUEUED", "RUNNING", "STOPPING"}}
     if len(active_sources) > 1:
         return max(1, total // 2)
-    return max(1, int(config.get(f"{source}_driver_count", total)))
+    return total
 
 
 def _active_job(source: str):
@@ -77,6 +81,10 @@ def _active_job(source: str):
 
 def _now() -> str:
     return __import__("datetime").datetime.now().astimezone().isoformat(timespec="seconds")
+
+
+def _safe_job(job: dict) -> dict:
+    return {key: value for key, value in job.items() if key != "stop_event"}
 
 
 def _previous_tasks(source: str, scrape_date: str) -> dict:
@@ -96,7 +104,10 @@ def _scraper_config() -> dict:
     try:
         with open(SCRAPER_CONFIG_PATH, encoding="utf-8") as handle:
             saved = __import__("json").load(handle)
-        return {**DEFAULT_SCRAPER_CONFIG, **saved}
+        config = {**DEFAULT_SCRAPER_CONFIG, **saved}
+        config.pop("compareflights_driver_count", None)
+        config.pop("ixigo_driver_count", None)
+        return config
     except (OSError, ValueError):
         return dict(DEFAULT_SCRAPER_CONFIG)
 
@@ -307,18 +318,27 @@ def source_health():
         for job in SCRAPE_JOBS.values():
             source_key = "ixigo" if job.get("source") == "Ixigo OTA" else "compareflights" if job.get("source") == "CompareFlights OTA" else None
             if source_key and (source_key not in latest_jobs or job.get("created_at", "") > latest_jobs[source_key].get("created_at", "")):
-                latest_jobs[source_key] = dict(job)
+                latest_jobs[source_key] = _safe_job(job)
+    try:
+        with open(SCRAPE_STATUS_PATH, encoding="utf-8") as handle:
+            persisted_jobs = json.load(handle).get("jobs", {})
+        for job in persisted_jobs.values():
+            source_key = "ixigo" if job.get("source") == "Ixigo OTA" else "compareflights" if job.get("source") == "CompareFlights OTA" else None
+            if source_key and (source_key not in latest_jobs or job.get("created_at", "") > latest_jobs[source_key].get("created_at", "")):
+                latest_jobs[source_key] = _safe_job(job)
+    except (OSError, ValueError, TypeError):
+        pass
     for name, label, url in [("compareflights", "CompareFlights OTA", "https://compareflights.co.in"), ("ixigo", "Ixigo OTA", "https://www.ixigo.com"), ("ixigo_holiday", "Ixigo holiday calendar", "https://www.ixigo.com/growth/api/v1/holidayCalendar")]:
         if name not in known:
             sources.append({"name": name, "label": label, "status": "CONFIGURED" if name != "ixigo_holiday" else "ONLINE", "source_url": url, "last_success": None})
         job = latest_jobs.get(name)
         if job:
             entry = next(item for item in sources if item["name"] == name)
-            route_statuses = [str(item.get("status")) for item in job.get("routes", [])]
+            route_statuses = [str(item.get("status")) for item in (job.get("tasks") or job.get("routes", []))]
             success_count = sum(status == "SUCCESS" for status in route_statuses)
             error_count = sum(status == "SOURCE_ERROR" for status in route_statuses)
             source_status = "ONLINE" if success_count else "SOURCE_ERROR" if error_count else job.get("status", "UNKNOWN")
-            entry.update({"status": source_status, "job_status": job.get("status", "UNKNOWN"), "job_id": job.get("job_id"), "last_run": job.get("created_at"), "last_success": job.get("finished_at") if success_count else entry.get("last_success"), "completed_routes": job.get("completed_routes", 0), "total_routes": job.get("total_routes", 0), "successful_routes": success_count, "source_errors": error_count})
+            entry.update({"status": source_status, "job_status": job.get("status", "UNKNOWN"), "job_id": job.get("job_id"), "last_run": job.get("created_at"), "last_success": job.get("finished_at") if success_count else entry.get("last_success"), "completed_routes": job.get("completed_routes", 0), "total_routes": job.get("total_tasks", job.get("total_routes", 0)), "successful_routes": success_count, "source_errors": error_count, "headless": job.get("headless", False), "driver_count": job.get("driver_count", 0)})
     return sources
 
 
@@ -332,6 +352,8 @@ def scraper_config():
 @app.put("/api/scraper-config")
 def update_scraper_config(payload: dict = Body(...)):
     config = {**_scraper_config(), **payload}
+    config.pop("compareflights_driver_count", None)
+    config.pop("ixigo_driver_count", None)
     config["daily_route_pairs"] = max(1, min(100, int(config["daily_route_pairs"])))
     if config["direction_mode"] not in {"bidirectional", "unidirectional", "merged"}:
         raise HTTPException(status_code=400, detail="Invalid direction mode")
@@ -340,8 +362,8 @@ def update_scraper_config(payload: dict = Body(...)):
     config["ixigo_route_delay_seconds"] = max(0, min(60, int(config.get("ixigo_route_delay_seconds", 3))))
     config["ixigo_retry_count"] = max(0, min(5, int(config.get("ixigo_retry_count", 2))))
     config["scraper_driver_count"] = max(1, min(16, int(config.get("scraper_driver_count", 4))))
-    config["compareflights_driver_count"] = max(1, min(16, int(config.get("compareflights_driver_count", config["scraper_driver_count"]))))
-    config["ixigo_driver_count"] = max(1, min(16, int(config.get("ixigo_driver_count", config["scraper_driver_count"]))))
+    config["compareflights_headless"] = bool(config.get("compareflights_headless", False))
+    config["ixigo_headless"] = bool(config.get("ixigo_headless", False))
     config["ixigo_lead_days"] = sorted({int(value) for value in config.get("ixigo_lead_days", [1, 7, 15, 30, 45]) if int(value) > 0}) or [1]
     config["ixigo_viewport_width"] = max(1280, min(3840, int(config.get("ixigo_viewport_width", 1920))))
     config["ixigo_viewport_height"] = max(720, min(2160, int(config.get("ixigo_viewport_height", 1080))))
@@ -359,6 +381,7 @@ def _run_ota_job(job_id: str) -> None:
         for record in records:
             route_groups[f"{record.origin}-{record.destination}"].append(record)
         configured = [f"{item.origin}-{item.destination}" for item in _source_routes()]
+        SOURCE_RUN_ADAPTER.write_manifest("compareflights", SCRAPE_JOBS[job_id]["run_date"])
         with SCRAPE_LOCK:
             SCRAPE_JOBS[job_id].update({"total_routes": len(configured), "completed_routes": 0, "record_count": len(records), "available_count": sum(r.availability_status == "AVAILABLE" for r in records), "routes": [{"route": route, "status": "QUEUED", "record_count": len(route_groups.get(route, [])), "available_count": sum(r.availability_status == "AVAILABLE" for r in route_groups.get(route, [])), "started_at": None, "completed_at": None} for route in configured]})
             _write_scrape_status(SCRAPE_JOBS[job_id])
@@ -404,7 +427,8 @@ def run_source_scrape(source_name: str):
             return {"job_id": active["job_id"], "status": active["status"], "message": "An OTA collection is already running."}
         job_id = uuid.uuid4().hex
         latest_run = CompareFlightsOfflineAdapter()._run_dir().name
-        SCRAPE_JOBS[job_id] = {"job_id": job_id, "source": "CompareFlights OTA", "run_date": latest_run, "scrape_date": date.today().isoformat(), "status": "QUEUED", "created_at": _now(), "started_at": _now(), "driver_count": _driver_budget("compareflights"), "total_routes": 0, "completed_routes": 0, "routes": [], "stop_event": threading.Event()}
+        config = _scraper_config()
+        SCRAPE_JOBS[job_id] = {"job_id": job_id, "source": "CompareFlights OTA", "run_date": latest_run, "scrape_date": date.today().isoformat(), "status": "QUEUED", "created_at": _now(), "started_at": _now(), "headless": bool(config.get("compareflights_headless", False)), "driver_count": _driver_budget("compareflights"), "total_routes": 0, "completed_routes": 0, "routes": [], "stop_event": threading.Event()}
         _write_scrape_status(SCRAPE_JOBS[job_id])
     threading.Thread(target=_run_ota_job, args=(job_id,), daemon=True).start()
     return {"job_id": job_id, "source": "CompareFlights OTA", "status": "QUEUED", "message": "OTA collection started in the background."}
@@ -430,6 +454,7 @@ def _run_ixigo_task(job_id: str, task: dict, config: dict) -> None:
         item["attempts"] = attempt
         try:
             result = asyncio.run(collect_route(task["origin"], task["destination"], task["travel_date"], headless=bool(config.get("ixigo_headless", False)), browser_engine="chromium", viewport=(int(config.get("ixigo_viewport_width", 1920)), int(config.get("ixigo_viewport_height", 1080)))))
+            result.update({"lead_days": task["lead_days"], "lead_label": task["lead_label"], "travel_date": f"{task['travel_date'][4:8]}-{task['travel_date'][2:4]}-{task['travel_date'][:2]}"})
             save_route_result(result, run_date=job["scrape_date"], suffix=task["lead_label"])
             if result.get("status") == "SUCCESS" or attempt == max_attempts:
                 break
@@ -450,10 +475,12 @@ def _run_ixigo_task(job_id: str, task: dict, config: dict) -> None:
 def _run_ixigo_job(job_id: str) -> None:
     try:
         from datetime import date, timedelta
+        from scraper.ota.ixigo import consolidate_legacy_run
         config = _scraper_config()
         routes = _source_routes()
         lead_days = sorted({int(value) for value in config.get("ixigo_lead_days", [1, 7, 15, 30, 45]) if int(value) > 0}) or [1]
         scrape_date = SCRAPE_JOBS[job_id]["scrape_date"]
+        consolidate_legacy_run(scrape_date)
         tasks = []
         for route in routes:
             for days in lead_days:
@@ -466,7 +493,11 @@ def _run_ixigo_job(job_id: str) -> None:
             elif prior and int(prior.get("attempts", 0)) < max(1, int(config.get("ixigo_retry_count", 2)) + 1):
                 task.update({"attempts": int(prior.get("attempts", 0)), "reason": "Resuming incomplete task from previous run"})
         with SCRAPE_LOCK:
-            SCRAPE_JOBS[job_id].update({"status": "RUNNING", "lead_days": lead_days, "driver_count": _driver_budget("ixigo"), "total_routes": len(routes), "total_tasks": len(tasks), "completed_routes": 0, "completed_tasks": 0, "record_count": 0, "available_count": 0, "tasks": tasks, "routes": tasks})
+            completed_tasks = sum(row.get("status") in {"SUCCESS", "NO_DATA", "SOURCE_ERROR", "STOPPED"} for row in tasks)
+            record_count = sum(int(row.get("record_count", 0)) for row in tasks)
+            available_count = sum(int(row.get("available_count", 0)) for row in tasks)
+            completed_routes = len({row["route"] for row in tasks if row.get("status") in {"SUCCESS", "NO_DATA", "SOURCE_ERROR", "STOPPED"}})
+            SCRAPE_JOBS[job_id].update({"status": "RUNNING", "lead_days": lead_days, "headless": bool(config.get("ixigo_headless", False)), "driver_count": _driver_budget("ixigo"), "total_routes": len(routes), "total_tasks": len(tasks), "completed_routes": completed_routes, "completed_tasks": completed_tasks, "record_count": record_count, "available_count": available_count, "tasks": tasks, "routes": tasks})
             _write_scrape_status(SCRAPE_JOBS[job_id])
         workers = max(1, int(SCRAPE_JOBS[job_id]["driver_count"]))
         with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="ixigo-driver") as pool:
@@ -475,7 +506,10 @@ def _run_ixigo_job(job_id: str) -> None:
                 future.result()
         with SCRAPE_LOCK:
             job = SCRAPE_JOBS[job_id]
-            job["completed_routes"] = len({row["route"] for row in job["tasks"] if row.get("status") in {"SUCCESS", "NO_DATA", "SOURCE_ERROR"}})
+            job["completed_tasks"] = sum(row.get("status") in {"SUCCESS", "NO_DATA", "SOURCE_ERROR", "STOPPED"} for row in job["tasks"])
+            job["record_count"] = sum(int(row.get("record_count", 0)) for row in job["tasks"])
+            job["available_count"] = sum(int(row.get("available_count", 0)) for row in job["tasks"])
+            job["completed_routes"] = len({row["route"] for row in job["tasks"] if row.get("status") in {"SUCCESS", "NO_DATA", "SOURCE_ERROR", "STOPPED"}})
             job.update({"status": "STOPPED" if job["stop_event"].is_set() else "COMPLETED", "finished_at": _now()})
             _write_scrape_status(job)
     except Exception as exc:
@@ -490,7 +524,8 @@ def run_ixigo_scrape():
         active = _active_job("Ixigo OTA")
         if active: return {"job_id": active["job_id"], "status": active["status"], "message": "Ixigo collection is already running."}
         job_id = uuid.uuid4().hex
-        SCRAPE_JOBS[job_id] = {"job_id": job_id, "source": "Ixigo OTA", "scrape_date": date.today().isoformat(), "status": "QUEUED", "created_at": _now(), "started_at": _now(), "driver_count": 0, "total_routes": 0, "total_tasks": 0, "completed_routes": 0, "completed_tasks": 0, "record_count": 0, "available_count": 0, "tasks": [], "routes": [], "stop_event": threading.Event()}
+        config = _scraper_config()
+        SCRAPE_JOBS[job_id] = {"job_id": job_id, "source": "Ixigo OTA", "scrape_date": date.today().isoformat(), "status": "QUEUED", "created_at": _now(), "started_at": _now(), "headless": bool(config.get("ixigo_headless", False)), "driver_count": 0, "total_routes": 0, "total_tasks": 0, "completed_routes": 0, "completed_tasks": 0, "record_count": 0, "available_count": 0, "tasks": [], "routes": [], "stop_event": threading.Event()}
         _write_scrape_status(SCRAPE_JOBS[job_id])
     threading.Thread(target=_run_ixigo_job, args=(job_id,), daemon=True).start()
     return {"job_id": job_id, "source": "Ixigo OTA", "status": "QUEUED", "message": "Ixigo collection started in the background."}
@@ -508,7 +543,7 @@ def scrape_status(job_id: str):
                 job = None
         if not job:
             raise HTTPException(status_code=404, detail="Scrape job not found or expired.")
-        return dict(job)
+        return _safe_job(job)
 
 
 @app.post("/api/scrape/stop/{job_id}")
@@ -524,7 +559,52 @@ def stop_scrape(job_id: str):
             if task.get("status") == "QUEUED":
                 task.update({"status": "STOPPED", "completed_at": _now(), "reason": "Stopped by operator"})
         _write_scrape_status(job)
-        return {key: value for key, value in job.items() if key != "stop_event"}
+        return _safe_job(job)
+
+
+def _source_run_signature(source: str, run_date: str) -> float:
+    run_dir = SOURCE_RUN_ADAPTER.root / source / run_date
+    files = list(run_dir.glob("*.json")) if run_dir.exists() else []
+    return max((path.stat().st_mtime for path in files), default=0.0)
+
+
+@app.get("/api/source-data/dates")
+def source_data_dates(source: str | None = Query(None)):
+    names = [source.lower()] if source else list(SOURCE_LABELS)
+    unknown = [name for name in names if name not in SOURCE_LABELS]
+    if unknown:
+        raise HTTPException(status_code=400, detail=f"Unsupported source: {unknown[0]}")
+    output = []
+    for name in names:
+        dates = []
+        for run_date in reversed(SOURCE_RUN_ADAPTER.run_dates(name)):
+            manifest = SOURCE_RUN_ADAPTER.manifest(name, run_date)
+            run_dir = SOURCE_RUN_ADAPTER.root / name / run_date
+            collection = run_dir / "collection.json"
+            dates.append({"run_date": run_date, "label": run_date, "file": str(collection.relative_to(SOURCE_RUN_ADAPTER.root.parent.parent)) if collection.exists() else None, "file_count": manifest.get("file_count", 0), "format": manifest.get("format", "route-files")})
+        output.append({"source": name, "label": SOURCE_LABELS[name], "dates": dates})
+    return {"sources": output}
+
+
+@app.get("/api/source-data")
+def source_data(source: str = Query(...), run_date: str = Query(...), offset: int = Query(0, ge=0), limit: int = Query(1000, ge=1, le=200000)):
+    source = source.lower()
+    if source not in SOURCE_LABELS:
+        raise HTTPException(status_code=400, detail=f"Unsupported source: {source}")
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", run_date) or run_date not in SOURCE_RUN_ADAPTER.run_dates(source):
+        raise HTTPException(status_code=404, detail=f"No {source} run found for {run_date}.")
+    key = (source, run_date)
+    signature = _source_run_signature(source, run_date)
+    cached = SOURCE_DATA_CACHE.get(key)
+    if not cached or cached[0] != signature:
+        try:
+            rows = SOURCE_RUN_ADAPTER.rows(source, run_date)
+        except (OSError, ValueError, KeyError) as exc:
+            raise HTTPException(status_code=500, detail=f"Could not read {source} data: {exc}") from exc
+        SOURCE_DATA_CACHE[key] = (signature, rows)
+    else:
+        rows = cached[1]
+    return {"source": source, "label": SOURCE_LABELS[source], "run_date": run_date, "total_rows": len(rows), "offset": offset, "limit": limit, "rows": rows[offset:offset + limit], "manifest": SOURCE_RUN_ADAPTER.manifest(source, run_date)}
 
 
 @app.get("/api/scrape-overview")

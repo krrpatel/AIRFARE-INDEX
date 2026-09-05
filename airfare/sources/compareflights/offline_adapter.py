@@ -55,7 +55,7 @@ class CompareFlightsOfflineAdapter(SourceAdapter):
     def iter_all_records(self) -> list[StandardFareRecord]:
         records: list[StandardFareRecord] = []
         for path in self._run_dir().glob("*.json"):
-            if path.name in {"summary.json", "completed_searches.json"}:
+            if path.name in {"summary.json", "completed_searches.json", "collection.json"}:
                 continue
             payload = json.loads(path.read_text(encoding="utf-8"))
             records.extend(records_from_route_payload(payload, path))

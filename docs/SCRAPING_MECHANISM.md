@@ -10,7 +10,7 @@ All source adapters normalize into the common dataclasses in `airfare/sources/ba
 
 ## Ixigo Airfare
 
-`scraper/ota/ixigo.py` opens an Ixigo search with Playwright, listens for the `/flights/v2/search/stream` response, parses JSON/SSE/concatenated frames, validates route segments, deduplicates observations, and writes JSON under `data/raw_airfare/ixigo/`. It does not bypass CAPTCHA, rotate identities, evade access controls, or fabricate fare components.
+`scraper/ota/ixigo.py` opens an Ixigo search with Selenium Chromium, listens for the `/flights/v2/search/stream` response, parses JSON/SSE/concatenated frames, validates route segments, deduplicates observations, and writes date-partitioned JSON under `data/raw_airfare/ixigo/`. All T+ windows for a route are upserted into one route file, with a small `collection.json` manifest for the date. It does not bypass CAPTCHA, rotate identities, evade access controls, or fabricate fare components.
 
 ## Ixigo Holidays
 
@@ -20,7 +20,7 @@ All source adapters normalize into the common dataclasses in `airfare/sources/ba
 
 The worker runs CompareFlights and Ixigo as separate APScheduler jobs. Their times are independent. `daily_route_pairs` is expanded through the DGCA basket: in bidirectional mode, Top 20 pairs becomes 40 directed searches for each source. The dashboard's Settings page writes the shared schedule file and displays the calculated count.
 
-Ixigo uses Playwright in forced headless mode. The configured engine can be Chromium, Firefox, or WebKit, provided that browser has been installed with Playwright. Stream responses are captured as bytes, parsed across JSON, concatenated JSON, and SSE envelopes, and validated against the requested origin and destination. HTTP failures and rate limits are reported as `SOURCE_ERROR`; an HTTP-success response with no matching journeys is reported as `NO_DATA`.
+Ixigo uses Selenium Chromium. The source-specific headless setting can be enabled for unattended runs or disabled for an attended diagnostic run. Stream responses are captured as bytes, parsed across JSON, concatenated JSON, and SSE envelopes, and validated against the requested origin and destination. HTTP failures and rate limits are reported as `SOURCE_ERROR`; an HTTP-success response with no matching journeys is reported as `NO_DATA`.
 
 ## Useful Commands
 
