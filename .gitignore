@@ -10,6 +10,10 @@ __pycache__/
 .env
 *.log
 data/runtime/ixigo_browser_profiles/
+data/runtime/status.json
+data/runtime/*.tmp
+data/raw_airfare/
+data/clean_airfare/*.tmp
 scraper/ota/__pycache__/
 ixigo_browser_profile/
 raw/

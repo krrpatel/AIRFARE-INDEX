@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import TrendChart from "./components/TrendChart";
+import BarChart from "./components/BarChart";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "/api/backend";
 
@@ -93,7 +94,7 @@ export default function Home() {
         <div className="panel">
           <h2>Observations</h2>
           <div className="metric">{dq?.total_observations?.toLocaleString() ?? "..."}</div>
-          <div className="muted">Valid plus flagged observations in local DB</div>
+          <div className="muted">Valid plus flagged observations in source files</div>
         </div>
         <div className="panel">
           <h2>DGCA Basket</h2>
@@ -131,12 +132,12 @@ export default function Home() {
           <p className="muted">Monitor freshness, source availability, observation coverage, quality events, and day-over-day route movement before publishing a series.</p>
           {alerts.length ? <table><thead><tr><th>Severity</th><th>Date</th><th>Alert</th></tr></thead><tbody>{alerts.map(a => <tr key={a.alert_id}><td>{a.severity}</td><td>{a.index_date}</td><td>{a.message}</td></tr>)}</tbody></table> : <p className="muted">No active alerts recorded.</p>}
           <h3 className="subheading">Source health</h3>
-          <table><thead><tr><th>Source</th><th>Status</th><th>Last success</th></tr></thead><tbody>{sourceHealth.map(source => <tr key={source.name}><td>{source.label || source.name}</td><td>{source.status}</td><td>{source.last_success || "Configured; no run recorded"}</td></tr>)}</tbody></table>
+          <table><thead><tr><th>Source</th><th>Status</th><th>Last success</th></tr></thead><tbody>{sourceHealth.map(source => <tr key={source.name}><td>{source.label || source.name}</td><td>{source.status}</td><td>{source.last_success || (source.today_scrape === "NO_SCRAPE_PERFORMED" ? "No scrape performed today" : "Configured; no run recorded")}</td></tr>)}</tbody></table>
         </div>
 
         <div className="panel wide">
           <h2>Route Movement Watch</h2>
-          {(movers?.top_increasing?.length || movers?.top_decreasing?.length) ? <table><thead><tr><th>Route</th><th>Current index</th><th>Change</th></tr></thead><tbody>{(movers?.top_increasing || []).slice(0, 5).map(r => <tr key={`up-${r.origin}-${r.destination}`}><td>{r.origin}-{r.destination}</td><td>{r.current_value?.toFixed(2) ?? "n/a"}</td><td className="positive">+{r.change_pct?.toFixed(2)}%</td></tr>)}{(movers?.top_decreasing || []).slice(0, 5).map(r => <tr key={`down-${r.origin}-${r.destination}`}><td>{r.origin}-{r.destination}</td><td>{r.current_value?.toFixed(2) ?? "n/a"}</td><td className="negative">{r.change_pct?.toFixed(2)}%</td></tr>)}</tbody></table> : <p className="muted">No data available.</p>}
+          {(movers?.top_increasing?.length || movers?.top_decreasing?.length) ? <><BarChart data={[...(movers?.top_increasing || []).slice(0, 5).map(r => ({ label: `↑ ${r.origin}-${r.destination}`, value: Math.abs(r.change_pct || 0) })), ...(movers?.top_decreasing || []).slice(0, 5).map(r => ({ label: `↓ ${r.origin}-${r.destination}`, value: Math.abs(r.change_pct || 0) }))]} valueLabel="Absolute index change (%)" /><table><thead><tr><th>Route</th><th>Current index</th><th>Change</th></tr></thead><tbody>{(movers?.top_increasing || []).slice(0, 5).map(r => <tr key={`up-${r.origin}-${r.destination}`}><td>{r.origin}-{r.destination}</td><td>{r.current_value?.toFixed(2) ?? "n/a"}</td><td className="positive">+{r.change_pct?.toFixed(2)}%</td></tr>)}{(movers?.top_decreasing || []).slice(0, 5).map(r => <tr key={`down-${r.origin}-${r.destination}`}><td>{r.origin}-{r.destination}</td><td>{r.current_value?.toFixed(2) ?? "n/a"}</td><td className="negative">{r.change_pct?.toFixed(2)}%</td></tr>)}</tbody></table></> : <p className="muted">No data available.</p>}
         </div>
         <div className="panel wide">
           <h2>Lead-Time Analysis</h2>

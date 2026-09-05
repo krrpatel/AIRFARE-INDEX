@@ -20,7 +20,7 @@
 | API (15 live endpoints) | `backend/app/main.py` + `database/sqlite_store.py`, all queried and confirmed returning real numbers |
 | Dashboard (4 pages) | National Overview, Route Explorer, Airline Analysis, India Route Map — all live-wired to the API |
 | Docker stack definition | `docker-compose.yml`, Dockerfiles, auto-generating entrypoint |
-| Documentation | METHODOLOGY, LIMITATIONS, ARCHITECTURE, API, SIH_DEMO_GUIDE, EVALUATOR_QA, this report |
+| Documentation | METHODOLOGY, LIMITATIONS, ARCHITECTURE, API, EVALUATOR_QA, this report |
 
 ## Incomplete features (explicitly out of scope given the time limit)
 - Real scraper adapters (all pending robots.txt/ToS review — needs
@@ -62,7 +62,7 @@
 1. Wire `/api/forecast`, build Route Explorer page — highest visual payoff.
 2. Get one real, ToS-cleared source live (even one OTA) — biggest
    credibility boost with evaluators.
-3. Write `docs/ARCHITECTURE.md`, `API.md`, `SIH_DEMO_GUIDE.md`,
-   evaluator Q&A doc — needed before presentation day, not before demo day.
+3. Keep `docs/ARCHITECTURE.md`, `API.md`, and the evaluator Q&A aligned with
+   the file-backed source workflow.
 4. Consolidate the DB layer once Postgres is reachable in your team's dev
    environment (it wasn't reachable in this build sandbox).

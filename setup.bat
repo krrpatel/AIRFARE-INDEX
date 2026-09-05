@@ -30,6 +30,10 @@ if exist "%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" set "CHROME_
 if exist "%LocalAppData%\Google\Chrome\Application\chrome.exe" set "CHROME_EXE=%LocalAppData%\Google\Chrome\Application\chrome.exe"
 if not defined CHROME_EXE if exist "%ProgramFiles%\Chromium\Application\chrome.exe" set "CHROME_EXE=%ProgramFiles%\Chromium\Application\chrome.exe"
 if not defined CHROME_EXE if exist "%LocalAppData%\Chromium\Application\chrome.exe" set "CHROME_EXE=%LocalAppData%\Chromium\Application\chrome.exe"
+if not defined CHROME_EXE if exist "%~dp0browser\chrome.exe" set "CHROME_EXE=%~dp0browser\chrome.exe"
+if not defined CHROME_EXE if exist "%~dp0browser\chrome-win\chrome.exe" set "CHROME_EXE=%~dp0browser\chrome-win\chrome.exe"
+if not defined CHROME_EXE if exist "%~dp0chromium\chrome.exe" set "CHROME_EXE=%~dp0chromium\chrome.exe"
+if not defined CHROME_EXE if exist "%~dp0chromium\chrome-win\chrome.exe" set "CHROME_EXE=%~dp0chromium\chrome-win\chrome.exe"
 if not defined CHROME_EXE for /f "delims=" %%C in ('where chrome 2^>nul') do if not defined CHROME_EXE set "CHROME_EXE=%%C"
 if not defined CHROME_EXE for /f "delims=" %%C in ('where chromium 2^>nul') do if not defined CHROME_EXE set "CHROME_EXE=%%C"
 if not defined CHROME_EXE (

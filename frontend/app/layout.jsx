@@ -7,8 +7,8 @@ import "./styles.css";
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <header className="topbar">
           <div className="topbar-inner">
             <div className="ministry">MoSPI research dashboard</div>
@@ -22,6 +22,7 @@ export default function RootLayout({ children }) {
             <a href="/airlines">Airlines</a>
             <a href="/map">India Map</a>
             <a href="/analytics">Analytics</a>
+            <a href="/data">Source data</a>
             <a href="/settings">Settings</a>
           </div>
         </nav>

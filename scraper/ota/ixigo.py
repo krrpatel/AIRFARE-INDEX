@@ -1,6 +1,6 @@
 """Permission-aware Ixigo airfare collector.
 
-This adapter captures the public Ixigo flight-search stream with Playwright,
+This adapter captures the public Ixigo flight-search stream with Selenium Chromium,
 normalizes the response into JSON, and never attempts CAPTCHA, IP, cookie, or
 robots.txt bypasses. Configure routes through ``IXIGO_ROUTES`` or the CLI.
 """
@@ -13,7 +13,8 @@ import re
 import time
 import os
 import shutil
-from datetime import date
+import threading
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -25,6 +26,8 @@ LEGACY_PROFILE = BASE_DIR.parent / "ixigo_browser_profile"
 PROFILE_ROOT = Path(os.getenv("IXIGO_PROFILE_DIR", str(LEGACY_PROFILE if LEGACY_PROFILE.exists() else BASE_DIR / "data" / "runtime" / "ixigo_browser_profiles")))
 STREAM_HINT = "/flights/v2/search/stream"
 CLASSES = {"e": "Economy", "w": "Premium Economy", "b": "Business"}
+AIRLINE_NAMES = {"6E": "IndiGo", "AI": "Air India", "IX": "Air India Express", "QP": "Akasa Air", "SG": "SpiceJet", "UK": "Vistara", "G8": "Go First"}
+OUTPUT_LOCK = threading.RLock()
 
 
 def parse_stream(text: str) -> list[Any]:
@@ -96,7 +99,10 @@ def extract_observations(frames: list[Any], origin: str, destination: str, trave
                     for part in keys.split("*"):
                         pieces = part.split("-")
                         if len(pieces) >= 4:
-                            segments.append({"origin": pieces[0], "destination": pieces[1], "flight_number": pieces[2], "travel_date": _iso(pieces[3])})
+                            flight_number = pieces[2]
+                            carrier_match = re.match(r"([A-Za-z0-9]{2})", flight_number)
+                            carrier_code = carrier_match.group(1).upper() if carrier_match else None
+                            segments.append({"origin": pieces[0], "destination": pieces[1], "flight_number": flight_number, "airline_code": carrier_code, "airline_name": AIRLINE_NAMES.get(carrier_code, carrier_code), "travel_date": _iso(pieces[3])})
                     if not segments or segments[0]["origin"] != origin or segments[-1]["destination"] != destination:
                         continue
                     for fare in flight_fare.get("fares") or []:
@@ -106,7 +112,8 @@ def extract_observations(frames: list[Any], origin: str, destination: str, trave
                             continue
                         metadata = fare.get("fareMetadata") or []
                         provider = metadata[0].get("providerId") if metadata and isinstance(metadata[0], dict) else None
-                        output.append({"source": "ixigo", "observed_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "origin": origin, "destination": destination, "travel_date": _iso(travel_date), "advance_purchase_days": None, "cabin_class": CLASSES.get(cabin, cabin), "airline_code": segments[0].get("airline_code"), "flight_number": "|".join(segment["flight_number"] for segment in segments), "stops": len(segments) - 1, "fare": {"amount": amount, "currency": "INR"}, "provider_id": provider, "fare_token_present": bool(details.get("fareToken")), "segments": segments})
+                        carrier_code = segments[0].get("airline_code")
+                        output.append({"source": "ixigo", "observed_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "origin": origin, "destination": destination, "travel_date": _iso(travel_date), "advance_purchase_days": None, "cabin_class": CLASSES.get(cabin, cabin), "airline_code": carrier_code, "airline_name": AIRLINE_NAMES.get(carrier_code, carrier_code), "flight_number": "|".join(segment["flight_number"] for segment in segments), "stops": len(segments) - 1, "number_of_stops": len(segments) - 1, "departure": None, "arrival": None, "duration_minutes": None, "fare": {"amount": amount, "currency": "INR"}, "provider_id": provider, "fare_token_present": bool(details.get("fareToken")), "segments": segments})
     unique = {}
     for row in output:
         key = (row["origin"], row["destination"], row["travel_date"], row["flight_number"], row["fare"]["amount"], row["cabin_class"])
@@ -137,6 +144,10 @@ def _collect_route_selenium(origin: str, destination: str, travel_date: str, cab
         os.path.expandvars(r"%LocalAppData%\Google\Chrome\Application\chrome.exe"),
         os.path.expandvars(r"%ProgramFiles%\Chromium\Application\chrome.exe"),
         os.path.expandvars(r"%LocalAppData%\Chromium\Application\chrome.exe"),
+        str(BASE_DIR / "browser" / "chrome.exe"),
+        str(BASE_DIR / "browser" / "chrome-win" / "chrome.exe"),
+        str(BASE_DIR / "chromium" / "chrome.exe"),
+        str(BASE_DIR / "chromium" / "chrome-win" / "chrome.exe"),
     ]
     browser_binary = next((path for path in candidates if path and Path(path).exists()), None)
     if browser_binary:
@@ -226,12 +237,75 @@ async def collect_route(origin: str, destination: str, travel_date: str, cabin: 
     return await asyncio.to_thread(_collect_route_selenium, origin, destination, travel_date, cabin, viewport, headless)
 
 
-def save_route_result(result: dict[str, Any], run_date: str | None = None) -> Path:
+def _atomic_json_write(path: Path, payload: dict[str, Any]) -> None:
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    temporary.replace(path)
+
+
+def save_route_result(result: dict[str, Any], run_date: str | None = None, suffix: str | None = None) -> Path:
+    """Upsert one lead-time result into one route file for the run date."""
     folder = OUTPUT_DIR / (run_date or date.today().isoformat())
     folder.mkdir(parents=True, exist_ok=True)
     path = folder / f"{result['route']}.json"
-    path.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
+    window = suffix or result.get("lead_label") or (f"T+{result['lead_days']}" if result.get("lead_days") is not None else "latest")
+    with OUTPUT_LOCK:
+        payload: dict[str, Any] = {"source": "ixigo", "route": result["route"], "run_date": run_date or date.today().isoformat(), "updated_at": datetime.now().astimezone().isoformat(timespec="seconds"), "lead_windows": {}}
+        if path.exists():
+            try:
+                existing = json.loads(path.read_text(encoding="utf-8"))
+                if isinstance(existing, dict):
+                    payload.update({key: existing[key] for key in ("source", "route", "run_date") if key in existing})
+                    payload["lead_windows"] = existing.get("lead_windows") if isinstance(existing.get("lead_windows"), dict) else {}
+            except (OSError, ValueError):
+                pass
+        payload["updated_at"] = datetime.now().astimezone().isoformat(timespec="seconds")
+        payload["lead_windows"][window] = result
+        _atomic_json_write(path, payload)
+        _write_run_manifest(folder, payload["run_date"])
     return path
+
+
+def _write_run_manifest(folder: Path, run_date: str) -> Path:
+    route_files = sorted(path.name for path in folder.glob("*.json") if path.name != "collection.json")
+    manifest = {"source": "ixigo", "run_date": run_date, "format": "route-files-with-lead-windows", "route_files": route_files, "file_count": len(route_files), "updated_at": datetime.now().astimezone().isoformat(timespec="seconds")}
+    path = folder / "collection.json"
+    _atomic_json_write(path, manifest)
+    return path
+
+
+def consolidate_legacy_run(run_date: str) -> int:
+    """Merge older per-window files into one route file for this date."""
+    folder = OUTPUT_DIR / run_date
+    merged = 0
+    with OUTPUT_LOCK:
+        for legacy_path in (sorted(folder.glob("*-T+*.json")) if folder.exists() else []):
+            match = re.match(r"^(?P<route>[A-Z]{3}-[A-Z]{3})-(?P<label>T\+\d+)\.json$", legacy_path.name)
+            if not match:
+                continue
+            try:
+                result = json.loads(legacy_path.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                continue
+            if not isinstance(result, dict):
+                continue
+            result["route"] = result.get("route") or match.group("route")
+            route_path = folder / f"{result['route']}.json"
+            payload: dict[str, Any] = {"source": "ixigo", "route": result["route"], "run_date": run_date, "updated_at": datetime.now().astimezone().isoformat(timespec="seconds"), "lead_windows": {}}
+            if route_path.exists():
+                try:
+                    existing = json.loads(route_path.read_text(encoding="utf-8"))
+                    if isinstance(existing, dict):
+                        payload["lead_windows"] = existing.get("lead_windows") if isinstance(existing.get("lead_windows"), dict) else {}
+                except (OSError, ValueError):
+                    pass
+            payload["lead_windows"][match.group("label")] = result
+            _atomic_json_write(route_path, payload)
+            legacy_path.unlink()
+            merged += 1
+        if folder.exists():
+            _write_run_manifest(folder, run_date)
+    return merged
 
 
 async def main_async(args: argparse.Namespace) -> None:

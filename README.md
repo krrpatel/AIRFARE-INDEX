@@ -28,14 +28,28 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 2. Prepare or refresh the local index database
+### 2. Prepare source files
 
-The repository includes `database/airfare_demo.db`. To regenerate the deterministic research dataset:
+The dashboard currently uses date-partitioned JSON files and does not require
+SQLite. Raw runs live under `data/raw_airfare/<source>/YYYY-MM-DD/`. After a
+complete run is available, open **Settings → Clean Data Adaptor**, validate the
+source/date, confirm the prompt, and publish
+`data/clean_airfare/<source>/DDMMYYYY.json`. Incomplete route coverage is
+rejected before any clean file is written.
+
+Clean JSON is intentionally not ignored, so it can be versioned and consumed
+by the dashboard on another machine without the raw scraper files. Raw data
+and runtime status remain ignored. To publish the generated artifacts:
 
 ```powershell
-$env:PYTHONPATH = "."
-python scripts/run_pipeline_demo.py --start 2026-01-01 --end 2026-08-24 --seed 42
+git add data/clean_airfare
+git commit -m "Publish cleaned airfare observations"
+git push origin HEAD
 ```
+
+The current generated files are small enough for normal GitHub uploads. If a
+future clean artifact reaches GitHub's 100 MB single-file limit, use Git LFS
+for that artifact instead of committing raw source snapshots.
 
 ### 3. Start the backend
 
@@ -72,16 +86,16 @@ npm run start
 
 ## Scraper Setup
 
-The active local OTA source is the normalized CompareFlights import. Ixigo collection is implemented as a permission-aware Playwright stream collector. Install its optional browser dependency only when running Ixigo:
+The active OTA sources are live, permission-aware collectors. CompareFlights follows the public search flow used by its white-label page; Ixigo uses a Selenium Chromium stream collector. Install the shared scraper dependencies before running either source:
 
 ```powershell
 pip install -r requirements-scrapers.txt
 Install Chrome or Chromium on the VPS and ensure it is available on `PATH`.
 ```
 
-Ixigo uses the same Selenium Chromium/CDP capture path as CompareFlights and defaults to headless mode. Set `ixigo_headless` to `false` only for an explicitly attended diagnostic run. A source-side HTTP 403 or rate limit is recorded as `SOURCE_ERROR`, not as a false `NO_DATA` result.
+Ixigo uses Selenium Chromium/CDP capture. CompareFlights uses the live signed search and result-polling requests made by its browser widget. Each source has an independent `headless` setting in the dashboard: `true` hides its browser, while `false` opens a visible browser for diagnostics where a browser is used. A source-side HTTP 403 or rate limit is recorded as `SOURCE_ERROR`, not as a false `NO_DATA` result.
 
-VPS stability defaults are also stored in `data/runtime/scraper_config.json`: 1920x1080 viewport, one route at a time, a 3-second route delay, and two bounded retries. These settings reduce accidental request bursts; they do not bypass source access controls.
+VPS stability defaults are also stored in `data/runtime/scraper_config.json`: 1920x1080 viewport, a shared maximum parallel-driver count, a 3-second route delay, and two bounded retries. Ixigo writes one route file per date containing all T+ lead-time windows, plus a small date-level collection manifest. These settings reduce accidental request bursts; they do not bypass source access controls.
 
 Run the holiday calendar collector:
 
@@ -96,6 +110,11 @@ Run one Ixigo route manually:
 $env:PYTHONPATH = "."
 python -m scraper.ota.ixigo DEL BOM --date 10102026 --headless
 ```
+
+The collector checks `CHROME_BINARY`, installed Chrome/Chromium, and then
+project-local fallback binaries at `browser/chrome.exe` or
+`chromium/chrome.exe`. `setup.bat` verifies the selected executable and
+installs application and scraper Python dependencies.
 
 The dashboard Settings page provides independent background actions for CompareFlights and Ixigo. Direct airline scrapers remain disabled until their permissions and collection paths are approved.
 
@@ -115,6 +134,7 @@ Default schedule:
 - DGCA basket check: day 1 at `09:30`
 - Daily source scope: 20 DGCA pairs in bidirectional mode = 40 directed routes per source
 - Browser collection is queued in the background and continues when the dashboard page changes
+- The worker validates and publishes complete clean source files without writing SQLite
 
 Environment variables can override defaults for deployment, including `COMPAREFLIGHTS_SCRAPE_HOUR`, `COMPAREFLIGHTS_SCRAPE_MINUTE`, `IXIGO_SCRAPE_HOUR`, `IXIGO_SCRAPE_MINUTE`, `DAILY_ROUTE_PAIRS`, `DGCA_TOP_N`, and `DGCA_DIRECTION_MODE`.
 
@@ -143,9 +163,9 @@ npm run build
 ```text
 airfare/       DGCA basket, airport registry, source contracts
 backend/       FastAPI service and API endpoints
-data/          DGCA files, imported airfare, runtime scraper settings
+    data/          DGCA files, raw/clean airfare, runtime scraper settings
 data_pipeline/ Validation, outlier handling, representative fare preparation
-database/      SQLite persistence and PostgreSQL target schema
+database/      Legacy pipeline schemas; not used by the current dashboard read path
 frontend/      Next.js dashboard, charts, Leaflet map, settings
 index_engine/  Basket weights, relatives, index, alerts, revisions
 ml/            Forecasting and anomaly detection
@@ -156,4 +176,8 @@ tests/         Automated unit tests
 
 ## Limitations
 
-The checked-in database contains research/backcast observations and an imported OTA run. A production deployment still needs permissioned live-source credentials or APIs, durable job storage, retry/observability infrastructure, database migrations, and compliance review for every source. The worker never bypasses CAPTCHA, robots rules, access controls, or terms of service.
+The current dashboard deliberately reads date-partitioned files instead of a
+database. A production deployment still needs permissioned live-source
+credentials or APIs, durable job storage, retry/observability infrastructure,
+and compliance review for every source. The worker never bypasses CAPTCHA,
+robots rules, access controls, or terms of service.

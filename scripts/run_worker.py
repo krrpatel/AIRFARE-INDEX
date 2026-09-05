@@ -2,23 +2,20 @@
 Worker entrypoint: runs the scheduled daily airfare collection and monthly
 DGCA basket refresh using APScheduler.
 
-Wired to the real pipeline: each cycle calls
-scripts/run_pipeline_demo.run() to regenerate mock data and recompute the
-index/alerts/airline-index/revisions, exactly like a manual invocation of
-run_pipeline_demo.py would. In live mode, the source-adapter loop is still
-a documented TODO -- see scraper/airlines/indigo.py for why (pending
-robots.txt/ToS review).
+The dashboard is file-backed. A cycle validates and publishes a clean source
+file when the configured route basket is complete; it never writes SQLite.
 """
 import logging
 import os
 import json
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, timedelta
 
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 logger = logging.getLogger("worker")
 
-MODE = os.getenv("MODE", "mock")
+MODE = os.getenv("MODE", "file")
 SCRAPE_HOUR = int(os.getenv("SCRAPE_HOUR", "6"))
 SCRAPE_MINUTE = int(os.getenv("SCRAPE_MINUTE", "0"))
 COMPAREFLIGHTS_SCRAPE_HOUR = int(os.getenv("COMPAREFLIGHTS_SCRAPE_HOUR", str(SCRAPE_HOUR)))
@@ -27,8 +24,6 @@ IXIGO_SCRAPE_HOUR = int(os.getenv("IXIGO_SCRAPE_HOUR", "6"))
 IXIGO_SCRAPE_MINUTE = int(os.getenv("IXIGO_SCRAPE_MINUTE", "30"))
 MAX_RETRIES = int(os.getenv("SCRAPE_MAX_RETRIES", "3"))
 BACKOFF_BASE = int(os.getenv("SCRAPE_BACKOFF_BASE_SECONDS", "5"))
-SQLITE_DB_PATH = os.getenv("SQLITE_DB_PATH", "database/airfare_demo.db")
-MOCK_SEED = int(os.getenv("MOCK_SEED", "42"))
 DGCA_CHECK_HOUR = int(os.getenv("DGCA_CHECK_HOUR", "9"))
 DGCA_CHECK_MINUTE = int(os.getenv("DGCA_CHECK_MINUTE", "30"))
 DGCA_TOP_N = int(os.getenv("DGCA_TOP_N", "50"))
@@ -37,6 +32,8 @@ DAILY_ROUTE_PAIRS = int(os.getenv("DAILY_ROUTE_PAIRS", "20"))
 DAILY_DIRECTION_MODE = os.getenv("DGCA_DIRECTION_MODE", "bidirectional")
 IXIGO_DRIVER = os.getenv("IXIGO_DRIVER", "chromium")
 IXIGO_HEADLESS = os.getenv("IXIGO_HEADLESS", "0").lower() in {"1", "true", "yes"}
+SCRAPER_DRIVER_COUNT = int(os.getenv("SCRAPER_DRIVER_COUNT", "4"))
+IXIGO_LEAD_DAYS = [1, 7, 15, 30, 45]
 RUNTIME_CONFIG_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "runtime", "scraper_config.json")
 
 try:
@@ -46,6 +43,8 @@ try:
     DAILY_DIRECTION_MODE = _runtime.get("direction_mode", DAILY_DIRECTION_MODE)
     IXIGO_DRIVER = _runtime.get("ixigo_driver", IXIGO_DRIVER)
     IXIGO_HEADLESS = bool(_runtime.get("ixigo_headless", IXIGO_HEADLESS))
+    SCRAPER_DRIVER_COUNT = max(1, min(16, int(_runtime.get("scraper_driver_count", SCRAPER_DRIVER_COUNT))))
+    IXIGO_LEAD_DAYS = sorted({int(value) for value in _runtime.get("ixigo_lead_days", IXIGO_LEAD_DAYS) if int(value) > 0}) or [1]
     COMPAREFLIGHTS_SCRAPE_HOUR, COMPAREFLIGHTS_SCRAPE_MINUTE = (int(value) for value in _runtime.get("compareflights_time", f"{COMPAREFLIGHTS_SCRAPE_HOUR:02d}:{COMPAREFLIGHTS_SCRAPE_MINUTE:02d}").split(":", 1))
     IXIGO_SCRAPE_HOUR, IXIGO_SCRAPE_MINUTE = (int(value) for value in _runtime.get("ixigo_time", f"{IXIGO_SCRAPE_HOUR:02d}:{IXIGO_SCRAPE_MINUTE:02d}").split(":", 1))
 except (OSError, ValueError, TypeError):
@@ -58,68 +57,79 @@ def scheduled_routes():
 
 
 def run_collection_cycle():
-    """One full cycle: collect -> validate -> store -> recompute index."""
+    """Validate the latest OTA run and publish a clean file when complete."""
     logger.info("Starting collection cycle (mode=%s)", MODE)
     logger.info("CompareFlights route scope: top %d pairs -> %d directed routes.", DAILY_ROUTE_PAIRS, len(scheduled_routes()))
-
-    for attempt in range(1, MAX_RETRIES + 1):
-        try:
-            if MODE == "mock":
-                logger.info("Mock mode: running the real pipeline (scripts/run_pipeline_demo.run).")
-                from scripts.run_pipeline_demo import run as run_pipeline
-                # Re-runs the deterministic generator + full pipeline through today.
-                # In a real deployment this would be replaced by an incremental
-                # append of only the latest interval's observations rather than
-                # a full regeneration -- documented simplification for the demo.
-                run_pipeline(date(2026, 1, 1), date.today(), MOCK_SEED, SQLITE_DB_PATH)
-            else:
-                logger.info("Live mode: invoking source adapters.")
-                # TODO(Phase 6): iterate enabled sources from `sources` table, call each adapter.
-                # Blocked on robots.txt/ToS review -- see scraper/airlines/indigo.py.
-                raise NotImplementedError(
-                    "Live mode has no cleared source adapters yet. Use MODE=mock."
-                )
-            logger.info("Collection cycle completed successfully.")
-            return
-        except Exception as exc:  # noqa: BLE001 - top-level cycle guard, logged not swallowed
-            wait = BACKOFF_BASE * (2 ** (attempt - 1))
-            logger.error("Cycle attempt %d/%d failed: %s", attempt, MAX_RETRIES, exc)
-            if attempt < MAX_RETRIES:
-                logger.info("Retrying in %ds (exponential backoff).", wait)
-                time.sleep(wait)
-            else:
-                logger.error("All retries exhausted. Marking source unavailable, "
-                              "preserving last valid observation, raising data-quality warning.")
-                try:
-                    from database.sqlite_store import get_conn, init_db
-                    init_db(SQLITE_DB_PATH)
-                    with get_conn(SQLITE_DB_PATH) as conn:
-                        conn.execute(
-                            "INSERT OR REPLACE INTO sources (name, status, last_success) "
-                            "VALUES (?, 'OFFLINE', (SELECT last_success FROM sources WHERE name=?))",
-                            (MODE, MODE),
-                        )
-                except Exception:  # noqa: BLE001 - best-effort status write, never crash the worker on this
-                    logger.exception("Could not persist source-offline status.")
+    from airfare.sources.clean_adapter import CleanDataValidationError, CleanSourceAdapter
+    from airfare.sources.run_adapter import SourceRunAdapter
+    raw = SourceRunAdapter()
+    clean = CleanSourceAdapter(raw)
+    dates = raw.run_dates("compareflights")
+    if not dates:
+        logger.warning("No CompareFlights date-partitioned run is available.")
+        return
+    run_date = dates[-1]
+    expected = [f"{route.origin}-{route.destination}" for route in scheduled_routes()]
+    validation = clean.validate("compareflights", run_date, expected)
+    if not validation["valid"]:
+        logger.warning("Clean adaptation rejected for %s: %s", run_date, validation["message"])
+        return
+    try:
+        result = clean.build("compareflights", run_date, expected)
+        logger.info("Clean adaptation completed: %s", result["path"])
+    except CleanDataValidationError as exc:
+        logger.warning("Clean adaptation rejected: %s", exc)
 
 
 def run_ixigo_collection_cycle():
-    """Run the Ixigo route queue independently from the CompareFlights job."""
+    """Run Ixigo's date/route/lead-window queue independently."""
     routes = scheduled_routes()
-    logger.info("Starting Ixigo collection: top %d pairs -> %d directed routes.", DAILY_ROUTE_PAIRS, len(routes))
+    logger.info("Starting Ixigo collection: top %d pairs -> %d directed routes x %s.", DAILY_ROUTE_PAIRS, len(routes), IXIGO_LEAD_DAYS)
     if MODE != "live":
         logger.info("MODE=%s: Ixigo queue validated; live browser collection is disabled in non-live mode.", MODE)
         return
-    from scraper.ota.ixigo import collect_route
+    from scraper.ota.ixigo import collect_route, consolidate_legacy_run, save_route_result
     from datetime import timedelta
-    travel_date = (date.today() + timedelta(days=1)).strftime("%d%m%Y")
     import asyncio
-    for route in routes:
+    run_date = date.today().isoformat()
+    consolidate_legacy_run(run_date)
+    output_root = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "raw_airfare", "ixigo", run_date)
+
+    def window_completed(route, lead_days):
+        path = os.path.join(output_root, f"{route.origin}-{route.destination}.json")
         try:
-            result = asyncio.run(collect_route(route.origin, route.destination, travel_date, headless=IXIGO_HEADLESS, browser_engine=IXIGO_DRIVER))
-            logger.info("Ixigo %s-%s: %s observations=%s", route.origin, route.destination, result["status"], result["observation_count"])
-        except Exception:
-            logger.exception("Ixigo collection failed for %s-%s", route.origin, route.destination)
+            with open(path, encoding="utf-8") as result_file:
+                payload = json.load(result_file)
+            return payload.get("lead_windows", {}).get(f"T+{lead_days}", {}).get("status") == "SUCCESS"
+        except (OSError, ValueError, TypeError):
+            return False
+
+    tasks = [(route, days) for route in routes for days in IXIGO_LEAD_DAYS if not window_completed(route, days)]
+    logger.info("Ixigo resume check: %d windows already complete; %d remain.", len(routes) * len(IXIGO_LEAD_DAYS) - len(tasks), len(tasks))
+
+    def collect_task(task):
+        route, lead_days = task
+        result = None
+        travel_date = (date.today() + timedelta(days=lead_days)).strftime("%d%m%Y")
+        for attempt in range(1, MAX_RETRIES + 1):
+            try:
+                result = asyncio.run(collect_route(route.origin, route.destination, travel_date, headless=IXIGO_HEADLESS, browser_engine=IXIGO_DRIVER))
+                result.update({"lead_days": lead_days, "lead_label": f"T+{lead_days}"})
+                save_route_result(result, run_date=run_date, suffix=f"T+{lead_days}")
+                if result.get("status") == "SUCCESS" or attempt == MAX_RETRIES:
+                    return route, lead_days, result
+            except Exception as exc:
+                result = {"route": f"{route.origin}-{route.destination}", "status": "SOURCE_ERROR", "reason": str(exc), "observation_count": 0}
+                if attempt == MAX_RETRIES:
+                    return route, lead_days, result
+            time.sleep(min(30, BACKOFF_BASE * (2 ** (attempt - 1))))
+        return route, lead_days, result or {"route": f"{route.origin}-{route.destination}", "status": "SOURCE_ERROR", "observation_count": 0}
+
+    with ThreadPoolExecutor(max_workers=SCRAPER_DRIVER_COUNT, thread_name_prefix="ixigo-driver") as pool:
+        futures = [pool.submit(collect_task, task) for task in tasks]
+        for future in as_completed(futures):
+            route, lead_days, result = future.result()
+            logger.info("Ixigo %s-%s %s: %s observations=%s", route.origin, route.destination, f"T+{lead_days}", result["status"], result.get("observation_count", 0))
 
 
 def run_dgca_route_basket_check():
