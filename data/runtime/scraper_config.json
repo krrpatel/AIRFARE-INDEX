@@ -1,10 +1,14 @@
 {
-  "daily_route_pairs": 20,
+  "daily_route_pairs": 10,
   "compareflights_time": "06:00",
   "ixigo_time": "06:30",
+  "dgca_month": "2026-07",
+  "dgca_top_n": 50,
+  "dgca_time": "09:30",
+  "scraper_enabled": true,
   "direction_mode": "bidirectional",
   "ixigo_driver": "chromium",
-  "compareflights_headless": false,
+  "compareflights_headless": true,
   "ixigo_headless": false,
   "scraper_driver_count": 4,
   "ixigo_lead_days": [

@@ -1,15 +1,18 @@
 """Build and validate compact, date-partitioned source artifacts.
 
 Clean files are deliberately plain JSON so they can be reviewed, uploaded to
-GitHub, and consumed by the dashboard without a database.  Raw source files
-remain the audit trail; this module only writes after route completeness has
-been checked.
+GitHub, and consumed by the dashboard without a database. Raw source files
+remain the audit trail; complete files are written only after route
+completeness has been checked. A partial file is written only when the
+operator explicitly allows missing routes.
 """
 from __future__ import annotations
 
 import json
 import math
+import os
 import re
+import threading
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Callable
@@ -86,11 +89,13 @@ class CleanSourceAdapter:
         run_date: str,
         expected_routes: list[str],
         on_progress: Callable[[int, int], None] | None = None,
+        allow_missing: bool = False,
     ) -> dict[str, Any]:
         validation = self.validate(source, run_date, expected_routes)
-        if not validation["valid"]:
+        if not validation["valid"] and not allow_missing:
             raise CleanDataValidationError(validation["message"])
-        rows = [self._normalize(row) for row in self.raw.rows(source, run_date)]
+        expected_set = {str(route).upper() for route in expected_routes}
+        rows = [self._normalize(row) for row in self.raw.rows(source, run_date) if str(row.get("route", "")).upper() in expected_set]
         route_names = sorted({row["route"] for row in rows if row.get("route")})
         routes = []
         for index, route in enumerate(route_names, 1):
@@ -117,13 +122,19 @@ class CleanSourceAdapter:
             "route_count": len(routes),
             "row_count": len(rows),
             "number_of_stops_field": "number_of_stops",
+            "publication_status": "PARTIAL_MISSING_ROUTES" if allow_missing and validation["missing_routes"] else "COMPLETE",
+            "allow_missing_routes": allow_missing,
+            "configured_routes": sorted(expected_set),
+            "filtered_to_configured_routes": True,
+            "published_route_count": len(routes),
+            "published_row_count": len(rows),
             "validation": validation,
             "routes": routes,
             "rows": rows,
         }
         path = self.path(source, run_date)
         path.parent.mkdir(parents=True, exist_ok=True)
-        temporary = path.with_suffix(".json.tmp")
+        temporary = path.with_name(f".{path.name}.{os.getpid()}.{threading.get_ident()}.tmp")
         temporary.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         temporary.replace(path)
         return {"path": str(path), "source": source, "run_date": run_date, "route_count": len(routes), "row_count": len(rows), "validation": validation}
@@ -146,4 +157,9 @@ class CleanSourceAdapter:
             stops = None
         normalized["number_of_stops"] = stops
         normalized.pop("stops", None)
+        normalized.setdefault("departure", None)
+        normalized.setdefault("arrival", None)
+        normalized.setdefault("duration_minutes", None)
+        if normalized.get("advance_purchase_days") is None:
+            normalized["advance_purchase_days"] = normalized.get("lead_days")
         return normalized

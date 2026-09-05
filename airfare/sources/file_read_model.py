@@ -337,6 +337,10 @@ class FileAirfareReadModel:
                 output["lead_days"] = int(str(output["lead_window"])[2:])
             except ValueError:
                 pass
+        output.setdefault("departure", None)
+        output.setdefault("arrival", None)
+        output.setdefault("duration_minutes", None)
+        output.setdefault("advance_purchase_days", output.get("lead_days"))
         return output
 
     def _latest_route_indices(self, source: str) -> dict[str, float | None]:

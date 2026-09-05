@@ -1,8 +1,8 @@
 """Read date-partitioned source runs for the dashboard and exports.
 
 The adapter keeps the dashboard independent from a scraper's native file
-layout.  Ixigo stores one route file containing all lead-time windows, while
-the imported CompareFlights source keeps its route files.  Both become the
+layout.  Ixigo and live CompareFlights stores one route file containing all
+lead-time windows.  Historical CompareFlights route files remain supported. Both become the
 same compact row shape at the API boundary.
 """
 from __future__ import annotations
@@ -65,35 +65,69 @@ class SourceRunAdapter:
         raise ValueError(f"Unsupported source: {source}")
 
     def _compareflights_rows(self, run_date: str) -> list[dict[str, Any]]:
-        adapter = CompareFlightsOfflineAdapter(root=self.root / "compareflights", run_date=run_date)
+        run_dir = self.root / "compareflights" / run_date
         rows = []
-        for record in adapter.iter_all_records():
-            fare = record.components.total_payable_fare or record.components.offered_fare
-            rows.append({
-                "source": "compareflights",
-                "run_date": run_date,
-                "observed_at": record.observed_at.isoformat() if record.observed_at else None,
-                "route": f"{record.origin}-{record.destination}",
-                "origin": record.origin,
-                "destination": record.destination,
-                "travel_date": record.travel_date.isoformat(),
-                "lead_window": f"T+{record.advance_purchase_days}",
-                "lead_days": record.advance_purchase_days,
-                "airline_code": record.airline_code,
-                "airline_name": record.airline_name,
-                "flight_number": record.flight_number,
-                "fare": fare,
-                "currency": record.currency,
-                "availability_status": record.availability_status,
-                "fare_code": record.fare_code,
-                "number_of_stops": record.stops,
-                "departure": record.departure_datetime.isoformat() if record.departure_datetime else None,
-                "arrival": record.arrival_datetime.isoformat() if record.arrival_datetime else None,
-                "duration_minutes": record.duration_minutes,
-                "cabin_class": record.cabin_class,
-                "checkin_baggage_kg": record.baggage.get("checkin_baggage_kg"),
-                "cabin_baggage_kg": record.baggage.get("cabin_baggage_kg"),
-            })
+        # Live searches are stored as one route file with all T+n windows.
+        # Keep the legacy parser below so older imported runs remain readable.
+        for path in sorted(run_dir.glob("*.json")):
+            if path.name in {"summary.json", "completed_searches.json", "collection.json"}:
+                continue
+            try:
+                payload = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                continue
+            windows = payload.get("lead_windows") if isinstance(payload, dict) else None
+            if isinstance(windows, dict):
+                route = str(payload.get("route") or path.stem).upper()
+                for label, result in windows.items():
+                    if not isinstance(result, dict):
+                        continue
+                    for observation in result.get("observations") or []:
+                        fare = observation.get("fare") if isinstance(observation.get("fare"), dict) else {}
+                        lead_days = _lead_days(label, result.get("lead_days"))
+                        rows.append({
+                            "source": "compareflights", "run_date": run_date,
+                            "observed_at": observation.get("observed_at") or result.get("observed_at"),
+                            "route": route,
+                            "origin": observation.get("origin") or route.split("-")[0],
+                            "destination": observation.get("destination") or route.split("-")[-1],
+                            "travel_date": observation.get("travel_date") or result.get("travel_date"),
+                            "lead_window": label, "lead_days": lead_days,
+                            "airline_code": observation.get("airline_code"),
+                            "airline_name": observation.get("airline_name") or observation.get("airline_code"),
+                            "flight_number": observation.get("flight_number"),
+                            "fare": fare.get("amount") if fare else observation.get("fare_amount"),
+                            "currency": fare.get("currency") if fare else observation.get("currency", "INR"),
+                            "availability_status": observation.get("availability_status", "AVAILABLE"),
+                            "fare_code": observation.get("fare_code"),
+                            "number_of_stops": observation.get("number_of_stops", observation.get("stops")),
+                            "departure": observation.get("departure"), "arrival": observation.get("arrival"),
+                            "duration_minutes": observation.get("duration_minutes"),
+                            "cabin_class": observation.get("cabin_class", "Economy"),
+                            "checkin_baggage_kg": observation.get("checkin_baggage_kg"),
+                            "cabin_baggage_kg": observation.get("cabin_baggage_kg"),
+                        })
+                continue
+            legacy = CompareFlightsOfflineAdapter(root=self.root / "compareflights", run_date=run_date)
+            for record in legacy.iter_all_records():
+                if record.source_file != str(path):
+                    continue
+                fare = record.components.total_payable_fare or record.components.offered_fare
+                rows.append({
+                    "source": "compareflights", "run_date": run_date,
+                    "observed_at": record.observed_at.isoformat() if record.observed_at else None,
+                    "route": f"{record.origin}-{record.destination}", "origin": record.origin, "destination": record.destination,
+                    "travel_date": record.travel_date.isoformat(), "lead_window": f"T+{record.advance_purchase_days}",
+                    "lead_days": record.advance_purchase_days, "airline_code": record.airline_code,
+                    "airline_name": record.airline_name, "flight_number": record.flight_number, "fare": fare,
+                    "currency": record.currency, "availability_status": record.availability_status,
+                    "fare_code": record.fare_code, "number_of_stops": record.stops,
+                    "departure": record.departure_datetime.isoformat() if record.departure_datetime else None,
+                    "arrival": record.arrival_datetime.isoformat() if record.arrival_datetime else None,
+                    "duration_minutes": record.duration_minutes, "cabin_class": record.cabin_class,
+                    "checkin_baggage_kg": record.baggage.get("checkin_baggage_kg"),
+                    "cabin_baggage_kg": record.baggage.get("cabin_baggage_kg"),
+                })
         return rows
 
     def _ixigo_rows(self, run_date: str) -> list[dict[str, Any]]:
@@ -151,3 +185,13 @@ class SourceRunAdapter:
                         "cabin_baggage_kg": observation.get("cabin_baggage_kg"),
                     })
         return rows
+
+
+def _lead_days(label: Any, fallback: Any = None) -> int | None:
+    match = re.fullmatch(r"T\+(\d+)", str(label or ""))
+    if match:
+        return int(match.group(1))
+    try:
+        return int(fallback) if fallback is not None else None
+    except (TypeError, ValueError):
+        return None

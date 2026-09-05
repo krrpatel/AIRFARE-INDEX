@@ -132,7 +132,7 @@ export default function Home() {
           <p className="muted">Monitor freshness, source availability, observation coverage, quality events, and day-over-day route movement before publishing a series.</p>
           {alerts.length ? <table><thead><tr><th>Severity</th><th>Date</th><th>Alert</th></tr></thead><tbody>{alerts.map(a => <tr key={a.alert_id}><td>{a.severity}</td><td>{a.index_date}</td><td>{a.message}</td></tr>)}</tbody></table> : <p className="muted">No active alerts recorded.</p>}
           <h3 className="subheading">Source health</h3>
-          <table><thead><tr><th>Source</th><th>Status</th><th>Last success</th></tr></thead><tbody>{sourceHealth.map(source => <tr key={source.name}><td>{source.label || source.name}</td><td>{source.status}</td><td>{source.last_success || "Configured; no run recorded"}</td></tr>)}</tbody></table>
+          <table><thead><tr><th>Source</th><th>Status</th><th>Last success</th></tr></thead><tbody>{sourceHealth.map(source => <tr key={source.name}><td>{source.label || source.name}</td><td>{source.status}</td><td>{source.last_success || (source.today_scrape === "NO_SCRAPE_PERFORMED" ? "No scrape performed today" : "Configured; no run recorded")}</td></tr>)}</tbody></table>
         </div>
 
         <div className="panel wide">

@@ -92,8 +92,8 @@ export default function AirlineAnalysis() {
         </div>
         <div className="panel full">
           <h2>Latest OTA Scrape</h2>
-          {isScrapeLoading ? <p className="muted">Loading data...</p> : <div className="metric-grid"><div><span className="metric-label">Source</span><strong>CompareFlights OTA</strong></div><div><span className="metric-label">Latest import run</span><strong>{scrape?.latest_import_run || "Unavailable"}</strong></div><div><span className="metric-label">Latest indexed date</span><strong>{scrape?.latest_database_date || "Unavailable"}</strong></div><div><span className="metric-label">Weekly observations</span><strong>{scrape?.observation_count?.toLocaleString() || "Unavailable"}</strong></div></div>}
-          <p className="muted">Scraped/imported dates are shown exactly as available from the OTA collection pipeline. A missing day is not filled with an estimated fare.</p>
+          {isScrapeLoading ? <p className="muted">Loading data...</p> : <div className="metric-grid"><div><span className="metric-label">Source</span><strong>CompareFlights OTA</strong></div><div><span className="metric-label">Latest scrape</span><strong>{scrape?.latest_scrape || scrape?.latest_import_run || (scrape?.today_scrape === "NO_SCRAPE_PERFORMED" ? "No scrape performed today" : "Unavailable")}</strong></div><div><span className="metric-label">Latest data date</span><strong>{scrape?.latest_data_date || scrape?.latest_database_date || "Unavailable"}</strong></div><div><span className="metric-label">Weekly observations</span><strong>{scrape?.observation_count?.toLocaleString() || "Unavailable"}</strong></div></div>}
+          <p className="muted">Scraped dates are shown exactly as available from the OTA collection pipeline. A missing day is not filled with an estimated fare.</p>
         </div>
         <div className="panel full">
           <h2>Weekly Airfare Overview</h2>

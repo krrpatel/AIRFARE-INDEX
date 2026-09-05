@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from datetime import date, datetime, time, timezone
 from pathlib import Path
 from typing import Any
@@ -74,6 +75,44 @@ class CompareFlightsOfflineAdapter(SourceAdapter):
 
 
 def records_from_route_payload(payload: dict[str, Any], source_file: Path) -> list[StandardFareRecord]:
+    live_windows = payload.get("lead_windows")
+    if isinstance(live_windows, dict):
+        route_origin = str(payload.get("origin") or str(payload.get("route") or "").split("-")[0]).upper()
+        route_dest = str(payload.get("destination") or str(payload.get("route") or "").split("-")[-1]).upper()
+        require_domestic_route(route_origin, route_dest)
+        out: list[StandardFareRecord] = []
+        for label, result in live_windows.items():
+            if not isinstance(result, dict):
+                continue
+            lead_match = re.fullmatch(r"T\+(\d+)", str(label))
+            lead_days = int(lead_match.group(1)) if lead_match else int(result.get("lead_days") or 0)
+            for observation in result.get("observations") or []:
+                fare = observation.get("fare") if isinstance(observation.get("fare"), dict) else {}
+                travel_date = _parse_date(observation.get("travel_date") or result.get("travel_date"))
+                if not travel_date:
+                    continue
+                amount = _num(fare.get("amount") if fare else observation.get("fare_amount"))
+                observed_at = _parse_dt(observation.get("observed_at") or result.get("observed_at")) or datetime.now(timezone.utc)
+                out.append(StandardFareRecord(
+                    source_name="compareflights", observed_at=observed_at,
+                    origin=str(observation.get("origin") or route_origin).upper(),
+                    destination=str(observation.get("destination") or route_dest).upper(),
+                    travel_date=travel_date, advance_purchase_days=lead_days,
+                    availability_status="AVAILABLE" if amount is not None else "UNKNOWN",
+                    airline_code=observation.get("airline_code"), airline_name=observation.get("airline_name"),
+                    flight_number=observation.get("flight_number"),
+                    departure_datetime=_parse_dt(observation.get("departure")),
+                    arrival_datetime=_parse_dt(observation.get("arrival")),
+                    duration_minutes=_int(observation.get("duration_minutes")),
+                    stops=_int(observation.get("number_of_stops", observation.get("stops"))),
+                    cabin_class=str(observation.get("cabin_class") or "Economy"),
+                    fare_code=observation.get("fare_code"), currency=str(fare.get("currency") or "INR"),
+                    components=FareComponents(offered_fare=amount, total_payable_fare=amount, source_native=observation),
+                    baggage={"checkin_baggage_kg": observation.get("checkin_baggage_kg"), "cabin_baggage_kg": observation.get("cabin_baggage_kg")},
+                    source_payload=observation, source_file=str(source_file), parser_version=PARSER_VERSION,
+                ))
+        return out
+
     date_searched = payload.get("date_searched")
     observed_at = _parse_dt(payload.get("searched_at")) or _date_to_dt(date_searched)
     out: list[StandardFareRecord] = []

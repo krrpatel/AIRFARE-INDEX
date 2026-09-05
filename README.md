@@ -37,6 +37,20 @@ source/date, confirm the prompt, and publish
 `data/clean_airfare/<source>/DDMMYYYY.json`. Incomplete route coverage is
 rejected before any clean file is written.
 
+Clean JSON is intentionally not ignored, so it can be versioned and consumed
+by the dashboard on another machine without the raw scraper files. Raw data
+and runtime status remain ignored. To publish the generated artifacts:
+
+```powershell
+git add data/clean_airfare
+git commit -m "Publish cleaned airfare observations"
+git push origin HEAD
+```
+
+The current generated files are small enough for normal GitHub uploads. If a
+future clean artifact reaches GitHub's 100 MB single-file limit, use Git LFS
+for that artifact instead of committing raw source snapshots.
+
 ### 3. Start the backend
 
 ```powershell
@@ -72,14 +86,14 @@ npm run start
 
 ## Scraper Setup
 
-The active local OTA source is the normalized CompareFlights import. Ixigo collection is implemented as a permission-aware Selenium Chromium stream collector. Install its scraper dependencies only when running Ixigo:
+The active OTA sources are live, permission-aware collectors. CompareFlights follows the public search flow used by its white-label page; Ixigo uses a Selenium Chromium stream collector. Install the shared scraper dependencies before running either source:
 
 ```powershell
 pip install -r requirements-scrapers.txt
 Install Chrome or Chromium on the VPS and ensure it is available on `PATH`.
 ```
 
-Ixigo uses Selenium Chromium/CDP capture. Each source has an independent `headless` setting in the dashboard: `true` hides its browser, while `false` opens a visible browser for diagnostics. A source-side HTTP 403 or rate limit is recorded as `SOURCE_ERROR`, not as a false `NO_DATA` result.
+Ixigo uses Selenium Chromium/CDP capture. CompareFlights uses the live signed search and result-polling requests made by its browser widget. Each source has an independent `headless` setting in the dashboard: `true` hides its browser, while `false` opens a visible browser for diagnostics where a browser is used. A source-side HTTP 403 or rate limit is recorded as `SOURCE_ERROR`, not as a false `NO_DATA` result.
 
 VPS stability defaults are also stored in `data/runtime/scraper_config.json`: 1920x1080 viewport, a shared maximum parallel-driver count, a 3-second route delay, and two bounded retries. Ixigo writes one route file per date containing all T+ lead-time windows, plus a small date-level collection manifest. These settings reduce accidental request bursts; they do not bypass source access controls.
 
