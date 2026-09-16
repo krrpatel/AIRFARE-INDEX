@@ -114,6 +114,17 @@ Default schedule: CompareFlights at 06:00, Ixigo at 06:30, DGCA basket on day 1 
 ## System Architecture
 
 ```mermaid
+%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "primaryTextColor": "#111111",
+    "secondaryTextColor": "#111111",
+    "tertiaryTextColor": "#111111",
+    "textColor": "#111111",
+    "lineColor": "#333333"
+  }
+}}%%
+
 graph TB
     subgraph "Data Sources"
         CF[CompareFlights OTA<br/>HTTP API + Signed Requests]
@@ -165,17 +176,27 @@ graph TB
     REV --> API
     API --> FE
     
-    style CF fill:#e1f5fe
-    style IX fill:#e1f5fe
-    style DG fill:#e1f5fe
-    style T1 fill:#fff3e0
-    style T2 fill:#fff3e0
-    style BR fill:#f3e5f5
-    style PR fill:#f3e5f5
-    style NI fill:#f3e5f5
-    style CL fill:#f3e5f5
-    style API fill:#e8f5e9
-    style FE fill:#e8f5e9
+    style CF fill:#e1f5fe,stroke:#0277bd,color:#111111
+    style IX fill:#e1f5fe,stroke:#0277bd,color:#111111
+    style DG fill:#e1f5fe,stroke:#0277bd,color:#111111
+    
+    style SA fill:#f5f5f5,stroke:#616161,color:#111111
+    style RAW fill:#f5f5f5,stroke:#616161,color:#111111
+    
+    style T1 fill:#fff3e0,stroke:#ef6c00,color:#111111
+    style T2 fill:#fff3e0,stroke:#ef6c00,color:#111111
+    style CLEAN fill:#f5f5f5,stroke:#616161,color:#111111
+    
+    style BR fill:#f3e5f5,stroke:#7b1fa2,color:#111111
+    style PR fill:#f3e5f5,stroke:#7b1fa2,color:#111111
+    style NI fill:#f3e5f5,stroke:#7b1fa2,color:#111111
+    style CL fill:#f3e5f5,stroke:#7b1fa2,color:#111111
+    
+    style SQL fill:#f5f5f5,stroke:#616161,color:#111111
+    style REV fill:#f5f5f5,stroke:#616161,color:#111111
+    
+    style API fill:#e8f5e9,stroke:#2e7d32,color:#111111
+    style FE fill:#e8f5e9,stroke:#2e7d32,color:#111111
 ```
 
 ---
@@ -183,6 +204,17 @@ graph TB
 ## Data Pipeline Flowchart
 
 ```mermaid
+%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "primaryTextColor": "#111111",
+    "secondaryTextColor": "#111111",
+    "tertiaryTextColor": "#111111",
+    "lineColor": "#333333",
+    "textColor": "#111111"
+  }
+}}%%
+
 flowchart TD
     Start([Raw Observation]) --> Validate{Tier 1 Validation}
     
@@ -235,15 +267,16 @@ flowchart TD
     Reject5 --> Discard
     Reject6 --> Discard
     
-    style Reject1 fill:#ffcdd2
-    style Reject2 fill:#ffcdd2
-    style Reject3 fill:#ffcdd2
-    style Reject4 fill:#ffcdd2
-    style Reject5 fill:#ffcdd2
-    style Reject6 fill:#ffcdd2
-    style Suspicious fill:#ffe0b2
-    style Valid1 fill:#c8e6c9
-    style Output fill:#bbdefb
+    style Reject1 fill:#ffcdd2,stroke:#b71c1c,color:#000000
+    style Reject2 fill:#ffcdd2,stroke:#b71c1c,color:#000000
+    style Reject3 fill:#ffcdd2,stroke:#b71c1c,color:#000000
+    style Reject4 fill:#ffcdd2,stroke:#b71c1c,color:#000000
+    style Reject5 fill:#ffcdd2,stroke:#b71c1c,color:#000000
+    style Reject6 fill:#ffcdd2,stroke:#b71c1c,color:#000000
+    
+    style Suspicious fill:#ffe0b2,stroke:#e65100,color:#000000
+    style Valid1 fill:#c8e6c9,stroke:#2e7d32,color:#000000
+    style Output fill:#bbdefb,stroke:#1565c0,color:#000000
 ```
 
 ---
